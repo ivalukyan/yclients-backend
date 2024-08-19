@@ -6,7 +6,7 @@ app = FastAPI(
     title='Yclients'
 )
 
-templates = Jinja2Templates(directory="backend/app/templates")
+templates = Jinja2Templates(directory="app/templates")
 
 
 @app.get("/")
