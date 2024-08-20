@@ -7,9 +7,7 @@ app = FastAPI(
     title='Yclients'
 )
 
-router = APIRouter(
-    tags=['record']
-)
+router = APIRouter()
 
 templates = Jinja2Templates(directory="app/templates")
 
