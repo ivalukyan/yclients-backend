@@ -19,6 +19,11 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {'request': request})
 
 
+@router.get("/type_records")
+async def type_records(request: Request):
+    return templates.TemplateResponse("type_records/type_record.html", {'request': request})
+
+
 @router.get("/records")
 async def recording(request: Request):
     return templates.TemplateResponse("recording/record.html", {'request': request})
