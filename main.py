@@ -24,6 +24,11 @@ async def type_records(request: Request):
     return templates.TemplateResponse("type_records/type_record.html", {'request': request})
 
 
+@router.get("/type_records/select_specialist")
+async def select_specialist(request: Request):
+    return templates.TemplateResponse("type_records/select_specialist.html", {'request': request})
+
+
 @router.get("/records")
 async def recording(request: Request):
     return templates.TemplateResponse("recording/record.html", {'request': request})
