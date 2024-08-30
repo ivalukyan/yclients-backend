@@ -21,12 +21,22 @@ async def home(request: Request):
 
 @router.get("/type_records")
 async def type_records(request: Request):
-    return templates.TemplateResponse("type_records/type_record.html", {'request': request})
+    return templates.TemplateResponse("type_record.html", {'request': request})
 
 
 @router.get("/type_records/select_specialist")
 async def select_specialist(request: Request):
-    return templates.TemplateResponse("type_records/select_specialist.html", {'request': request})
+    return templates.TemplateResponse("specialist/select_specialist.html", {'request': request})
+
+
+@router.get("/type_records/select_specialist/select_service")
+async def select_service_for_specialist(request: Request):
+    return templates.TemplateResponse("specialist/select_services.html", {'request': request})
+
+
+@router.get("/type_records/select_specialist/select_service/select_date")
+async def select_date_for_specialist(request: Request):
+    return templates.TemplateResponse("specialist/select_datatime.html", {'request': request})
 
 
 @router.get("/type_records/select_services")
