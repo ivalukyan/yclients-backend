@@ -60,7 +60,33 @@ async def success_for_specialist(request: Request):
 # Запись на событие по услуге
 @router.get("/type_records/select_service")
 async def select_services(request: Request):
-    return templates.TemplateResponse("type_records/select_services.html", {'request': request})
+    return templates.TemplateResponse("services/select_service.html", {'request': request})
+
+
+@router.get("/type_records/select_service/select_specialist")
+async def select_specialist_for_services(request: Request):
+    return templates.TemplateResponse("services/select_specialist.html", {'request': request})
+
+
+@router.get("/type_records/select_service/select_specialist/select_date")
+async def select_date_for_services(request: Request):
+    return templates.TemplateResponse("services/select_date.html", {'request': request})
+
+
+@router.post("/type_records/select_service/select_specialist/select_date")
+async def select_date_for_services(request: Request, date: Annotated[str, Form()], time: Annotated[str, Form()]):
+    redirect_url = request.url_for("select_success_for_services")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/type_records/select_service/select_specialist/select_date/success")
+async def select_success_for_services(request: Request):
+    return templates.TemplateResponse("services/success.html", {'request': request})
+
+
+@router.post("/type_records/select_service/select_specialist/select_date/success")
+async def select_success_for_services(request: Request):
+    return templates.TemplateResponse("services/success.html", {'request': request})
 
 
 # Запись на событие по дате
