@@ -25,6 +25,7 @@ async def type_records(request: Request):
     return templates.TemplateResponse("type_record.html", {'request': request})
 
 
+# Запись на событие по специалисту
 @router.get("/type_records/select_specialist")
 async def select_specialist(request: Request):
     return templates.TemplateResponse("specialist/select_specialist.html", {'request': request})
@@ -40,11 +41,29 @@ async def select_date_for_specialist(request: Request):
     return templates.TemplateResponse("specialist/select_datatime.html", {'request': request})
 
 
+@router.post("/type_records/select_specialist/select_service/select_date")
+async def select_date_for_specialist(request: Request, date: Annotated[str, Form()], time: Annotated[str, Form()]):
+    redirect_url = request.url_for("success_for_specialist", {'request': request})
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/type_records/select_specialist/select_service/select_date/success")
+async def success_for_specialist(request: Request):
+    return templates.TemplateResponse("specialist/success.html", {'request': request})
+
+
+@router.post("/type_records/select_specialist/select_service/select_date/success")
+async def success_for_specialist(request: Request):
+    return templates.TemplateResponse("specialist/success.html", {'request': request})
+
+
+# Запись на событие по услуге
 @router.get("/type_records/select_service")
 async def select_services(request: Request):
     return templates.TemplateResponse("type_records/select_services.html", {'request': request})
 
 
+# Запись на событие по дате
 @router.get("/type_records/select_date")
 async def select_datetime(request: Request):
     return templates.TemplateResponse("date/select_date.html", {'request': request})
