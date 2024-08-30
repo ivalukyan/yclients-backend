@@ -43,7 +43,7 @@ async def select_date_for_specialist(request: Request):
 
 @router.post("/type_records/select_specialist/select_service/select_date")
 async def select_date_for_specialist(request: Request, date: Annotated[str, Form()], time: Annotated[str, Form()]):
-    redirect_url = request.url_for("success_for_specialist", {'request': request})
+    redirect_url = request.url_for("success_for_specialist")
     return RedirectResponse(redirect_url)
 
 
