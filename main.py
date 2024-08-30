@@ -29,12 +29,12 @@ async def select_specialist(request: Request):
     return templates.TemplateResponse("type_records/select_specialist.html", {'request': request})
 
 
-@router.get("/type_records/select_specialist/select_services")
+@router.get("/type_records/select_services")
 async def select_services(request: Request):
     return templates.TemplateResponse("type_records/select_services.html", {'request': request})
 
 
-@router.get("/type_records/select_specialist/select_services/select_datetime")
+@router.get("/type_records/select_datetime")
 async def select_datetime(request: Request):
     return templates.TemplateResponse("type_records/select_datatime.html", {'request': request})
 
