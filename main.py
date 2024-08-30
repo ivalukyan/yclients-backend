@@ -71,6 +71,11 @@ async def select_specialist_for_date(request: Request):
     return templates.TemplateResponse("date/select_specialist.html", {'request': request})
 
 
+@router.get("/type_records/select_date/select_service/select_specialist/success")
+async def select_success_for_date(request: Request):
+    return templates.TemplateResponse("date/success.html", {'request': request})
+
+
 @router.get("/records")
 async def recording(request: Request):
     return templates.TemplateResponse("recording/record.html", {'request': request})
