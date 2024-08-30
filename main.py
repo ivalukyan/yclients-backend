@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI, Request, HTTPException, APIRouter, Form
 from starlette.templating import Jinja2Templates
 from typing import Annotated
+from starlette.responses import RedirectResponse
 
 app = FastAPI(
     title='Yclients'
@@ -39,14 +40,35 @@ async def select_date_for_specialist(request: Request):
     return templates.TemplateResponse("specialist/select_datatime.html", {'request': request})
 
 
-@router.get("/type_records/select_services")
+@router.get("/type_records/select_service")
 async def select_services(request: Request):
     return templates.TemplateResponse("type_records/select_services.html", {'request': request})
 
 
-@router.get("/type_records/select_datetime")
+@router.get("/type_records/select_date")
 async def select_datetime(request: Request):
-    return templates.TemplateResponse("type_records/select_datatime.html", {'request': request})
+    return templates.TemplateResponse("date/select_date.html", {'request': request})
+
+
+@router.post("/type_records/select_date")
+async def select_datetime(request: Request, date: Annotated[str, Form()], time: Annotated[str, Form()]):
+    redirect_url = request.url_for("select_service_for_date")
+    return RedirectResponse(redirect_url)
+
+
+@router.get("/type_records/select_date/select_service")
+async def select_service_for_date(request: Request):
+    return templates.TemplateResponse("date/select_service.html", {'request': request})
+
+
+@router.post("/type_records/select_date/select_service")
+async def select_service_for_date(request: Request):
+    return templates.TemplateResponse("date/select_service.html", {'request': request})
+
+
+@router.get("/type_records/select_date/select_service/select_specialist")
+async def select_specialist_for_date(request: Request):
+    return templates.TemplateResponse("date/select_specialist.html", {'request': request})
 
 
 @router.get("/records")
