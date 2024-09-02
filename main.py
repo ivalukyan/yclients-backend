@@ -79,7 +79,7 @@ async def book_created(request: Request, service_id: int, staff_id: int, date_id
                        name: Annotated[str, Form()], phone: Annotated[str, Form()], email: Annotated[str, Form()] = "",
                        comment: Annotated[str, Form()] = ""):
     """Создание онлай-записи"""
-    
+
     record = await api.create_booking(phone=phone, fullname=name, email=email, comment=comment, service_id=service_id,
                             staff_id=staff_id, date_id=date_id, time_id=time_id)
     
@@ -90,7 +90,14 @@ async def book_created(request: Request, service_id: int, staff_id: int, date_id
     else:
         return templates.TemplateResponse("booking/recording.html", {'request': request, 'service_id': service_id, 'staff_id': staff_id,
                                                                   'date_id': date_id, 'time_id': time_id, 'exp': record['meta']['message']})
-    
+
+
+@router.get("/book_record/success")
+async def success(request: Request):
+    """Страница подтверждающая запись"""
+
+    return templates.TemplateResponse("booking/success.html", {'request': request})
+
 
 @router.post("/book_record/success")
 async def success(request: Request):
