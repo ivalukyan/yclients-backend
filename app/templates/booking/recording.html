@@ -37,50 +37,43 @@
         margin-top: 20px;
     }
 
+    .form-control{
+        border: 1px solid #000;
+    }
+
+    .form-control:focus{
+        border-color: #DC63C2;
+    }
+
+    .form-text{
+        font-size: 16px;
+        font-weight: 600;
+        color: #ff5b5b;
+    }
+
 </style>
 <body>
 <div class="container">
     <h2 class="mb-5">Запись на услугу</h2>
-    <form method="post">
-        <div class="mb-3">
-            <label class="form-label">Выбор услуг</label>
-            <select class="form-select" aria-label="Выбор услуг" name="record_select">
-                <option selected>Услуги</option>
-                <option value="1">Услуга 1</option>
-                <option value="2">Услуга 2</option>
-                <option value="3">Услуга 3</option>
-                <option value="4">Услуга 4</option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label for="date-input" class="form-label">Выбор даты</label>
-            <input id="date-input" class="form-control" type="date" name="date">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Выбор специалиста</label>
-            <select class="form-select" aria-label="Выбор специалиста" name="human_select">
-                <option selected>Специалисты</option>
-                <option value="1">Специалист 1</option>
-                <option value="2">Специалист 2</option>
-                <option value="3">Специалист 3</option>
-                <option value="4">Специалист 4</option>
-            </select>
-        </div>
+    <form method="post" action="/book_record/services/{{service_id}}/{{staff_id}}/{{date_id}}/{{time_id}}">
         <div class="mb-3">
             <label class="form-label" for="name-input">Имя</label>
-            <input class="form-control" id="name-input" type="text" name="name" placeholder="Имя">
+            <input class="form-control" id="name-input" type="text" name="name" placeholder="Имя" required>
         </div>
         <div class="mb-3">
             <label class="form-label" for="phone-input">Телефон</label>
-            <input class="form-control" id="phone-input" type="text" name="phone" placeholder="Телефон">
+            <input class="form-control" id="phone-input" type="text" name="phone" placeholder="+79888997878" required>
         </div>
         <div class="mb-3">
             <label class="form-label" for="email-input">Почта</label>
-            <input class="form-control" id="email-input" type="email" name="email" placeholder="Почта">
+            <input class="form-control" id="email-input" type="email" name="email" placeholder="example@gmail.com">
         </div>
         <div class="mb-3">
             <label class="from-label" for="comment-input">Комметарий</label>
             <input class="form-control" id="comment-input" type="text" name="comment" placeholder="Комментарий">
+        </div>
+        <div class="mb-3">
+            <span class="form-text">{{ exp }}</span>
         </div>
         <button class="btn btn-success">Записаться</button>
     </form>
