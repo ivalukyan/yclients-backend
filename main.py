@@ -34,9 +34,8 @@ async def group_services(request: Request):
 
     date = await api.dates_range()
     group_services = await api.activity(from_date=date['min_date'], till_date=date['max_date'])
-    staff = await api.staff(staff_id=group_services['staff_id'])
 
-    return templates.TemplateResponse("/booking/group_services.html", {'request': request, 'data': group_services, 'staff': staff})
+    return templates.TemplateResponse("/booking/group_services.html", {'request': request, 'data': group_services})
 
 
 @router.get("/book_record/group_services/{service_id}")
@@ -49,17 +48,17 @@ async def book_created(request: Request, service_id: int, staff_id: int, date_id
                        name: Annotated[str, Form()], phone: Annotated[str, Form()], email: Annotated[str, Form()] = "",
                        comment: Annotated[str, Form()] = ""):
     """Создание онлай-записи"""
-
-    record = await api.create_booking(phone=phone, fullname=name, email=email, comment=comment, service_id=service_id,
-                            staff_id=staff_id, date_id=date_id, time_id=time_id)
+    
+    group_record = await api.create_group_booking(activity_id=service_id, fullname=name, phone=phone, email=email,
+                                                  comment=comment)
     
 
-    if record['success']:
+    if group_record['success']:
         redirect_url = request.url_for("success")
         return RedirectResponse(redirect_url)
     else:
         return templates.TemplateResponse("booking/recording.html", {'request': request, 'service_id': service_id, 'staff_id': staff_id,
-                                                                  'date_id': date_id, 'time_id': time_id, 'exp': record['meta']['message']})
+                                                                  'date_id': date_id, 'time_id': time_id, 'exp': group_record['meta']['message']})
 
 
 @router.get("/book_record/success")

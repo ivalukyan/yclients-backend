@@ -168,8 +168,6 @@ class Yclient:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
 
-        print(res)
-
         if res['success']:
             return res['data']
         
@@ -184,20 +182,23 @@ class Yclient:
             response = await c.get(url=url, params=query, headers=self.headers)
         res = ujson.loads(response.text)
 
-        print(res)
-
         if res['success']:
             return res['data']
         
 
-    async def staff(self, staff_id: int) -> None:
-        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/staff/{staff_id}"
+    async def create_group_booking(self, activity_id: int, fullname: str, phone: str, email: str, comment: str) -> None:
+        url = f"https://api.yclients.com/api/v1/activity/{self.company_id}/{activity_id}/book"
+        payload = {
+            "fullname": fullname,
+            "phone": phone,
+            "email": email,
+            "comment": comment
+        }
         async with httpx.AsyncClient() as c:
-            response = await c.get(url=url, headers=self.headers)
+            response = await c.post(url=url, json=payload , headers=self.headers)
         res = ujson.loads(response.text)
 
-        if res['success']:
-            return res['data']
+        return res
 
 
 async def main():
@@ -212,10 +213,11 @@ async def main():
 
     # print(await api.book_times(staff=staff, dates=dates))
 
-    # dates = await api.dates_range()
-    # print(dates)
+    # date = await api.dates_range()
+    # group_services = await api.activity(from_date=date['min_date'], till_date=date['max_date'])
+    # staff = await api.staff(staff_id=group_services['staff_id'])
+    # print(group_services[0])
 
-    # print(await api.activity(from_date=dates['min_date'], till_date=dates['max_date']))
 
 
 if __name__ == '__main__':
