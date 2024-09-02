@@ -10,7 +10,7 @@
 <style>
     body {
         background-color: #1d1d1d;
-        color: #8d8d8d;
+        color: #fff;
     }
 
     .row {
@@ -20,36 +20,41 @@
     .col {
         padding: 15px;
         border-radius: 10px;
+        background-color: #2f2f32;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
     }
 
     .btn {
-        background-color: lightcoral;
-        color: #1d1d1d;
+        background-color: #0060d0;
+        color: #000;
         border: none;
         font-size: 16px;
         font-weight: 700;
     }
 
     .btn:hover {
-        background-color: coral;
-        color: #1d1d1d;
+        background-color: #62aafd;
+        color: #000;
         border: none;
+    }
+
+    h3 {
+        color: #62aafd;
     }
 </style>
 <body>
 <div class="container px-4 py-5" id="hanging-icons">
-    <h2 class="pb-2">Функциональное меню</h2>
+    <h2 class="pb-2"><i>Функциональное меню</i></h2>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
         <div class="col d-flex align-items-start">
             <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" style="fill: #8d8d8d"
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="fill: #8d8d8d; background-color: #1d1d1d; border-radius: 7px; padding: 4px;"
                      class="bi bi-person-fill" viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
                 </svg>
             </div>
             <div>
-                <h3 class="fs-2 text-body-emphasis">Идивидуальные события</h3>
+                <h3>Идивидуальные события</h3>
                 <p>Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги</p>
                 <a href="/book_record/services" class="btn btn-default">
                     Выбрать
@@ -58,13 +63,13 @@
         </div>
         <div class="col d-flex align-items-start">
             <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" style="fill: #8d8d8d"
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="fill: #8d8d8d; background-color: #1d1d1d; border-radius: 7px; padding: 4px;"
                      class="bi bi-people-fill" viewBox="0 0 16 16">
                     <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
                 </svg>
             </div>
             <div>
-                <h3 class="fs-2 text-body-emphasis">Групповые события</h3>
+                <h3>Групповые события</h3>
                 <p>Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги</p>
                 <a href="/book_record/group_services" class="btn btn-default">
                     Выбрать
