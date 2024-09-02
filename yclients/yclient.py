@@ -160,6 +160,44 @@ class Yclient:
         res = ujson.loads(response.text)
 
         return res
+    
+
+    async def dates_range(self) -> None:
+        url = f"https://api.yclients.com/api/v1/activity/{self.company_id}/search_dates_range/"
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        print(res)
+
+        if res['success']:
+            return res['data']
+        
+
+    async def activity(self, from_date: str, till_date: str) -> None:
+        url = f"https://api.yclients.com/api/v1/activity/{self.company_id}/search/"
+        query = {
+            "from": from_date,
+            "till": till_date
+        }
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, params=query, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        print(res)
+
+        if res['success']:
+            return res['data']
+        
+
+    async def staff(self, staff_id: int) -> None:
+        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/staff/{staff_id}"
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        if res['success']:
+            return res['data']
 
 
 async def main():
@@ -173,6 +211,11 @@ async def main():
     # dates = await api.book_dates()
 
     # print(await api.book_times(staff=staff, dates=dates))
+
+    # dates = await api.dates_range()
+    # print(dates)
+
+    # print(await api.activity(from_date=dates['min_date'], till_date=dates['max_date']))
 
 
 if __name__ == '__main__':

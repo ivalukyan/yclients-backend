@@ -27,6 +27,54 @@ async def home(request: Request):
 async def health():
     return {'status_code': 200}
 
+# Запись на груповые события
+@router.get("/book_record/group_services")
+async def group_services(request: Request):
+    """Получение групповых событий"""
+
+    date = await api.dates_range()
+    group_services = await api.activity(from_date=date['min_date'], till_date=date['max_date'])
+    staff = await api.staff(staff_id=group_services['staff_id'])
+
+    return templates.TemplateResponse("/booking/group_services.html", {'request': request, 'data': group_services, 'staff': staff})
+
+
+@router.get("/book_record/group_services/{service_id}")
+async def recording_group_services(request: Request, service_id: int):
+    return templates.TemplateResponse("booking/recording.html", {'request': request, 'service_id': service_id})
+
+
+@router.post("/book_record/services/{service_id}")
+async def book_created(request: Request, service_id: int, staff_id: int, date_id: str, time_id: str,
+                       name: Annotated[str, Form()], phone: Annotated[str, Form()], email: Annotated[str, Form()] = "",
+                       comment: Annotated[str, Form()] = ""):
+    """Создание онлай-записи"""
+
+    record = await api.create_booking(phone=phone, fullname=name, email=email, comment=comment, service_id=service_id,
+                            staff_id=staff_id, date_id=date_id, time_id=time_id)
+    
+
+    if record['success']:
+        redirect_url = request.url_for("success")
+        return RedirectResponse(redirect_url)
+    else:
+        return templates.TemplateResponse("booking/recording.html", {'request': request, 'service_id': service_id, 'staff_id': staff_id,
+                                                                  'date_id': date_id, 'time_id': time_id, 'exp': record['meta']['message']})
+
+
+@router.get("/book_record/success")
+async def success(request: Request):
+    """Страница подтверждающая запись"""
+
+    return templates.TemplateResponse("booking/success.html", {'request': request})
+
+
+@router.post("/book_record/success")
+async def success(request: Request):
+    """Страница подтверждающая запись"""
+
+    return templates.TemplateResponse("booking/success.html", {'request': request})
+
 
 # Запись на Индивидульные занятия
 @router.get("/book_record/services")
