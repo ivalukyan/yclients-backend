@@ -33,9 +33,12 @@ async def group_services(request: Request):
     """Получение групповых событий"""
 
     date = await api.dates_range()
-    group_services = await api.activity(from_date=date['min_date'], till_date=date['max_date'])
-
-    return templates.TemplateResponse("/booking/group_services.html", {'request': request, 'data': group_services})
+    if not date:
+        exp = "Групповые события отсутствуют"
+        return templates.TemplateResponse("booking/group_services.html", {'request': request, 'exp': exp})
+    else:
+        group_services = await api.activity(from_date=date['min_date'], till_date=date['max_date'])
+        return templates.TemplateResponse("booking/group_services.html", {'request': request, 'data': group_services})
 
 
 @router.get("/book_record/group_services/{service_id}")
@@ -81,8 +84,14 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
-
-    return templates.TemplateResponse("booking/services.html", {'request': request, 'data': services.values()})
+    if services in "Услуги для бронирования отсутствуют":
+        exp = "Услуги для бронирования отсутствуют"
+        return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
+    elif services in "Ошибка запроса":
+        exp = "Ошибка запроса"
+        return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
+    else:
+        return templates.TemplateResponse("booking/services.html", {'request': request, 'data': services.values()})
 
 
 @router.get("/book_record/services/{service_id}")
