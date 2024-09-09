@@ -33,7 +33,6 @@ async def group_services(request: Request):
     """Получение групповых событий"""
 
     date = await api.dates_range()
-    print(date)
 
     if not date:
         exp = "Групповые события отсутствуют"
@@ -90,11 +89,10 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
-    if services in "Услуги для бронирования отсутствуют":
+    print(services)
+
+    if not services:
         exp = "Услуги для бронирования отсутствуют"
-        return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
-    elif services in "Ошибка запроса":
-        exp = "Ошибка запроса"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
     else:
         return templates.TemplateResponse("booking/services.html", {'request': request, 'data': services.values()})

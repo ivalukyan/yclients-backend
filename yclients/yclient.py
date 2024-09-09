@@ -71,7 +71,7 @@ class Yclient:
         if res['success']:
             data = res['data']
             if not data['services']:
-                return "Услуги для бронирования отсутствуют"
+                return None
             else:
                 service = data['services']
                 for _ in range(len(service)):
@@ -79,7 +79,7 @@ class Yclient:
 
                 return services
             
-        return "Ошибка запроса"
+        return None
     
 
     async def book_dates(self) -> None:
