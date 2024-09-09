@@ -89,8 +89,7 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
-    print(services)
-
+    
     if not services:
         exp = "Услуги для бронирования отсутствуют"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
