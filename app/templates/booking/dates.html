@@ -16,7 +16,6 @@
     svg {
         background-color: #343a40;
         padding: 5px;
-        fill: #8d8d8d;
         border-radius: 8px;
     }
 
@@ -24,90 +23,131 @@
         margin-top: 10vh;
     }
 
-    .mb-5 {
+
+    .navbar{
         display: flex;
         align-items: center;
-        justify-content: center;
-    }
-
-    .container-sm {
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
-        border-radius: 8px;
-        padding: 10px;
     }
 
-    .container-sm-1 {
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        gap: 15px;
+    .navbar h2{
+        width: 70%;
     }
 
-    p {
-        margin-top: 10px;
+    .navbar .back-button{
+        margin-left: 10px;
     }
 
-    .btn {
-        padding: 5px;
-        background-color: #fdde55;
-        color: #1d1d1d;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        font-weight: 650;
+    .back-button svg{
+        height: 32px;
+        width: 32px;
+        fill: #0d6efd;
+        box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
+    }
+
+    .form-label{
+        font-size: 24px;
+        font-weight: 600;
         width: 100%;
-        margin-top: 15px;
-    }
-
-    .btn:hover {
-        background-color: #fff643;
-        color: #1d1d1d;
-    }
-
-    .btn-default{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 20px;
-        background-color: #fdde55;
-        color: #1d1d1d;
-        font-size: 16px;
-        font-weight: 650;
-        border: none;
         text-align: center;
-        text-decoration: none;
-        width: 100%;
-        padding: 5px;
-        border-radius: 8px;
     }
 
-    .btn-default:hover{
-        background-color: #fff643;
-        color: #1d1d1d;
+    .form-control{
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+        color: #f8f8f8;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
+        background-color: #2f2f32;
         border: none;
+        outline: none;
+    }
+
+    .form-control:focus{
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+        color: #f8f8f8;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
+        background-color: #2f2f32;
+        border: none;
+        outline: none;
+    }
+
+    .submit-button{
+        margin-top: 15px;
+        padding: 5px;
+        width: 100%;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        font-weight: 500;
+        background-color: #0060d0;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+    }
+
+    .submit-button:active{
+        background-color: #2f2f32;
     }
 </style>
 <body>
-<div class="container">
-    <h2 class="mb-5">Выбрать Дату</h2>
-    <div class="row row-cols-lg-3">
-        {% for el in data %}
-        <div class="container-sm">
-            <div class="container-sm-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
-                    <path d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"/>
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-                  </svg>
-                <h3>{{ el.book_date }}</h3>
-            </div>
-            <a href="/book_record/services/{{ service_id }}/{{ staff_id }}/{{ el.book_date }}" class="btn" role="button">Выбрать</a>
-        </div>
-        {% endfor %}
+<nav class="navbar">
+    <a href="/book_record/services/{{ service_id }}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+    </a>
+    <h2>Выбрать Дату</h2>
+</nav>
+<div class="container" id="containerId">
+    <div class="mb-3">
+        <label class="form-label" for="idDateInput">Выберите дату записи</label>
+        <input class="form-control" type="date" id="idDateInput" required>
+        <button class="submit-button" id="submitButton">Выбрать дату</button>
     </div>
-    <a href="/book_record/services/{{ service_id }}" class="btn-default" role="button">Назад</a>
+    <div class="mb-3" id="idTimeContainer"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+<script>
+    async function selectDate(){
+        let date = document.getElementById('idDateInput').value.trim();
+
+        console.log(`Выбранная дата: ${date}`);
+
+        function createSelectTime() {
+            let container = document.getElementById('idTimeContainer');
+            let but = document.createElement('button');
+
+            but.textContent = "11.30";
+
+            container.appendChild(but);
+        }
+
+        if (date){
+            const payload = {
+                content: date,
+            }
+
+            try{
+                await fetch('/book_services/services/reserve/date', {
+                    method: 'POST',
+                    headers: {'Content-type': 'application-json'},
+                    body: JSON.stringify(payload)
+                });
+
+                console.log("Дата записана")
+                createSelectTime();
+
+            } catch (e){
+                console.log(e);
+            }
+        }
+    }
+
+    document.getElementById('submitButton').onclick = selectDate;
+</script>
 </body>
 </html>
