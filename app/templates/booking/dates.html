@@ -103,7 +103,7 @@
 <div class="container" id="containerId">
     <div class="mb-3">
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
-        <input class="form-control" type="date" id="idDateInput" required>
+        <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
     </div>
     <div class="mb-3" id="idTimeContainer"></div>
@@ -112,6 +112,28 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script>
+
+    let staffId = "{{ staff_id }}";
+
+    async function getTimes(staffID, selectDate){
+        try {
+
+            const payload = {
+                staff_id: staffID,
+                date: selectDate
+            }
+
+            return fetch('/book_services/services/reserve/times', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+        } catch (e){
+            console.log("Ошибка при GET:", e)
+        }
+    }
+
     async function selectDate(){
         let date = document.getElementById('idDateInput').value.trim();
 
@@ -138,7 +160,8 @@
                     body: JSON.stringify(payload)
                 });
 
-                console.log("Дата записана")
+                console.log("Дата записана");
+                let times = getTimes(staffId, date);
                 createSelectTime();
 
             } catch (e){

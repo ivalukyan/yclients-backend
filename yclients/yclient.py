@@ -117,7 +117,7 @@ class Yclient:
         return "Ошибка запроса"
     
 
-    async def book_times(self, staff_id: dict, date: str) -> None:
+    async def book_times(self, staff_id: int, date: str) -> None:
 
         times = {}
 
