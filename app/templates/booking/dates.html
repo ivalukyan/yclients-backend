@@ -74,6 +74,17 @@
         outline: none;
     }
 
+    .form-control:disabled{
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+        color: #f8f8f8;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
+        background-color: #2f2f32;
+        border: none;
+        outline: none;
+    }
+
     .submit-button{
         margin-top: 15px;
         padding: 5px;
@@ -89,6 +100,84 @@
 
     .submit-button:active{
         background-color: #2f2f32;
+    }
+
+    .list-times{
+        display: flex;
+        gap: 10px;
+        overflow-x: scroll;
+    }
+
+    .list-times::-webkit-scrollbar{
+        width: 0;
+    }
+
+    .time-button{
+        padding: 5px;
+        background-color: #b2ec5d;
+        color: #2f2f32;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+    }
+
+    .time-button:active{
+        background-color: #2f2f32;
+        color: #8d8d8d;
+    }
+
+    .container h4{
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+    }
+
+    .mb-5{
+        background-color: #343a40;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+    }
+
+    .sel{
+        padding: 8px;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .main-buttons{
+        padding: 5px;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .save-button{
+        width: 100%;
+        background-color: #47b143;
+        color: #2f2f32;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        margin-top: 15px;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+    }
+
+    .reset-button{
+        width: 100%;
+        background-color: #fff643;
+        color: #2f2f32;
+        border-radius: 10px;
+        padding: 10px;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        font-weight: 500;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 </style>
 <body>
@@ -106,7 +195,6 @@
         <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
     </div>
-    <div class="mb-3" id="idTimeContainer"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -115,15 +203,127 @@
 
     let staffId = "{{ staff_id }}";
 
+    async function reloadBut(){
+        location.reload();
+    }
+
+    async function nextStep(){
+        location.replace(`${staffId}/recording`)
+    }
+
+    async function disableBut(){
+        let listTimes = document.getElementById('listTimesId').getElementsByTagName('*');
+        for (let i = 0; i < listTimes.length; i++){
+            listTimes[i].disabled = true;
+        }
+    }
+
+    async function viewInfo(time){
+
+        let data = document.getElementById('idDateInput').value.trim()
+
+        if (time){
+
+            const payload = {
+                save_time: time,
+                save_date: data
+            }
+
+            try{
+                await fetch('/book_record/services/{{ service_id }}/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+            } catch (e){
+                console.log(e)
+            }
+        }
+
+        let conEl = document.getElementById('containerId')
+        let divEl = document.createElement('div')
+        divEl.className = 'mb-5'
+
+
+        let h4El = document.createElement('h4')
+        h4El.textContent = 'Информация о записи';
+
+        let selDate = document.createElement('div')
+        selDate.className = 'sel'
+        selDate.textContent = `Выбраная дата ${data}`
+
+        let selTime = document.createElement('div')
+        selTime.className = 'sel'
+        selTime.textContent = `Выбранное время ${time}`
+
+        divEl.appendChild(h4El);
+        divEl.appendChild(selDate);
+        divEl.appendChild(selTime);
+
+        conEl.appendChild(divEl);
+
+
+        await disableBut();
+
+        let inputDate = document.getElementById('idDateInput');
+        inputDate.disabled = true;
+
+        let divButtons = document.createElement('div');
+        divButtons.className = 'main-buttons';
+
+        let saveBut = document.createElement('button');
+        saveBut.className = 'save-button';
+        saveBut.textContent = 'Сохранить';
+        saveBut.onclick = await nextStep;
+
+        let resetBut = document.createElement('button');
+        resetBut.className = 'reset-button';
+        resetBut.textContent = 'Заполнить заново';
+        resetBut.onclick = await reloadBut;
+
+        divButtons.appendChild(resetBut)
+        divButtons.appendChild(saveBut)
+        conEl.appendChild(divButtons)
+    }
+
+    async function createTimesEl(text, data_id){
+        let butEl = document.createElement('button')
+        butEl.className = 'time-button';
+        butEl.id = text
+        butEl.textContent = text;
+        butEl.onclick = await viewInfo.bind(butEl, text);
+
+        return butEl
+    }
+
+    async function viewTimes(timesList, dataID){
+
+        let divEl = document.createElement('div');
+        divEl.className = 'list-times';
+        divEl.id = 'listTimesId'
+
+        for (let i = 0; i < timesList.length; i++){
+            let but = await createTimesEl(timesList[i], dataID);
+            divEl.appendChild(but);
+        }
+
+        let con = document.getElementById('containerId')
+        let h4El = document.createElement('h4');
+        h4El.textContent = 'Выберите время записи';
+        con.appendChild(h4El)
+        con.appendChild(divEl);
+    }
+
     async function getTimes(staffID, selectDate){
         try {
 
             const payload = {
                 staff_id: staffID,
-                date: selectDate
+                select_date: selectDate,
+                available_times: []
             }
 
-            return fetch('/book_services/services/reserve/times', {
+            return fetch('/book_record/services/{{ service_id }}/times', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -135,39 +335,30 @@
     }
 
     async function selectDate(){
-        let date = document.getElementById('idDateInput').value.trim();
+        let dateId = document.getElementById('idDateInput').value.trim();
 
-        console.log(`Выбранная дата: ${date}`);
+        console.log(`Выбранная дата: ${dateId}`);
 
-        function createSelectTime() {
-            let container = document.getElementById('idTimeContainer');
-            let but = document.createElement('button');
-
-            but.textContent = "11.30";
-
-            container.appendChild(but);
-        }
-
-        if (date){
-            const payload = {
-                content: date,
+        const payload = {
+                date_id: dateId,
+                staff_id: staffId,
+                available_times: []
             }
 
-            try{
-                await fetch('/book_services/services/reserve/date', {
-                    method: 'POST',
-                    headers: {'Content-type': 'application-json'},
-                    body: JSON.stringify(payload)
-                });
-
-                console.log("Дата записана");
-                let times = getTimes(staffId, date);
-                createSelectTime();
-
-            } catch (e){
-                console.log(e);
-            }
+        try{
+            await fetch("/book_record/services/{{ service_id }}/date", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(payload)
+            })
+        } catch (e){
+            console.log("Ошибка POST запроса:", e)
         }
+
+        const response = await getTimes(staffId, dateId);
+        let times = await response.json();
+
+        await viewTimes(times.available_times, dateId);
     }
 
     document.getElementById('submitButton').onclick = selectDate;

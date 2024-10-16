@@ -1,18 +1,18 @@
 """
 Services
 """
-
-import logging
-
 from fastapi import APIRouter, Request, Form
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
+from uuid import uuid4
+from app.routers.utils import get_times
 
 from yclients.yclient import Yclient
 from conf import YclientsConfig
 
-from app.routers.schemas import Dates, Times
+from app.routers.schemas import Dates, Times, SaveTime, BookingData
+
 
 router = APIRouter(
     prefix="/book_record/services",
@@ -23,6 +23,10 @@ yclient = YclientsConfig()
 api = Yclient(bearer_token=yclient.bearer, company_id=yclient.company_id, user_token=yclient.user)
 
 templates = Jinja2Templates(directory="app/templates")
+
+cache_ = {}
+user_id = 877008114
+
 
 # Запись на Индивидульные занятия
 @router.get("/")
@@ -48,6 +52,13 @@ async def book_staff(request: Request, service_id: int):
                                       {'request': request, 'data': staff.values(), 'service_id': service_id})
 
 
+@router.post("/{service_id}")
+async def book_staff(request: Request, service_id: int):
+
+    redirect_url = request.url_for('book_created')
+    return RedirectResponse(redirect_url)
+
+
 @router.get("/{service_id}/{staff_id}")
 async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
@@ -59,60 +70,54 @@ async def book_date(request: Request, service_id: int, staff_id: int):
                                        'data': dates.values()})
 
 
-@router.post("/reserve/date")
-async def save_reserve_date(date: Annotated[str, Form]):
+@router.post("/{service_id}/date", response_model=Dates)
+async def save_reserve_date(date: Dates):
     """Сохранение выбранной даты для пользователя"""
 
-    print("Выбранная дата: ", date)
+    content = f"{date.staff_id} -- {date.date_id}"
+    print(content)
 
-    return {"select_date": date, "status": "ok", "mes": "Дата выбрана"}
+    return {'date_id': date.date_id, 'staff_id': date.staff_id, 'content': content, 'status': 'ok', 'msg': 'Save date'}
 
 
-@router.post("/reserve/times", response_model=Times)
-async def get_reserve_times(times: Times):
+@router.post("/{service_id}/times", response_model=Times)
+async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
 
-    times = await api.book_times(staff_id=times.staff_id, date=times.date)
-    print(times.values())
+    times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
+    available_times = await get_times(times.values())
+    content = f"{time.staff_id} -- {time.select_date}"
+    print(content)
 
-    return {'date': times.values()}
-
-
-@router.get("/{service_id}/{staff_id}/{date_id}")
-async def book_time(request: Request, service_id: int, staff_id: int, date_id: str):
-    """Получение доступного времени для записи"""
-
-    times = await api.book_times(staff_id=staff_id, date=date_id)
-
-    return templates.TemplateResponse("booking/times.html",
-                                      {'request': request, 'service_id': service_id, 'staff_id': staff_id,
-                                       'date': date_id,
-                                       'data': times.values()})
+    return {'available_times': available_times, 'select_date': time.select_date, 'staff_id': time.staff_id,
+            'content': content, 'status': 'ok', 'msg': 'Get times'}
 
 
-@router.get("{service_id}/{staff_id}/{date_id}/{time_id}")
-async def book_created(request: Request, service_id: int, staff_id: int, date_id: str, time_id: str):
+@router.post("/{service_id}/save", response_model=SaveTime)
+async def save_reserve_times(request: Request, time: SaveTime):
+    """Сохранение полученных даты и времени"""
+
+    content = f"Выбранное время: {time.save_time}, Выбранная дата: {time.save_date}"
+    print(content)
+
+    return {'save_time': time.save_time, 'save_date': time.save_date,
+            'content': content, 'status': 'ok', 'msg': 'Save time'}
+
+
+@router.get("/{service_id}/{staff_id}/recording")
+async def book_created(request: Request, service_id: int, staff_id: int):
     """Создание онлайн-записи"""
 
-    return templates.TemplateResponse("booking/recording.html",
-                                      {'request': request, 'service_id': service_id, 'staff_id': staff_id,
-                                       'date_id': date_id, 'time_id': time_id})
+    return templates.TemplateResponse("booking/recording.html", {'request': request,
+                                                                 'service_id': service_id,
+                                                                 'staff_id': staff_id})
 
 
-@router.post("/{service_id}/{staff_id}/{date_id}/{time_id}")
-async def book_created(request: Request, service_id: int, staff_id: int, date_id: str, time_id: str,
-                       name: Annotated[str, Form()], phone: Annotated[str, Form()], email: Annotated[str, Form()] = "",
-                       comment: Annotated[str, Form()] = ""):
+@router.post("/{service_id}/{staff_id}/recording")
+async def book_created(request: Request, service_id: int, staff_id: int):
     """Создание онлай-записи"""
 
-    record = await api.create_booking(phone=phone, fullname=name, email=email, comment=comment, service_id=service_id,
-                                      staff_id=staff_id, date_id=date_id, time_id=time_id)
-
-    if record['success']:
-        redirect_url = request.url_for("success")
-        return RedirectResponse(redirect_url)
-    else:
-        return templates.TemplateResponse("booking/recording.html",
-                                          {'request': request, 'service_id': service_id, 'staff_id': staff_id,
-                                           'date_id': date_id, 'time_id': time_id, 'exp': record['meta']['message']})
+    return templates.TemplateResponse("booking/recording.html", {'request': request,
+                                                                 'service_id': service_id,
+                                                                 'staff_id': staff_id})
 

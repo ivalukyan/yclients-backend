@@ -19,7 +19,7 @@ router = APIRouter(
 templates = Jinja2Templates(directory="app/templates")
 
 
-app.get("/")
+@app.get("/")
 async def index(request: Request):
     redirect_url = request.url_for("home")
     return RedirectResponse(redirect_url)
@@ -63,4 +63,4 @@ async def custom_400_handler(request: Request, exp: HTTPException):
 
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', port=8080)
+    uvicorn.run('main:app')
