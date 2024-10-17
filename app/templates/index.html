@@ -56,7 +56,7 @@
             <div>
                 <h3>Идивидуальные события</h3>
                 <p>Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги</p>
-                <a href="/book_record/services/" class="btn btn-default" onclick="go_to()">
+                <a href="/book_record/services/" class="btn btn-default" onclick="go_to_service()">
                     Выбрать
                 </a>
             </div>
@@ -85,9 +85,11 @@
 <script>
 
     let userId = '{{ user_id }}'
+    let fullname = '{{ fullname }}'
 
-    function go_to(){
-        localStorage.setItem('num', userId);
+    function go_to_service(){
+        localStorage.setItem('user', userId);
+        localStorage.setItem('fullname', fullname);
         location.replace('/book_record/services/');
     }
 </script>

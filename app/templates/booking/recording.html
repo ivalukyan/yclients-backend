@@ -116,6 +116,43 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script>
+
+    let userId = null;
+
+    if (localStorage.getItem('user')){
+        userId = localStorage.getItem('user');
+    }
+
+    console.log(userId);
+
+    async function getDataForm(){
+
+        const payload = {
+            user_id: userId,
+            cache: {}
+        }
+
+        try{
+            const response = await fetch('/book_record/services/{{ service_id }}/{{ staff_id }}/get_form_data', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+
+            let data = await response.json();
+            return data;
+        } catch (e){
+            console.log(e);
+        }
+    }
+
+    (async () => {
+        let data = await getDataForm();
+        let cache = data.cache;
+        document.getElementById('name-input').value = cache.fullname
+    })();
+
+
     async function sendForm(){
         let name = document.getElementById('name-input').value.trim()
         let phone = document.getElementById('phone-input').value.trim()

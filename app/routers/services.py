@@ -12,8 +12,7 @@ from app.routers.utils import get_times, get_hash
 from yclients.yclient import Yclient
 from conf import YclientsConfig
 
-from app.routers.schemas import Dates, Times, SaveTime, UserData
-
+from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData
 
 router = APIRouter(
     prefix="/book_record/services",
@@ -26,7 +25,6 @@ api = Yclient(bearer_token=yclient.bearer, company_id=yclient.company_id, user_t
 templates = Jinja2Templates(directory="app/templates")
 
 cache_ = {}
-user_id = 877008114
 
 
 # Запись на Индивидульные занятия
@@ -35,15 +33,13 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
-    user_hash = await get_hash(str(user_id))
 
     if not services:
         exp = "Услуги для бронирования отсутствуют"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
     else:
         return templates.TemplateResponse("booking/services.html", {'request': request,
-                                                                    'data': services.values(),
-                                                                    'user_id': user_id})
+                                                                    'data': services.values()})
 
 
 @router.get("/{service_id}")
@@ -56,11 +52,17 @@ async def book_staff(request: Request, service_id: int):
                                       {'request': request, 'data': staff.values(), 'service_id': service_id})
 
 
-@router.post("/{service_id}")
-async def book_staff(request: Request, service_id: int):
+@router.post("/{service_id}", response_model=ServiceSchemas)
+async def book_staff(user: ServiceSchemas):
+    cache_[user.user_id] = {'fullname': user.fullname, 'service_id': str(user.service_id),
+                            'staff_id': str(user.staff_id)}
 
-    redirect_url = request.url_for('book_created')
-    return RedirectResponse(redirect_url)
+    content = f"User: {user.user_id} -- Service: {user.service_id} -- Staff: {user.staff_id}"
+    print(cache_)
+
+    return {'fullname': user.fullname, 'staff_id': user.staff_id, 'user_id': user.user_id,
+            'service_id': user.service_id, 'content': content,
+            'status': 'ok', 'msg': 'Save service data'}
 
 
 @router.get("/{service_id}/{staff_id}")
@@ -74,16 +76,6 @@ async def book_date(request: Request, service_id: int, staff_id: int):
                                        'data': dates.values()})
 
 
-@router.post("/{service_id}/date", response_model=Dates)
-async def save_reserve_date(date: Dates):
-    """Сохранение выбранной даты для пользователя"""
-
-    content = f"{date.staff_id} -- {date.date_id}"
-    print(content)
-
-    return {'date_id': date.date_id, 'staff_id': date.staff_id, 'content': content, 'status': 'ok', 'msg': 'Save date'}
-
-
 @router.post("/{service_id}/times", response_model=Times)
 async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
@@ -91,20 +83,23 @@ async def get_reserve_times(time: Times):
     times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
     available_times = await get_times(times.values())
     content = f"{time.staff_id} -- {time.select_date}"
-    print(content)
 
-    return {'available_times': available_times, 'select_date': time.select_date, 'staff_id': time.staff_id,
+    return {'available_times': available_times,
+            'select_date': time.select_date, 'staff_id': time.staff_id,
             'content': content, 'status': 'ok', 'msg': 'Get times'}
 
 
-@router.post("/{service_id}/save", response_model=SaveTime)
-async def save_reserve_times(request: Request, time: SaveTime):
+@router.post("/{service_id}/save", response_model=DataTime)
+async def save_reserve_times(request: Request, datatime: DataTime):
     """Сохранение полученных даты и времени"""
 
-    content = f"Выбранное время: {time.save_time}, Выбранная дата: {time.save_date}"
-    print(content)
+    cache_[datatime.user_id]['date'] = datatime.save_date
+    cache_[datatime.user_id]['time'] = datatime.save_time
+    print(cache_)
 
-    return {'save_time': time.save_time, 'save_date': time.save_date,
+    content = f"Выбранное время: {datatime.save_time}, Выбранная дата: {datatime.save_date}"
+
+    return {'user_id': datatime.user_id, 'save_time': datatime.save_time, 'save_date': datatime.save_date,
             'content': content, 'status': 'ok', 'msg': 'Save time'}
 
 
@@ -115,6 +110,14 @@ async def book_created(request: Request, service_id: int, staff_id: int):
     return templates.TemplateResponse("booking/recording.html", {'request': request,
                                                                  'service_id': service_id,
                                                                  'staff_id': staff_id})
+
+
+@router.post("/{service_id}/{staff_id}/get_form_data", response_model=FormData)
+async def get_form_data(service_id: int, staff_id: int, form: FormData):
+
+    return {'cache': cache_[form.user_id],
+            'user_id': form.user_id, 'content': f'{form.user_id}',
+            'status': 'ok', 'msg': 'Get form data'}
 
 
 @router.post("/{service_id}/{staff_id}/recording", response_model=UserData)

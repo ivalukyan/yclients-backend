@@ -112,7 +112,7 @@
                 </svg>
                 <h3>{{ el.service_title }}</h3>
             </div>
-            <a href="/book_record/services/{{ el.service_id }}" class="btn-service" role="button">Выбрать</a>
+            <a href="/book_record/services/{{ el.service_id }}" class="btn-service" onclick="go_to_staff(el.service_id)">Выбрать</a>
         </div>
         {% endfor %}
     </div>
@@ -125,12 +125,21 @@
         crossorigin="anonymous"></script>
 <script>
     let userId = null;
+    let fullname = null;
 
-    if (localStorage.getItem('num')){
-        userId = localStorage.getItem('num');
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
+        userId = localStorage.getItem('user');
+        fullname = localStorage.getItem('fullname');
     }
 
     console.log('User ID:', userId)
+
+
+    function go_to_staff(service_id){
+        localStorage.setItem('user', userId);
+        localStorage.setItem('fullname', fullname);
+        location.replace(`/book_record/services/${service_id}`);
+    }
 </script>
 </body>
 </html>

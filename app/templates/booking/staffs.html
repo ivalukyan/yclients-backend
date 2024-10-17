@@ -105,7 +105,7 @@
             <div class="mb-3">
                 <p>Описание: {{ el.staff_info or 'Описание услуги отсутствует' }}</p>
             </div>
-            <a href="/book_record/services/{{ service_id }}/{{ el.staff_id }}" class="btn" role="button">Выбрать</a>
+            <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
         </div>
         {% endfor %}
     </div>
@@ -113,5 +113,42 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+<script>
+    let userId = null;
+    let fullname = null;
+    let serviceId = '{{ service_id }}'
+
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
+        userId = localStorage.getItem('user');
+        fullname = localStorage.getItem('fullname');
+    }
+
+    console.log(userId);
+
+    async function go_to_dates(staff_id){
+        localStorage.setItem('user', userId);
+        location.replace(`/book_record/services/{{ service_id }}/${staff_id}`);
+    }
+
+    async function sendServiceId(staff){
+        const payload = {
+            user_id: userId,
+            fullname: fullname,
+            service_id: serviceId,
+            staff_id: staff
+        }
+        try{
+                await fetch('/book_record/services/{{ service_id }}', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
+        await go_to_dates(staff);
+    }
+</script>
 </body>
 </html>

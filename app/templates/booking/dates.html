@@ -201,6 +201,14 @@
         crossorigin="anonymous"></script>
 <script>
 
+    let userId = null;
+
+    if (localStorage.getItem('user')){
+        userId = localStorage.getItem('user');
+    }
+
+    console.log(userId);
+
     let staffId = "{{ staff_id }}";
 
     async function reloadBut(){
@@ -208,7 +216,8 @@
     }
 
     async function nextStep(){
-        location.replace(`${staffId}/recording`)
+        localStorage.setItem('user', userId);
+        location.replace(`${staffId}/recording`);
     }
 
     async function disableBut(){
@@ -225,6 +234,7 @@
         if (time){
 
             const payload = {
+                user_id: userId,
                 save_time: time,
                 save_date: data
             }
@@ -338,22 +348,6 @@
         let dateId = document.getElementById('idDateInput').value.trim();
 
         console.log(`Выбранная дата: ${dateId}`);
-
-        const payload = {
-                date_id: dateId,
-                staff_id: staffId,
-                available_times: []
-            }
-
-        try{
-            await fetch("/book_record/services/{{ service_id }}/date", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(payload)
-            })
-        } catch (e){
-            console.log("Ошибка POST запроса:", e)
-        }
 
         const response = await getTimes(staffId, dateId);
         let times = await response.json();
