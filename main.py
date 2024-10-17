@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, HTTPException, APIRouter, Form
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 
-from app.routers.services import router as services_router
+from app.routers.services import router as services_router, user_id
 from app.routers.group_services import router as groups_router
 
 
@@ -17,6 +17,7 @@ router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="app/templates")
+user_id = 877008114
 
 
 @app.get("/")
@@ -27,7 +28,7 @@ async def index(request: Request):
 
 @router.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {'request': request})
+    return templates.TemplateResponse("index.html", {'request': request, 'user_id': user_id})
 
 
 @router.get("/health")

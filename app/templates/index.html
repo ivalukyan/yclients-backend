@@ -56,7 +56,7 @@
             <div>
                 <h3>Идивидуальные события</h3>
                 <p>Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги</p>
-                <a href="/book_record/services/" class="btn btn-default">
+                <a href="/book_record/services/" class="btn btn-default" onclick="go_to()">
                     Выбрать
                 </a>
             </div>
@@ -81,5 +81,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+
+<script>
+
+    let userId = '{{ user_id }}'
+
+    function go_to(){
+        localStorage.setItem('num', userId);
+        location.replace('/book_record/services/');
+    }
+</script>
 </body>
 </html>

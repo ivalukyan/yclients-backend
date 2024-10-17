@@ -23,3 +23,10 @@ class SaveTime(BaseModel):
 class BookingData(BaseModel):
     service_id: int
     staff_id: int
+
+
+class UserData(BaseModel):
+    name: str
+    phone: str
+    email: str | None = None
+    comment: str | None = None

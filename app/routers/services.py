@@ -2,16 +2,17 @@
 Services
 """
 from fastapi import APIRouter, Request, Form
+from httptools.parser.parser import HttpRequestParser
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
 from uuid import uuid4
-from app.routers.utils import get_times
+from app.routers.utils import get_times, get_hash
 
 from yclients.yclient import Yclient
 from conf import YclientsConfig
 
-from app.routers.schemas import Dates, Times, SaveTime, BookingData
+from app.routers.schemas import Dates, Times, SaveTime, UserData
 
 
 router = APIRouter(
@@ -34,12 +35,15 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
+    user_hash = await get_hash(str(user_id))
 
     if not services:
         exp = "Услуги для бронирования отсутствуют"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
     else:
-        return templates.TemplateResponse("booking/services.html", {'request': request, 'data': services.values()})
+        return templates.TemplateResponse("booking/services.html", {'request': request,
+                                                                    'data': services.values(),
+                                                                    'user_id': user_id})
 
 
 @router.get("/{service_id}")
@@ -113,11 +117,20 @@ async def book_created(request: Request, service_id: int, staff_id: int):
                                                                  'staff_id': staff_id})
 
 
-@router.post("/{service_id}/{staff_id}/recording")
-async def book_created(request: Request, service_id: int, staff_id: int):
+@router.post("/{service_id}/{staff_id}/recording", response_model=UserData)
+async def book_created(request: Request, service_id: int, staff_id: int, user: UserData):
     """Создание онлай-записи"""
+
+    print(user)
 
     return templates.TemplateResponse("booking/recording.html", {'request': request,
                                                                  'service_id': service_id,
                                                                  'staff_id': staff_id})
+
+
+@router.get('/{service_id}/{staff_id}/success')
+async def success(request: Request, service_id: int, staff_id: int):
+    return templates.TemplateResponse('booking/success.html', {'request': request,
+                                                               'staff_id': staff_id,
+                                                               'service_id': service_id})
 
