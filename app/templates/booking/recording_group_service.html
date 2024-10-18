@@ -81,7 +81,7 @@
 </style>
 <body>
 <nav class="navbar">
-    <a href="/book_record/services/{{ service_id }}/{{ staff_id }}" class="back-button">
+    <a href="/book_record/services/{{ service_id }}" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
@@ -116,75 +116,15 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script>
-
     let userId = null;
+    let fullname = null;
 
-    if (localStorage.getItem('user')){
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
         userId = localStorage.getItem('user');
+        fullname = localStorage.getItem('fullname');
     }
 
-    console.log(userId);
-
-    async function getDataForm(){
-
-        const payload = {
-            user_id: userId,
-            cache: {}
-        }
-
-        try{
-            const response = await fetch('/book_record/services/{{ service_id }}/{{ staff_id }}/get_form_data', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            })
-
-            let data = await response.json();
-            return data;
-        } catch (e){
-            console.log(e);
-        }
-    }
-
-    (async () => {
-        let data = await getDataForm();
-        let cache = data.cache;
-        document.getElementById('name-input').value = cache.fullname
-    })();
-
-
-    async function sendForm(){
-        let name = document.getElementById('name-input').value.trim()
-        let phone = document.getElementById('phone-input').value.trim()
-        let email = document.getElementById('email-input').value.trim()
-        let comment = document.getElementById('comment-input').value.trim()
-
-        if (name && phone){
-
-            const payload = {
-                name: name,
-                phone: phone,
-                email: email,
-                comment: comment
-            }
-
-            try {
-                await fetch('/book_record/services/{{ service_id }}/{{ staff_id }}/recording', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                })
-
-                console.log("Данные отправлены")
-            } catch (e){
-                console.log(e)
-            }
-        }
-
-        location.replace('/book_record/services/{{ service_id }}/{{ staff_id }}/success')
-    }
-
-    let but = document.getElementById('sendIdButton').onclick = sendForm;
+    document.getElementById('name-input').value = fullname;
 </script>
 </body>
 </html>

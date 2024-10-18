@@ -123,5 +123,23 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
+<script>
+    let userId = null;
+    let fullname = null;
+
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
+        userId = localStorage.getItem('user');
+        fullname = localStorage.getItem('fullname');
+    }
+
+    console.log('User ID:', userId)
+
+
+    function go_to_staff(service_id){
+        localStorage.setItem('user', userId);
+        localStorage.setItem('fullname', fullname);
+        location.replace(`/book_record/group_services/${service_id}`);
+    }
+</script>
 </body>
 </html>

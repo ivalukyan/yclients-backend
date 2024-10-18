@@ -352,7 +352,12 @@
         const response = await getTimes(staffId, dateId);
         let times = await response.json();
 
-        await viewTimes(times.available_times, dateId);
+        if (times.available_times){
+            await viewTimes(times.available_times, dateId);
+        } else {
+            console.log("Время записи отсутствует")
+        }
+
     }
 
     document.getElementById('submitButton').onclick = selectDate;

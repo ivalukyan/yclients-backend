@@ -71,7 +71,7 @@
             <div>
                 <h3>Групповые события</h3>
                 <p>Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги</p>
-                <a href="/book_record/group_services" class="btn btn-default">
+                <a href="/book_record/group_services" class="btn btn-default" onclick="go_to_group_service()">
                     Выбрать
                 </a>
             </div>
@@ -91,6 +91,12 @@
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
         location.replace('/book_record/services/');
+    }
+
+    function go_to_group_service(){
+        localStorage.setItem('user', userId);
+        localStorage.setItem('fullname', fullname);
+        location.replace('/book_record/group_services/')
     }
 </script>
 </body>
