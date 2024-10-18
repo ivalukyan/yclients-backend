@@ -118,6 +118,12 @@
 <script>
 
     let userId = null;
+    let name = document.getElementById('name-input').value.trim()
+    let phone = document.getElementById('phone-input').value.trim()
+    let email = document.getElementById('email-input').value.trim()
+    let comment = document.getElementById('comment-input').value.trim()
+    let date_id = null;
+    let time_id = null;
 
     if (localStorage.getItem('user')){
         userId = localStorage.getItem('user');
@@ -154,10 +160,6 @@
 
 
     async function sendForm(){
-        let name = document.getElementById('name-input').value.trim()
-        let phone = document.getElementById('phone-input').value.trim()
-        let email = document.getElementById('email-input').value.trim()
-        let comment = document.getElementById('comment-input').value.trim()
 
         if (name && phone){
 
@@ -165,7 +167,9 @@
                 name: name,
                 phone: phone,
                 email: email,
-                comment: comment
+                comment: comment,
+                date_id: date_id,
+                time_id: time_id
             }
 
             try {
@@ -184,7 +188,10 @@
         location.replace('/book_record/services/{{ service_id }}/{{ staff_id }}/success')
     }
 
-    let but = document.getElementById('sendIdButton').onclick = sendForm;
+    if (name && email){
+        document.getElementById('sendIdButton').onclick = sendForm;
+    }
+
 </script>
 </body>
 </html>

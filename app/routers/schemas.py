@@ -22,6 +22,8 @@ class UserData(BaseModel):
     phone: str
     email: str | None = None
     comment: str | None = None
+    date_id: str
+    time_id: str
 
 
 class ServiceSchemas(BaseModel):
@@ -34,3 +36,8 @@ class ServiceSchemas(BaseModel):
 class FormData(BaseModel):
     user_id: int
     cache: dict[str, str]
+
+
+class SearchSchemas(BaseModel):
+    text: str
+    list_search: list

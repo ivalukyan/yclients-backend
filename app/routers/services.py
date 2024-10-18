@@ -1,18 +1,18 @@
 """
 Services
 """
-from fastapi import APIRouter, Request, Form
-from httptools.parser.parser import HttpRequestParser
+from fastapi import APIRouter, Request, Form, HTTPException
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
 from uuid import uuid4
-from app.routers.utils import get_times, get_hash
+from app.routers.utils import get_times, get_search
 
 from yclients.yclient import Yclient
 from conf import YclientsConfig
 
-from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData
+from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, SearchSchemas
+
 
 router = APIRouter(
     prefix="/book_record/services",
@@ -42,6 +42,16 @@ async def book_services(request: Request):
                                                                     'data': services.values()})
 
 
+@router.post('/search', response_model=SearchSchemas)
+async def get_search_services(search: SearchSchemas):
+
+    list_services = await api.book_services()
+    search_service = await get_search(search.text, list_services.values(), 'service_title')
+
+    return {'text': search.text, 'list_search': search_service,
+            'content': f"{search.text}", 'status': 'ok', 'msg': 'Search services'}
+
+
 @router.get("/{service_id}")
 async def book_staff(request: Request, service_id: int):
     """Получение персонала по выбранной услуге"""
@@ -63,6 +73,16 @@ async def book_staff(user: ServiceSchemas):
     return {'fullname': user.fullname, 'staff_id': user.staff_id, 'user_id': user.user_id,
             'service_id': user.service_id, 'content': content,
             'status': 'ok', 'msg': 'Save service data'}
+
+
+@router.post('/{service_id}/search', response_model=SearchSchemas)
+async def get_search_staffs(search: SearchSchemas):
+    staff = await api.book_staff()
+
+    list_staff = await get_search(search.text, staff.values(), 'staff_name')
+
+    return {'text': search.text, 'list_search': list_staff,
+            'content': f"{search.text}", 'status': 'ok', 'msg': 'Search staff'}
 
 
 @router.get("/{service_id}/{staff_id}")
@@ -124,9 +144,14 @@ async def get_form_data(service_id: int, staff_id: int, form: FormData):
 async def book_created(request: Request, service_id: int, staff_id: int, user: UserData):
     """Создание онлай-записи"""
 
-    print(user)
-
-    return templates.TemplateResponse("booking/recording.html", {'request': request,
+    service = api.create_booking(fullname=user.name, phone=user.phone, email=user.email,
+                                 comment=user.comment, service_id=service_id, staff_id=staff_id,
+                                 date_id=user.date_id, time_id=user.time_id)
+    if service['success']:
+        redirect_url = request.url_for('success', service_id=service_id, staff_id=staff_id)
+        return RedirectResponse(redirect_url)
+    else:
+        return templates.TemplateResponse("booking/recording.html", {'request': request,
                                                                  'service_id': service_id,
                                                                  'staff_id': staff_id})
 
@@ -136,4 +161,7 @@ async def success(request: Request, service_id: int, staff_id: int):
     return templates.TemplateResponse('booking/success.html', {'request': request,
                                                                'staff_id': staff_id,
                                                                'service_id': service_id})
+
+
+
 

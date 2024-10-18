@@ -81,6 +81,51 @@
         fill: #0d6efd;
         box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
     }
+
+    .search-input {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .search-input button {
+        background-color: transparent;
+        border: none;
+    }
+
+    .search-input svg {
+        height: 38px;
+        width: 38px;
+        padding: 5px;
+    }
+
+    .search-field {
+        border: none;
+        outline: none;
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 18px;
+        font-weight: 500;
+        color: #f8f8f8;
+        background-color: #343a40;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 7px 17px 0;
+    }
+
+    .search-field:focus {
+        border: 2px solid #0060d0;
+    }
+
+    .search-input svg:active {
+        fill: #0060d0;
+    }
+
+    img{
+        border-radius: 8px;
+        height: 32px;
+        width: 32px;
+    }
 </style>
 <body>
 <nav class="navbar">
@@ -91,12 +136,23 @@
     </a>
     <h2>Выбрать специалиста</h2>
 </nav>
-<div class="container">
-    <div class="row row-cols-lg-3">
+<div class="container" id="mainId">
+    <div class="search-input">
+        <label for="searchId"></label>
+        <input type="text" name="search" placeholder="Поиск" id="searchId" class="search-field" autocomplete="off"
+               required>
+        <button id="searchBut">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                 viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+    </div>
+    <div class="row row-cols-lg-3" id="rowId">
         {% for el in data %}
         <div class="container-sm">
             <div class="container-sm-1">
-                <img src="{{ el.staff_avatar }}" height="32" width="32" style="border-radius: 8px;"></img>
+                <img src="{{ el.staff_avatar }}" height="32" width="32"></img>
                 <h3>{{ el.staff_name }}</h3>
             </div>
             <div class="mb-3">
@@ -149,6 +205,97 @@
 
         await go_to_dates(staff);
     }
+
+    async function searchService(){
+        let text = document.getElementById('searchId').value
+
+        if (text){
+            const payload = {
+                text: text,
+                list_search: []
+            }
+
+            try{
+                let response = await fetch('/book_record/services/{{ service_id }}/search', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+
+                let data = await response.json();
+                return data
+            } catch (e){
+                console.log(e);
+            }
+        }
+
+        document.getElementById('searchId').value = ""
+    }
+
+    async function onClickBut () {
+        let search = await searchService();
+        let search_arr = search.list_search[0]
+
+        console.log(search);
+        console.log(search_arr);
+
+        let row = document.getElementById('rowId');
+        row.remove();
+
+        let card = document.createElement('div');
+        card.className = 'container-sm';
+
+        let container = document.createElement('div');
+        container.className = 'container-sm-1';
+
+        let img = document.createElement('img');
+        img.src = search_arr.staff_avatar;
+
+        let h = document.createElement('h3');
+        h.textContent = search_arr.staff_name;
+
+        let div1 = document.createElement('div')
+        div1.className = 'mb-3'
+
+        let p1 = document.createElement('p');
+        p1.textContent = `Специализация: ${search_arr.staff_specialization || 'Специализация отсутствует'}`;
+
+        let div2 = document.createElement('div');
+        div2.className = 'mb-3';
+
+        let p2 = document.createElement('p');
+        p2.textContent = `Описание: ${search_arr.staff_info || 'Описание отсутствует'}`;
+
+        let but = document.createElement('button');
+        but.id = search_arr.staff_id;
+        but.className = 'btn';
+        but.onclick = sendServiceId.bind(but, search_arr.staff_id);
+        but.textContent = 'Выбрать';
+
+        container.appendChild(img);
+        container.appendChild(h);
+
+        div1.appendChild(p1);
+        div2.appendChild(p2);
+
+        card.appendChild(container);
+        card.appendChild(div1);
+        card.appendChild(div2);
+        card.appendChild(but);
+
+        let con = document.getElementById('mainId');
+        con.appendChild(card);
+    }
+
+    document.getElementById('searchBut').onclick = onClickBut;
+
+    document.getElementById('searchBut').addEventListener('keydown', e => {
+        if (e.code === 'Enter'){
+            e.preventDefault();
+            onClickBut();
+            console.log("Кнопка нажата")
+        }
+    })
 </script>
 </body>
 </html>

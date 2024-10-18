@@ -17,3 +17,10 @@ async def get_hash(user_id) -> str:
     hashed = bcrypt.hashpw(user_id, bcrypt.gensalt())
 
     return hashed.decode('ascii')
+
+
+async def get_search(text: str, list_services: dict[str, str], find_field: str) -> list:
+
+    for service in list_services:
+        if service[find_field].lower() in text.lower():
+            return [service]

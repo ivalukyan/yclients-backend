@@ -20,7 +20,7 @@
         border-radius: 8px;
     }
 
-    .container{
+    .container {
         margin-top: 5vh;
         padding: 20px;
     }
@@ -67,53 +67,107 @@
     }
 
 
-    .form-text{
+    .form-text {
         color: #b82b14;
     }
 
-    .navbar{
+    .navbar {
         display: flex;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
     }
 
-    .navbar h2{
+    .navbar h2 {
         width: 70%;
     }
 
-    .navbar .back-button{
+    .navbar .back-button {
         margin-left: 10px;
     }
 
-    .back-button svg{
+    .back-button svg {
         height: 32px;
         width: 32px;
         fill: #0d6efd;
         box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
     }
+
+    .search-input {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .search-input button {
+        background-color: transparent;
+        border: none;
+    }
+
+    .search-input svg {
+        height: 38px;
+        width: 38px;
+        padding: 5px;
+    }
+
+    .search-field {
+        border: none;
+        outline: none;
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 18px;
+        font-weight: 500;
+        color: #f8f8f8;
+        background-color: #343a40;
+        box-shadow: rgba(0, 0, 0, 0.25) 0 7px 17px 0;
+    }
+
+    .search-field:focus {
+        border: 2px solid #0060d0;
+    }
+
+    .search-input svg:active {
+        fill: #0060d0;
+    }
 </style>
 <body>
 <nav class="navbar">
     <a href="/book_record" class="back-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
     </a>
     <h2>Выбрать услугу</h2>
 </nav>
-<div class="container">
-    <div class="row row-cols-lg-3">
+<div class="container" id="mainId">
+    <div class="search-input">
+        <label for="searchId"></label>
+        <input type="text" name="search" placeholder="Поиск" id="searchId" class="search-field" autocomplete="off"
+               required>
+        <button id="searchBut">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+                 viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="row row-cols-lg-3" id="rowId">
         {% for el in data %}
-        <div class="card-service">
-            <div class="container-sm-1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
-                     class="bi bi-grid-fill" viewBox="0 0 16 16">
-                    <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5z"/>
-                </svg>
-                <h3>{{ el.service_title }}</h3>
+            <div class="card-service">
+                <div class="container-sm-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+                         class="bi bi-grid-fill" viewBox="0 0 16 16" id="svgId">
+                        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5zm8 0A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5z"/>
+                    </svg>
+                    <h3>{{ el.service_title }}</h3>
+                </div>
+                <a href="/book_record/services/{{ el.service_id }}" class="btn-service"
+                   onclick="go_to_staff(el.service_id)">Выбрать</a>
             </div>
-            <a href="/book_record/services/{{ el.service_id }}" class="btn-service" onclick="go_to_staff(el.service_id)">Выбрать</a>
-        </div>
         {% endfor %}
     </div>
     <span class="form-text">
@@ -127,7 +181,7 @@
     let userId = null;
     let fullname = null;
 
-    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
     }
@@ -135,11 +189,75 @@
     console.log('User ID:', userId)
 
 
-    function go_to_staff(service_id){
+    function go_to_staff(service_id) {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
         location.replace(`/book_record/services/${service_id}`);
     }
+
+    async function searchService(){
+        let text = document.getElementById('searchId').value
+
+        if (text){
+            const payload = {
+                text: text,
+                list_search: []
+            }
+
+            try{
+                let response = await fetch('/book_record/services/search', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+
+                let data = await response.json();
+                return data
+            } catch (e){
+                console.log(e);
+            }
+        }
+
+        document.getElementById('searchId').value = ""
+    }
+
+    async function onClickBut () {
+        let search = await searchService();
+        let search_arr = search.list_search[0]
+
+        console.log(search_arr);
+
+        let svg = document.getElementById('svgId')
+
+        console.log(search);
+        let row = document.getElementById('rowId');
+        row.remove();
+
+        let card = document.createElement('div');
+        card.className = 'card-service';
+
+        let container = document.createElement('div');
+        container.className = 'container-sm-1';
+
+        let h = document.createElement('h3')
+        h.textContent = search_arr.service_title
+
+        let a = document.createElement('a');
+        a.href = `/book_record/services/${search_arr.service_id}`;
+        a.className = 'btn-service';
+        a.onclick = go_to_staff.bind(a, search_arr.service_id);
+        a.textContent = 'Выбрать'
+
+        container.appendChild(svg);
+        container.appendChild(h)
+        card.appendChild(container);
+        card.appendChild(a);
+
+        let mainСon = document.getElementById('mainId');
+        mainСon.appendChild(card);
+    }
+
+    document.getElementById('searchBut').onclick = onClickBut;
 </script>
 </body>
 </html>
