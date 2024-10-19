@@ -85,10 +85,10 @@
 <script src="https://telegram.org/js/telegram-web-app.js">
 
     let api = window.Telegram.WebApp
-    console.log(api)
+    let user = api.user
 
-    let userId = '{{ user_id }}'
-    let fullname = '{{ fullname }}'
+    let userId = user.id
+    let fullname = `${user.first_name} ${user.last_name}`
 
     function go_to_service(){
         localStorage.setItem('user', userId);
