@@ -1,5 +1,5 @@
 import uvicorn
-from django.shortcuts import redirect
+
 from fastapi import FastAPI, Request, HTTPException, APIRouter, Form
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
