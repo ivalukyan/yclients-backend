@@ -5,8 +5,6 @@ from starlette.responses import RedirectResponse
 
 from app.routers.services import router as services_router
 from app.routers.group_services import router as groups_router
-user_id = 877008114
-fullname = 'Сергей'
 
 
 app = FastAPI(
@@ -29,19 +27,12 @@ async def index(request: Request):
 
 @router.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {'request': request, 'user_id': user_id, 'fullname': fullname})
+    return templates.TemplateResponse("index.html", {'request': request})
 
 
 @router.get("/health")
 async def health():
     return {'status_code': 200}
-
-
-@router.get("/success")
-async def success(request: Request):
-    """Страница подтверждающая запись"""
-
-    return templates.TemplateResponse("booking/success.html", {'request': request})
 
 
 app.include_router(router)

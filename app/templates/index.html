@@ -84,10 +84,13 @@
         crossorigin="anonymous"></script>
 
 <script>
-    let userId = '{{ user_id }}' || '';
-    console.log(userId);
+    let app = window.Telegram.WebApp;
+    app.expand();
 
-    let fullname = '{{ fullname }}' || '';
+    let userId = `${app.initDataUnsafe.user.id}`
+    let fullname = `${app.initDataUnsafe.user.first_name} ${app.initDataUnsafe.user.last_name}`
+
+    console.log(userId);
     console.log(fullname);
 
     function go_to_service(){
@@ -101,29 +104,6 @@
         localStorage.setItem('fullname', fullname);
         location.replace('/book_record/group_services/');
     }
-
-{#    window.Telegram.WebApp.ready(() => {#}
-{#    let api = window.Telegram.WebApp;#}
-{#    let user = api.initDataUnsafe?.user || {};#}
-{##}
-{#    let userId = user.id || '';#}
-{#    console.log(userId);#}
-{##}
-{#    let fullname = `${user.first_name || ''} ${user.last_name || ''}`;#}
-{#    console.log(fullname);#}
-{##}
-{#    function go_to_service(){#}
-{#        localStorage.setItem('user', userId);#}
-{#        localStorage.setItem('fullname', fullname);#}
-{#        location.replace('/book_record/services/');#}
-{#    }#}
-{##}
-{#    function go_to_group_service(){#}
-{#        localStorage.setItem('user', userId);#}
-{#        localStorage.setItem('fullname', fullname);#}
-{#        location.replace('/book_record/group_services/');#}
-{#    }#}
-{#});#}
 </script>
 </body>
 </html>
