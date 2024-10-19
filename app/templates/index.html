@@ -95,9 +95,6 @@
     let fullname = `${user.first_name || ''} ${user.last_name || ''}`;
     console.log(fullname);
 
-    let h = document.getElementById('h2Id');
-    h.textContent = fullname;
-
     function go_to_service(){
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
