@@ -82,7 +82,10 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
-<script>
+<script src="https://telegram.org/js/telegram-web-app.js">
+
+    let api = window.Telegram.WebApp
+    console.log(api)
 
     let userId = '{{ user_id }}'
     let fullname = '{{ fullname }}'
