@@ -19,18 +19,6 @@ router = APIRouter(
 templates = Jinja2Templates(directory="app/templates")
 
 
-@app.get("/")
-async def index(request: Request):
-    redirect_url = request.url_for("home")
-    return RedirectResponse(redirect_url)
-
-
-@app.get('/{user_id}/{fullname}')
-async def home(request: Request, user_id: str, fullname: str):
-    redirect_url = request.url_for("home", user_id=user_id, fullname=fullname)
-    return RedirectResponse(redirect_url)
-
-
 @router.get("/{user_id}/{fullname}")
 async def home(request: Request, user_id: str, fullname: str):
     return templates.TemplateResponse("index.html", {'request': request,
