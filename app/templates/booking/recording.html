@@ -118,10 +118,6 @@
 <script>
 
     let userId = null;
-    let name = document.getElementById('name-input').value.trim()
-    let phone = document.getElementById('phone-input').value.trim()
-    let email = document.getElementById('email-input').value.trim()
-    let comment = document.getElementById('comment-input').value.trim()
     let date_id = null;
     let time_id = null;
 
@@ -155,16 +151,25 @@
     (async () => {
         let data = await getDataForm();
         let cache = data.cache;
-        document.getElementById('name-input').value = cache.fullname
+
+        document.getElementById('name-input').value = cache.fullname;
+        date_id = cache.date;
+        time_id = cache.time;
+
     })();
 
 
     async function sendForm(){
 
-        if (name && phone){
+        let fullname = document.getElementById('name-input').value.trim()
+        let phone = document.getElementById('phone-input').value.trim()
+        let email = document.getElementById('email-input').value.trim()
+        let comment = document.getElementById('comment-input').value.trim()
+
+        if (fullname && phone){
 
             const payload = {
-                name: name,
+                name: fullname,
                 phone: phone,
                 email: email,
                 comment: comment,
@@ -188,9 +193,7 @@
         location.replace('/book_record/services/{{ service_id }}/{{ staff_id }}/success')
     }
 
-    if (name && email){
-        document.getElementById('sendIdButton').onclick = sendForm;
-    }
+    document.getElementById('sendIdButton').onclick = sendForm;
 
 </script>
 </body>

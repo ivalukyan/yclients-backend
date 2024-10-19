@@ -115,7 +115,6 @@ async def save_reserve_times(request: Request, datatime: DataTime):
 
     cache_[datatime.user_id]['date'] = datatime.save_date
     cache_[datatime.user_id]['time'] = datatime.save_time
-    print(cache_)
 
     content = f"Выбранное время: {datatime.save_time}, Выбранная дата: {datatime.save_date}"
 
@@ -144,10 +143,11 @@ async def get_form_data(service_id: int, staff_id: int, form: FormData):
 async def book_created(request: Request, service_id: int, staff_id: int, user: UserData):
     """Создание онлай-записи"""
 
-    service = api.create_booking(fullname=user.name, phone=user.phone, email=user.email,
+    service = await api.create_booking(fullname=user.name, phone=user.phone, email=user.email,
                                  comment=user.comment, service_id=service_id, staff_id=staff_id,
                                  date_id=user.date_id, time_id=user.time_id)
     if service['success']:
+        print('Запись сделана')
         redirect_url = request.url_for('success', service_id=service_id, staff_id=staff_id)
         return RedirectResponse(redirect_url)
     else:
@@ -157,6 +157,13 @@ async def book_created(request: Request, service_id: int, staff_id: int, user: U
 
 
 @router.get('/{service_id}/{staff_id}/success')
+async def success(request: Request, service_id: int, staff_id: int):
+    return templates.TemplateResponse('booking/success.html', {'request': request,
+                                                               'staff_id': staff_id,
+                                                               'service_id': service_id})
+
+
+@router.post('/{service_id}/{staff_id}/success')
 async def success(request: Request, service_id: int, staff_id: int):
     return templates.TemplateResponse('booking/success.html', {'request': request,
                                                                'staff_id': staff_id,
