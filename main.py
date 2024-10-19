@@ -1,4 +1,5 @@
 import uvicorn
+from django.shortcuts import redirect
 from fastapi import FastAPI, Request, HTTPException, APIRouter, Form
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
@@ -19,8 +20,14 @@ router = APIRouter(
 templates = Jinja2Templates(directory="app/templates")
 
 
+@app.get("/")
+async def index(request: Request):
+    redirect_url = request.url_for('home')
+    return RedirectResponse(redirect_url)
+
+
 @router.get("/")
-async def home(request: Request, user_id: str, fullname: str):
+async def home(request: Request):
     return templates.TemplateResponse("index.html", {'request': request})
 
 
