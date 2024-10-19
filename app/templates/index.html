@@ -84,11 +84,9 @@
         crossorigin="anonymous"></script>
 
 <script>
-    let app = window.Telegram.WebApp;
-    app.expand();
 
-    let userId = `${app.initDataUnsafe.user.id}`
-    let fullname = `${app.initDataUnsafe.user.first_name} ${app.initDataUnsafe.user.last_name}`
+    let userId = '{{ user_id }}' || ''
+    let fullname = '{{ fullname }}' || ''
 
     console.log(userId);
     console.log(fullname);
