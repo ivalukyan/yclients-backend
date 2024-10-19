@@ -89,7 +89,10 @@
     let user = api.initDataUnsafe?.user || {};
 
     let userId = user.id || '';
+    console.log(userId);
+
     let fullname = `${user.first_name || ''} ${user.last_name || ''}`;
+    console.log(fullname)
 
     function go_to_service(){
         localStorage.setItem('user', userId);
