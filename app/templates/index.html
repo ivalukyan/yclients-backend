@@ -84,11 +84,12 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js">
 
-    let api = window.Telegram.WebApp
-    let user = api.user
+    window.Telegram.WebApp.ready(() => {
+    let api = window.Telegram.WebApp;
+    let user = api.initDataUnsafe?.user || {};
 
-    let userId = user.id
-    let fullname = `${user.first_name} ${user.last_name}`
+    let userId = user.id || '';
+    let fullname = `${user.first_name || ''} ${user.last_name || ''}`;
 
     function go_to_service(){
         localStorage.setItem('user', userId);
@@ -99,8 +100,9 @@
     function go_to_group_service(){
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
-        location.replace('/book_record/group_services/')
+        location.replace('/book_record/group_services/');
     }
+});
 </script>
 </body>
 </html>

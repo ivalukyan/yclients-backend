@@ -17,8 +17,6 @@ router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="app/templates")
-user_id = 877008114
-fullname = 'Иван'
 
 
 @app.get("/")
@@ -29,7 +27,7 @@ async def index(request: Request):
 
 @router.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {'request': request, 'user_id': user_id, 'fullname': fullname})
+    return templates.TemplateResponse("index.html", {'request': request})
 
 
 @router.get("/health")
