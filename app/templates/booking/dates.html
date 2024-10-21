@@ -32,7 +32,6 @@
 
     .navbar h2{
         width: 70%;
-        color: #232323;
     }
 
     .navbar .back-button{
@@ -96,6 +95,7 @@
         font-size: 18px;
         font-weight: 500;
         background-color: #0060d0;
+        color: #1d1d1d;
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
@@ -195,6 +195,20 @@
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
         <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
+        <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+          <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+              <img src="..." class="rounded me-2" alt="...">
+              <strong class="me-auto">Уведомление</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+              Время для записи отсутствует.
+            </div>
+          </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -355,9 +369,20 @@
 
         console.log(times.available_times)
 
-        if (times.available_times){
+        if (times.available_times && times.available_times.length !== 0){
             await viewTimes(times.available_times, dateId);
         } else {
+
+            let toastTrigger = document.getElementById('submitButton')
+            let toastLiveExample = document.getElementById('liveToast')
+
+            if (toastTrigger) {
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastTrigger.addEventListener('click', () => {
+                toastBootstrap.show()
+              })
+            }
+
             console.log("Время записи отсутствует")
         }
 
