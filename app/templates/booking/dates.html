@@ -182,12 +182,12 @@
     }
 
     .toast{
-        background-color: #1d1d1d;
+        background-color: #2f2f32;
         color: #0060d0;
     }
 
     .toast-header{
-        background-color: #1d1d1d;
+        background-color: #2f2f32;
         color: #0060d0;
         box-shadow: rgba(0, 0, 0, 0.30) 0 5px 17px 0;
     }
@@ -382,21 +382,18 @@
 
         console.log(times.available_times)
 
+        let toastTrigger = document.getElementById('submitButton');
+        let toastLiveExample = document.getElementById('liveToast');
+        let toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+
         if (times.available_times && times.available_times.length !== 0){
             await viewTimes(times.available_times, dateId);
         } else {
-
-            let toastTrigger = document.getElementById('submitButton')
-            let toastLiveExample = document.getElementById('liveToast')
-
-            if (toastTrigger) {
-              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-              toastTrigger.addEventListener('click', () => {
+            toastTrigger.addEventListener('click', () => {
                 toastBootstrap.show()
-              })
-            }
+            });
 
-            console.log("Время записи отсутствует")
+            console.log("Время записи отсутствует");
         }
 
     }
