@@ -102,6 +102,7 @@ async def get_reserve_times(time: Times):
 
     times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
     available_times = await get_times(times.values())
+    print(available_times)
     content = f"{time.staff_id} -- {time.select_date}"
 
     return {'available_times': available_times,
