@@ -352,6 +352,8 @@
         const response = await getTimes(staffId, dateId);
         let times = await response.json();
 
+        console.log(times.available_times)
+
         if (times.available_times){
             await viewTimes(times.available_times, dateId);
         } else {
