@@ -181,7 +181,7 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .toast{
+    .mes-toast{
         color: #0060d0;
         font-size: 18px;
         font-weight: 500;
@@ -387,8 +387,8 @@
             inputDate.disabled = true;
             submitBut.disabled = true;
 
-            let mes = document.createElement('div');
-            mes.className = "toast";
+            let mes = document.createElement('p');
+            mes.className = "mes-toast";
             mes.textContent = "Время для выбранной даты отсутвует.";
 
             let butReload = document.createElement('button');
