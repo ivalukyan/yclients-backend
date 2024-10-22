@@ -214,6 +214,17 @@
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
         <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -389,40 +400,6 @@
             console.log("Время записи отсутствует");
         }
 
-    }
-
-    async function viewToastMessage() {
-        const containerMain = document.getElementById('mb3Id');
-
-        let toastDiv = document.createElement('div');
-        toastDiv.className = 'toast';
-        toastDiv.role = 'alert';
-        toastDiv.ariaAtomic = 'true';
-        toastDiv.ariaLive = 'assertive';
-        toastDiv.id = 'liveToast';
-
-        let toastHeader = document.createElement('div');
-        toastHeader.className = 'toast-header';
-
-        let textStrong = document.createElement('strong');
-        textStrong.textContent = 'Уведомление';
-
-        let closeBut = document.createElement('button');
-        closeBut.type = 'button';
-        closeBut.className = 'btn-close';
-        closeBut.ariaLabel = 'Close';
-
-        toastHeader.appendChild(textStrong);
-        toastHeader.appendChild(closeBut);
-
-        let toastBody = document.createElement('div');
-        toastBody.className = 'toast-body';
-        toastBody.textContent = 'Для выбранной даты отсутсвует время';
-
-        toastDiv.appendChild(toastHeader);
-        toastDiv.appendChild(toastBody);
-
-        containerMain.appendChild(toastDiv);
     }
 
     document.getElementById('submitButton').onclick = selectDate;
