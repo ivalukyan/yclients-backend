@@ -378,6 +378,14 @@
             await viewTimes(times.available_times, dateId);
         } else {
             await viewToastMessage();
+
+            const toastTrigger = document.getElementById('submitButton');
+            const toastLiveExample = document.getElementById('liveToast');
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+            toastTrigger.addEventListener('click', () => {
+            toastBootstrap.show();
+            })
             console.log("Время записи отсутствует");
         }
 
@@ -391,6 +399,7 @@
         toastDiv.role = 'alert';
         toastDiv.ariaAtomic = 'true';
         toastDiv.ariaLive = 'assertive';
+        toastDiv.id = 'liveToast';
 
         let toastHeader = document.createElement('div');
         toastHeader.className = 'toast-header';
