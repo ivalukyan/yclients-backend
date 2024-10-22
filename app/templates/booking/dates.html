@@ -361,20 +361,17 @@
         if (times.available_times && times.available_times.length !== 0) {
             await viewTimes(times.available_times, dateId);
         } else {
-            await viewAlert();
+            const mb3 = document.getElementById('mb3Id');
+
+            let divAlert = document.createElement('div');
+            divAlert.className = 'alert alert-primary';
+            divAlert.role = 'alert';
+            divAlert.textContent = 'Для выбранной даты отсутвует время записи.';
+
+            mb3.appendChild(divAlert);
+
             console.log("Время записи отсутствует");
         }
-    }
-
-    async function viewAlert(){
-        const mb3 = document.getElementById('mb3Id');
-
-        let divAlert = document.createElement('div');
-        divAlert.className = 'alert alert-primary';
-        divAlert.role = 'alert';
-        divAlert.textContent = 'Для выбранной даты отсутвует время записи.';
-
-        mb3.appendChild(divAlert);
     }
 
     document.getElementById('submitButton').onclick = selectDate;
