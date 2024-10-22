@@ -24,35 +24,35 @@
     }
 
 
-    .navbar{
+    .navbar {
         display: flex;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
     }
 
-    .navbar h2{
+    .navbar h2 {
         width: 70%;
     }
 
-    .navbar .back-button{
+    .navbar .back-button {
         margin-left: 10px;
     }
 
-    .back-button svg{
+    .back-button svg {
         height: 32px;
         width: 32px;
         fill: #0d6efd;
         box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
     }
 
-    .form-label{
+    .form-label {
         font-size: 24px;
         font-weight: 600;
         width: 100%;
         text-align: center;
     }
 
-    .form-control{
+    .form-control {
         font-size: 18px;
         font-weight: 500;
         text-align: center;
@@ -63,7 +63,7 @@
         outline: none;
     }
 
-    .form-control:focus{
+    .form-control:focus {
         font-size: 18px;
         font-weight: 500;
         text-align: center;
@@ -74,7 +74,7 @@
         outline: none;
     }
 
-    .form-control:disabled{
+    .form-control:disabled {
         font-size: 18px;
         font-weight: 500;
         text-align: center;
@@ -85,7 +85,7 @@
         outline: none;
     }
 
-    .submit-button{
+    .submit-button {
         margin-top: 15px;
         padding: 5px;
         width: 100%;
@@ -99,21 +99,21 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .submit-button:active{
+    .submit-button:active {
         background-color: #2f2f32;
     }
 
-    .list-times{
+    .list-times {
         display: flex;
         gap: 10px;
         overflow-x: scroll;
     }
 
-    .list-times::-webkit-scrollbar{
+    .list-times::-webkit-scrollbar {
         width: 0;
     }
 
-    .time-button{
+    .time-button {
         padding: 5px;
         background-color: #b2ec5d;
         color: #2f2f32;
@@ -125,36 +125,36 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .time-button:active{
+    .time-button:active {
         background-color: #2f2f32;
         color: #8d8d8d;
     }
 
-    .container h4{
+    .container h4 {
         width: 100%;
         text-align: center;
         padding: 15px;
     }
 
-    .mb-5{
+    .mb-5 {
         background-color: #2f2f32;
         border-radius: 10px;
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .sel{
+    .sel {
         padding: 8px;
         font-size: 20px;
         font-weight: 500;
     }
 
-    .main-buttons{
+    .main-buttons {
         padding: 5px;
         gap: 8px;
         width: 100%;
     }
 
-    .save-button{
+    .save-button {
         width: 100%;
         background-color: #47b143;
         color: #2f2f32;
@@ -168,7 +168,7 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .reset-button{
+    .reset-button {
         width: 100%;
         background-color: #fff643;
         color: #2f2f32;
@@ -181,38 +181,36 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .mes-toast{
-        color: #0060d0;
-        font-size: 18px;
-        font-weight: 500;
-        margin-top: 15px;
+    .toast{
+        background-color: #2f2f32;
+        color: #8d8d8d;
     }
 
-    .toast-but{
+    .toast-header{
         background-color: #2f2f32;
-        color: #0060d0;
-        padding: 5px;
-        border: none;
-        outline: none;
-        border-radius: 10px;
-        font-size: 18px;
+        color: #8d8d8d;
+    }
+
+    .toast-body{
+        background-color: #2f2f32;
+        color: #8d8d8d;
+        font-size: 16px;
         font-weight: 500;
-        width: 100%;
-        box-shadow: rgba(0, 0, 0, 0.30) 0 5px 17px 0;
-        margin-top: 15px;
     }
 </style>
 <body>
 <nav class="navbar">
     <a href="/book_record/services/{{ service_id }}" class="back-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
     </a>
     <h2>Выбрать Дату</h2>
 </nav>
 <div class="container" id="containerId">
-    <div class="mb-3" id="mbId">
+    <div class="mb-3">
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
         <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
@@ -225,7 +223,7 @@
 
     let userId = null;
 
-    if (localStorage.getItem('user')){
+    if (localStorage.getItem('user')) {
         userId = localStorage.getItem('user');
     }
 
@@ -233,27 +231,27 @@
 
     let staffId = "{{ staff_id }}";
 
-    async function reloadBut(){
+    async function reloadBut() {
         location.reload();
     }
 
-    async function nextStep(){
+    async function nextStep() {
         localStorage.setItem('user', userId);
         location.replace(`${staffId}/recording`);
     }
 
-    async function disableBut(){
+    async function disableBut() {
         let listTimes = document.getElementById('listTimesId').getElementsByTagName('*');
-        for (let i = 0; i < listTimes.length; i++){
+        for (let i = 0; i < listTimes.length; i++) {
             listTimes[i].disabled = true;
         }
     }
 
-    async function viewInfo(time){
+    async function viewInfo(time) {
 
         let data = document.getElementById('idDateInput').value.trim()
 
-        if (time){
+        if (time) {
 
             const payload = {
                 user_id: userId,
@@ -261,13 +259,13 @@
                 save_date: data
             }
 
-            try{
+            try {
                 await fetch('/book_record/services/{{ service_id }}/save', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(payload)
                 })
-            } catch (e){
+            } catch (e) {
                 console.log(e)
             }
         }
@@ -318,7 +316,7 @@
         conEl.appendChild(divButtons)
     }
 
-    async function createTimesEl(text, data_id){
+    async function createTimesEl(text, data_id) {
         let butEl = document.createElement('button')
         butEl.className = 'time-button';
         butEl.id = text
@@ -328,13 +326,13 @@
         return butEl
     }
 
-    async function viewTimes(timesList, dataID){
+    async function viewTimes(timesList, dataID) {
 
         let divEl = document.createElement('div');
         divEl.className = 'list-times';
         divEl.id = 'listTimesId'
 
-        for (let i = 0; i < timesList.length; i++){
+        for (let i = 0; i < timesList.length; i++) {
             let but = await createTimesEl(timesList[i], dataID);
             divEl.appendChild(but);
         }
@@ -346,7 +344,7 @@
         con.appendChild(divEl);
     }
 
-    async function getTimes(staffID, selectDate){
+    async function getTimes(staffID, selectDate) {
         try {
 
             const payload = {
@@ -361,12 +359,12 @@
                 body: JSON.stringify(payload)
             });
 
-        } catch (e){
+        } catch (e) {
             console.log("Ошибка при GET:", e)
         }
     }
 
-    async function selectDate(){
+    async function selectDate() {
         let dateId = document.getElementById('idDateInput').value.trim();
 
         console.log(`Выбранная дата: ${dateId}`);
@@ -376,36 +374,46 @@
 
         console.log(times.available_times)
 
-        if (times.available_times && times.available_times.length !== 0){
+        if (times.available_times && times.available_times.length !== 0) {
             await viewTimes(times.available_times, dateId);
         } else {
-
-            let mb3 = document.getElementById('mbId');
-            let inputDate = document.getElementById('idDateInput');
-            let submitBut = document.getElementById('submitButton');
-
-            inputDate.disabled = true;
-            submitBut.disabled = true;
-
-            let mes = document.createElement('p');
-            mes.className = "mes-toast";
-            mes.textContent = "Время для выбранной даты отсутвует.";
-
-            let butReload = document.createElement('button');
-            butReload.className = "toast-but";
-            butReload.textContent = "Выбрать заново";
-            butReload.onclick = butReloadClick;
-
-            mb3.appendChild(mes);
-            mb3.appendChild(butReload);
-
+            await viewToastMessage();
             console.log("Время записи отсутствует");
         }
 
     }
 
-    async function butReloadClick(){
-        location.reload();
+    async function viewToastMessage() {
+        const containerMain = document.getElementById('containerId');
+
+        let toastDiv = document.createElement('div');
+        toastDiv.className = 'toast';
+        toastDiv.role = 'alert';
+        toastDiv.ariaAtomic = 'true';
+        toastDiv.ariaLive = 'assertive';
+
+        let toastHeader = document.createElement('div');
+        toastHeader.className = 'toast-header';
+
+        let textStrong = document.createElement('strong');
+        textStrong.textContent = 'Уведомление';
+
+        let closeBut = document.createElement('button');
+        closeBut.type = 'button';
+        closeBut.className = 'btn-close';
+        closeBut.ariaLabel = 'Close';
+
+        toastHeader.appendChild(textStrong);
+        toastHeader.appendChild(closeBut);
+
+        let toastBody = document.createElement('div');
+        toastBody.className = 'toast-body';
+        toastBody.textContent = 'Для выбранной даты отсутсвует время';
+
+        toastDiv.appendChild(toastHeader);
+        toastDiv.appendChild(toastBody);
+
+        containerMain.appendChild(toastDiv);
     }
 
     document.getElementById('submitButton').onclick = selectDate;
