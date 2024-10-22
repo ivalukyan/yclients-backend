@@ -210,7 +210,7 @@
     <h2>Выбрать Дату</h2>
 </nav>
 <div class="container" id="containerId">
-    <div class="mb-3">
+    <div class="mb-3" id="mb3Id">
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
         <input name="date" class="form-control" type="date" id="idDateInput">
         <button class="submit-button" id="submitButton">Выбрать дату</button>
@@ -384,7 +384,7 @@
 
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
             toastTrigger.addEventListener('click', () => {
-            toastBootstrap.show();
+                toastBootstrap.show();
             })
             console.log("Время записи отсутствует");
         }
@@ -392,7 +392,7 @@
     }
 
     async function viewToastMessage() {
-        const containerMain = document.getElementById('containerId');
+        const containerMain = document.getElementById('mb3Id');
 
         let toastDiv = document.createElement('div');
         toastDiv.className = 'toast';
