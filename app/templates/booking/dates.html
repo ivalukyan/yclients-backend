@@ -367,23 +367,14 @@
     }
 
     async function viewAlert(){
-        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-        const appendAlert = (message, type) => {
-          const wrapper = document.createElement('div')
-          wrapper.innerHTML = [
-            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-            `   <div>${message}</div>`,
-            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-            '</div>'
-          ].join('')
+        const mb3 = document.getElementById('mb3Id');
 
-          alertPlaceholder.append(wrapper)
-        }
+        let divAlert = document.createElement('div');
+        divAlert.className = 'alert alert-primary';
+        divAlert.role = 'alert';
+        divAlert.textContent = 'Для выбранной даты отсутвует время записи.';
 
-        const alertTrigger = document.getElementById('submitButton')
-        alertTrigger.addEventListener('click', () => {
-            appendAlert('Для выбранной даты отсутствует выбор времени.', 'primary')
-        })
+        mb3.appendChild(divAlert);
     }
 
     document.getElementById('submitButton').onclick = selectDate;
