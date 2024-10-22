@@ -367,22 +367,15 @@
         } else {
             const mb3 = document.getElementById('mb3Id');
 
-            let divAlert = document.createElement('div');
-            divAlert.className = 'alert alert-primary';
-            divAlert.role = 'alert';
+            const wrapper = document.createElement('div')
+              wrapper.innerHTML = [
+                `<div class="alert alert-primary alert-dismissible" role="alert">`,
+                `   <div>Для выбранной даты отсутсвует время для записи.</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+              ].join('')
 
-            let textDiv = document.createElement('div');
-            textDiv.textContent = 'Для выбранной даты отсутствует время записи.';
-
-            let alertBut = document.createElement('button');
-            alertBut.type = 'button';
-            alertBut.className = 'btn-close';
-            alertBut.ariaLabel = 'Close'
-
-            divAlert.appendChild(textDiv);
-            divAlert.appendChild(alertBut);
-
-            mb3.appendChild(divAlert);
+            mb3.append(wrapper);
 
             console.log("Время записи отсутствует");
         }
