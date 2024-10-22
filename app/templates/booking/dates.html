@@ -181,22 +181,22 @@
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
     }
 
-    .toast{
-        background-color: #2f2f32;
-        color: #8d8d8d;
-    }
+    /*.toast{*/
+    /*    background-color: #2f2f32;*/
+    /*    color: #8d8d8d;*/
+    /*}*/
 
-    .toast-header{
-        background-color: #2f2f32;
-        color: #8d8d8d;
-    }
+    /*.toast-header{*/
+    /*    background-color: #2f2f32;*/
+    /*    color: #8d8d8d;*/
+    /*}*/
 
-    .toast-body{
-        background-color: #2f2f32;
-        color: #8d8d8d;
-        font-size: 16px;
-        font-weight: 500;
-    }
+    /*.toast-body{*/
+    /*    background-color: #2f2f32;*/
+    /*    color: #8d8d8d;*/
+    /*    font-size: 16px;*/
+    /*    font-weight: 500;*/
+    /*}*/
 </style>
 <body>
 <nav class="navbar">
@@ -217,11 +217,11 @@
         <div class="toast-container position-fixed bottom-0 end-0 p-3">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header">
-                    <strong class="me-auto">Bootstrap</strong>
+                    <strong class="me-auto">Уведомление</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div class="toast-body">
-                    Hello, world! This is a toast message.
+                    Для выбраной даты отсутсвует время для записи.
                 </div>
             </div>
         </div>
@@ -388,15 +388,15 @@
         if (times.available_times && times.available_times.length !== 0) {
             await viewTimes(times.available_times, dateId);
         } else {
-            await viewToastMessage();
-
             const toastTrigger = document.getElementById('submitButton');
             const toastLiveExample = document.getElementById('liveToast');
 
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastTrigger.addEventListener('click', () => {
-                toastBootstrap.show();
-            })
+            if (toastTrigger) {
+              const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+              toastTrigger.addEventListener('click', () => {
+                toastBootstrap.show()
+              })
+            }
             console.log("Время записи отсутствует");
         }
 
