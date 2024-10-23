@@ -35,6 +35,7 @@ class ServiceSchemas(BaseModel):
 
 class FormData(BaseModel):
     user_id: int
+    phone: str
     cache: dict[str, str]
 
 

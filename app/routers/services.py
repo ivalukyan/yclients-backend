@@ -13,6 +13,8 @@ from conf import YclientsConfig
 
 from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, SearchSchemas
 
+from db.utils import get_user_phone_number
+
 
 router = APIRouter(
     prefix="/book_record/services",
@@ -136,7 +138,10 @@ async def book_created(request: Request, service_id: int, staff_id: int):
 @router.post("/{service_id}/{staff_id}/get_form_data", response_model=FormData)
 async def get_form_data(service_id: int, staff_id: int, form: FormData):
 
-    return {'cache': cache_[form.user_id],
+    phone = get_user_phone_number(form.user_id)
+    print(phone)
+
+    return {'cache': cache_[form.user_id], 'phone': phone,
             'user_id': form.user_id, 'content': f'{form.user_id}',
             'status': 'ok', 'msg': 'Get form data'}
 

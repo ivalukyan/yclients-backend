@@ -131,6 +131,7 @@
 
         const payload = {
             user_id: userId,
+            phone: "",
             cache: {}
         }
 
@@ -152,6 +153,7 @@
         let data = await getDataForm();
         let cache = data.cache;
 
+        document.getElementById('phone-input').value = data.phone;
         document.getElementById('name-input').value = cache.fullname;
         date_id = cache.date;
         time_id = cache.time;
