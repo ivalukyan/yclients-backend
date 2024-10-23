@@ -124,6 +124,32 @@
         fullname = localStorage.getItem('fullname');
     }
 
+    async function getPhoneNumber(){
+        const payload = {
+            user_id: userId,
+            phone: ""
+        }
+
+        try{
+            const response = await fetch('/book_record/group_services/{{ service_id }}/get_form_data', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            })
+
+            let data = await response.json();
+            return data;
+        } catch (e){
+            console.log(e);
+        }
+    }
+
+    (async () => {
+        let data = await getPhoneNumber();
+
+        document.getElementById('phone-input').value = data.phone;
+    })();
+
     document.getElementById('name-input').value = fullname;
 </script>
 </body>

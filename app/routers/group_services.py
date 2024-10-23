@@ -7,8 +7,11 @@ from starlette.templating import Jinja2Templates
 from typing import Annotated
 from starlette.responses import RedirectResponse
 
+from app.routers.schemas import FormGroup
 from yclients.yclient import Yclient
 from conf import YclientsConfig
+
+from db.utils import get_user_phone_number
 
 
 router = APIRouter(
@@ -45,6 +48,17 @@ async def group_services(request: Request):
 @router.get("/{service_id}")
 async def recording_group_services(request: Request, service_id: int):
     return templates.TemplateResponse("booking/recording.html", {'request': request, 'service_id': service_id})
+
+
+@router.post("/{service_id}/get_form_data", response_model=FormGroup)
+async def get_form_data(service_id: int, form: FormGroup):
+
+    phone = get_user_phone_number(form.user_id)
+    print(phone)
+
+    return {'user_id': form.user_id, 'phone': phone, 'service_id': service_id,
+            'content': f'{form.user_id} -- {phone}', 'status': 'ok',
+            'msg': 'Get phone user'}
 
 
 @router.post("/{service_id}")

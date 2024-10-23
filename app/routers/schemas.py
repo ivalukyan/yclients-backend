@@ -39,6 +39,11 @@ class FormData(BaseModel):
     cache: dict[str, str]
 
 
+class FormGroup(BaseModel):
+    user_id: int
+    phone: str
+
+
 class SearchSchemas(BaseModel):
     text: str
     list_search: list
