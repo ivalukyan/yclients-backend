@@ -47,3 +47,7 @@ class FormGroup(BaseModel):
 class SearchSchemas(BaseModel):
     text: str
     list_search: list
+
+
+class ServicesLoad(BaseModel):
+    exist: bool

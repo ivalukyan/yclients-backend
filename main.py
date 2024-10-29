@@ -4,9 +4,11 @@ from fastapi import FastAPI, Request, HTTPException, APIRouter, Form
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 
+from app.routers.schemas import ServicesLoad
 from app.routers.services import router as services_router
 from app.routers.group_services import router as groups_router
-
+from conf import YclientsConfig
+from yclients.yclient import Yclient
 
 app = FastAPI(
     title='Services API',
@@ -19,6 +21,9 @@ router = APIRouter(
 
 templates = Jinja2Templates(directory="app/templates")
 
+yclient = YclientsConfig()
+api = Yclient(bearer_token=yclient.bearer, company_id=yclient.company_id, user_token=yclient.user)
+
 
 @app.get("/")
 async def index(request: Request):
@@ -29,6 +34,24 @@ async def index(request: Request):
 @router.get("/")
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {'request': request})
+
+
+@router.get("/get_services", response_model=ServicesLoad)
+async def get_services():
+    exist = True
+    services = await api.book_services()
+    if services is None:
+        exist = False
+    return {"exist": exist}
+
+
+@router.get("/get_services_group", response_model=ServicesLoad)
+async def get_services_group():
+    exist = True
+    group_services = await api.dates_range()
+    if group_services is None:
+        exist = False
+    return {"exist": exist}
 
 
 @router.get("/health")
