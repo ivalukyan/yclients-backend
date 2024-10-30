@@ -49,8 +49,9 @@ async def get_services():
 async def get_services_group():
     exist = True
     group_services = await api.dates_range()
-    print(group_services)
     if group_services is None:
+        exist = False
+    elif (group_services['min_date'] is None) or (group_services['max_date'] is None):
         exist = False
     return {"exist": exist}
 
