@@ -130,6 +130,29 @@
         color: #8d8d8d;
     }
 
+    .container{
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    .list-times{
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeOut {
+        0%{
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100%{
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
     .container h4 {
         width: 100%;
         text-align: center;
@@ -140,6 +163,9 @@
         background-color: #2f2f32;
         border-radius: 10px;
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
     }
 
     .sel {
@@ -166,6 +192,9 @@
         font-size: 18px;
         font-weight: 500;
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
     }
 
     .reset-button {
@@ -179,6 +208,9 @@
         font-size: 18px;
         font-weight: 500;
         box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
     }
 
     .alert{

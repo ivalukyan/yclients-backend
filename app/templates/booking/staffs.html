@@ -30,6 +30,20 @@
         background-color: #2f2f32;
         border-radius: 8px;
         padding: 10px;
+        opacity: 0;
+        animation: fadeInUp 0.8s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .container-sm-1 {
@@ -61,21 +75,21 @@
         color: #1d1d1d;
     }
 
-    .navbar{
+    .navbar {
         display: flex;
         align-items: center;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
     }
 
-    .navbar h2{
+    .navbar h2 {
         width: 80%;
     }
 
-    .navbar .back-button{
+    .navbar .back-button {
         margin-left: 10px;
     }
 
-    .back-button svg{
+    .back-button svg {
         height: 32px;
         width: 32px;
         fill: #0d6efd;
@@ -87,6 +101,20 @@
         width: 100%;
         align-items: center;
         margin-bottom: 15px;
+        opacity: 0;
+        animation: fadeOut 0.8s ease-in-out;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes fadeOut {
+        0% {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        100%{
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .search-input button {
@@ -121,17 +149,24 @@
         fill: #0060d0;
     }
 
-    img{
+    img {
         border-radius: 8px;
         height: 32px;
         width: 32px;
+    }
+
+    .name-staff {
+        font-size: 18px;
+        font-weight: 500;
     }
 </style>
 <body>
 <nav class="navbar">
     <a href="/book_record/services/" class="back-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
     </a>
     <h2>Выбрать специалиста</h2>
@@ -139,30 +174,24 @@
 <div class="container" id="mainId">
     <div class="search-input">
         <label for="searchId"></label>
-        <input type="text" name="search" placeholder="Поиск" id="searchId" class="search-field" autocomplete="off"
+        <input type="text" name="search" placeholder="Поиск" id="searchFieldId" class="search-field" autocomplete="off"
                required>
-        <button id="searchBut">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
-                 viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-            </svg>
-        </button>
     </div>
     <div class="row gap-4 row-cols-lg-3" id="rowId">
         {% for el in data %}
-        <div class="container-sm">
-            <div class="container-sm-1">
-                <img src="{{ el.staff_avatar }}" height="32" width="32"></img>
-                <h3>{{ el.staff_name }}</h3>
+            <div class="container-sm">
+                <div class="container-sm-1">
+                    <img src="{{ el.staff_avatar }}" height="32" width="32"></img>
+                    <div class="name-staff">{{ el.staff_name }}</div>
+                </div>
+                <div class="mb-3">
+                    <p>Специализация: {{ el.staff_specialization or 'Специализация отсутствует' }}</p>
+                </div>
+                <div class="mb-3">
+                    <p>Описание: {{ el.staff_info or 'Описание услуги отсутствует' }}</p>
+                </div>
+                <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
             </div>
-            <div class="mb-3">
-                <p>Специализация: {{ el.staff_specialization or 'Специализация отсутствует' }}</p>
-            </div>
-            <div class="mb-3">
-                <p>Описание: {{ el.staff_info or 'Описание услуги отсутствует' }}</p>
-            </div>
-            <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
-        </div>
         {% endfor %}
     </div>
 </div>
@@ -174,7 +203,7 @@
     let fullname = null;
     let serviceId = '{{ service_id }}'
 
-    if (localStorage.getItem('user') && localStorage.getItem('fullname')){
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
     }
@@ -182,20 +211,20 @@
     console.log(userId);
     console.log(fullname);
 
-    async function go_to_dates(staff_id){
+    async function go_to_dates(staff_id) {
         localStorage.setItem('user', userId);
         location.replace(`/book_record/services/{{ service_id }}/${staff_id}`);
     }
 
-    async function sendServiceId(staff){
+    async function sendServiceId(staff) {
         const payload = {
             user_id: userId,
             fullname: fullname,
             service_id: serviceId,
             staff_id: staff
         }
-        try{
-                await fetch('/book_record/services/{{ service_id }}', {
+        try {
+            await fetch('/book_record/services/{{ service_id }}', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -207,33 +236,7 @@
         await go_to_dates(staff);
     }
 
-    async function searchService(){
-        let text = document.getElementById('searchId').value
-
-        if (text){
-            const payload = {
-                text: text,
-                list_search: []
-            }
-
-            try{
-                let response = await fetch('/book_record/services/{{ service_id }}/search', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                })
-
-                let data = await response.json();
-                return data
-            } catch (e){
-                console.log(e);
-            }
-        }
-
-        document.getElementById('searchId').value = ""
-    }
-
-    async function onClickBut () {
+    async function onClickBut() {
         let search = await searchService();
         let search_arr = search.list_search[0]
 
@@ -291,12 +294,26 @@
     document.getElementById('searchBut').onclick = onClickBut;
 
     document.getElementById('searchBut').addEventListener('keydown', e => {
-        if (e.code === 'Enter'){
+        if (e.code === 'Enter') {
             e.preventDefault();
             onClickBut();
             console.log("Кнопка нажата")
         }
     })
+
+    document.getElementById('searchFieldId').addEventListener('input', function () {
+        let filter = this.value.toLowerCase();
+        let chatCards = document.querySelectorAll('.container-sm');
+
+        chatCards.forEach(card => {
+            let name = card.querySelector('.name-staff').textContent.toLowerCase();
+            if (name.includes(filter)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
 </script>
 </body>
 </html>
