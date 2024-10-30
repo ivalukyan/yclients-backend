@@ -156,7 +156,6 @@
      })
 
     getGroupServices().then(function (response) {
-        alert(response.data.exist);
         console.log(response.data.exist);
         if (response.data.exist === true) {
             createElement("Групповые события", "Здесь вы можете записаться на событие выбрав вам удобную дату, вид услуги",
