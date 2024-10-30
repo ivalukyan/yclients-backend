@@ -49,6 +49,7 @@ async def get_services():
 async def get_services_group():
     exist = True
     group_services = await api.dates_range()
+    print(group_services)
     if group_services is None:
         exist = False
     return {"exist": exist}
