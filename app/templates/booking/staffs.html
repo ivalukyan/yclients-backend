@@ -291,16 +291,6 @@
         con.appendChild(card);
     }
 
-    document.getElementById('searchBut').onclick = onClickBut;
-
-    document.getElementById('searchBut').addEventListener('keydown', e => {
-        if (e.code === 'Enter') {
-            e.preventDefault();
-            onClickBut();
-            console.log("Кнопка нажата")
-        }
-    })
-
     document.getElementById('searchFieldId').addEventListener('input', function () {
         let filter = this.value.toLowerCase();
         let chatCards = document.querySelectorAll('.container-sm');
