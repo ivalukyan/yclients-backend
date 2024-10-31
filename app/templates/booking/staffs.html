@@ -188,7 +188,7 @@
                     <p>Специализация: {{ el.staff_specialization or 'Специализация отсутствует' }}</p>
                 </div>
                 <div class="mb-3">
-                    <div>{{ el.staff_info or 'Описание отсутствует' }}</div>
+                    <p>Описание: {{ el.staff_info or 'Описание отсутствует' }}</p>
                 </div>
                 <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
             </div>
