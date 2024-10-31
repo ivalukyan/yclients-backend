@@ -61,7 +61,7 @@ async def book_staff(request: Request, service_id: int):
     staff = await api.book_staff()
     values = list(staff.values())
     for i in values:
-        i['staff_info'] = remove_html_tags(i['staff_info'])
+        i['staff_info'] = await remove_html_tags(i['staff_info'])
 
     return templates.TemplateResponse("booking/staffs.html",
                                       {'request': request, 'data': values, 'service_id': service_id})
