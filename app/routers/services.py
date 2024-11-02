@@ -35,13 +35,16 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
+    values = list(services.values())
+    for i in values:
+        i['service_description'] = await remove_html_tags(i['service_description'])
 
     if not services:
         exp = "Услуги для бронирования отсутствуют"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
     else:
         return templates.TemplateResponse("booking/services.html", {'request': request,
-                                                                    'data': services.values()})
+                                                                    'data': values})
 
 
 @router.post('/search', response_model=SearchSchemas)
