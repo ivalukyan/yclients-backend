@@ -228,7 +228,7 @@
         console.log(category_id)
 
         for (let i = 0; i < list.length; i++) {
-            if (list[i]['category_id'] === category_id) {
+            if (`${list[i]['category_id']}` === category_id) {
                 dates.push(list[i]);
             }
         }

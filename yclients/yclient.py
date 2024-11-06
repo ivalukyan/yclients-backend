@@ -129,7 +129,7 @@ class Yclient:
         if res['success']:
             data = res['data']
             for _ in range(len(data)):
-                categories[uuid4().hex] = {"id": data[_]['id'], "category_id": data[_]['category_id'],
+                categories[uuid4().hex] = {"c_id": data[_]['id'], "category_id": data[_]['category_id'],
                                            "category_title": data[_]['title']}
 
             return categories
