@@ -54,6 +54,8 @@ async def category_services(request: Request):
     category = await api.book_category()
     print(category)
 
+    return templates.TemplateResponse("booking/category_services.html", {'request': request, 'category': category})
+
 
 
 @router.post('/search', response_model=SearchSchemas)
