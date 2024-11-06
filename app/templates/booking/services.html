@@ -221,7 +221,7 @@
     let userId = null;
     let fullname = null;
     let dates = [];
-    let list = JSON.parse(`{{ data }}`);
+    let list = [];
     let category_id = null;
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
@@ -233,14 +233,26 @@
     console.log('User ID:', userId)
     console.log(`Дата тг: ${fullname}`)
 
-    function category_list() {
+    dates = () => {
+
+        const response = async () => {
+            const res = await fetch("book_record/category_service", {
+                method: "GET",
+                headers: {"Content-Type": "application/json"}
+            })
+
+            const data = await res.json()
+            list = data.data
+        }
+
+        response();
         alert(list)
+
         for (let i = 0; i < list.length; i++){
             if (list[i]['category_id'] === category_id){
                 dates.push(list[i]);
             }
         }
-        alert(dates)
     }
 
 
@@ -263,8 +275,6 @@
             }
         });
     });
-
-    category_list();
 </script>
 </body>
 </html>
