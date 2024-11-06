@@ -236,7 +236,7 @@
     function category_list() {
         for (let i = 0; i < list.length; i++){
             if (list[i]['category_id'] === category_id){
-                dates.append(list[i]);
+                dates.push(list[i]);
             }
         }
     }
@@ -297,6 +297,8 @@
             }
         });
     });
+
+    category_list();
 </script>
 </body>
 </html>
