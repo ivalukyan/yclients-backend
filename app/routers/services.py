@@ -54,9 +54,11 @@ async def category_services(request: Request):
     category = await api.book_category()
     print(category)
 
+    if not category:
+        exp = "Категории отсутствуют"
+        return templates.TemplateResponse("booking/category_services.html", {'request': request, 'exp': exp})
     return templates.TemplateResponse("booking/category_services.html", {'request': request,
-                                                                         'category': category.values()})
-
+                                                                         'data': category.values()})
 
 
 @router.post('/search', response_model=SearchSchemas)
