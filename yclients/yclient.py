@@ -116,6 +116,15 @@ class Yclient:
                 
             return staff
         return "Ошибка запроса"
+
+
+    async def book_category(self) -> None:
+        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/service_categories/"
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        return res
     
 
     async def book_times(self, staff_id: int, date: str) -> None:

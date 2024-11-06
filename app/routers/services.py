@@ -47,6 +47,15 @@ async def book_services(request: Request):
                                                                     'data': values})
 
 
+@router.get("/category")
+async def category_services(request: Request):
+    """Получение категорий"""
+
+    category = await api.book_category()
+    print(category)
+
+
+
 @router.post('/search', response_model=SearchSchemas)
 async def get_search_services(search: SearchSchemas):
 
