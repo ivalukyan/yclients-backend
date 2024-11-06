@@ -205,7 +205,7 @@
                     <div class="name-service">{{ el.category_title }}</div>
                 </div>
                 <a href="/book_record/services/" class="btn-service"
-                   onclick="go_to_staff(el.id)">Выбрать</a>
+                   onclick="go_to_service(el.category_id)">Выбрать</a>
             </div>
         {% endfor %}
     </div>
@@ -220,7 +220,6 @@
     let userId = null;
     let fullname = null;
     let id = null;
-    let category_id = null
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
@@ -231,48 +230,12 @@
     console.log(`Дата тг: ${fullname}`)
 
 
-    function go_to_staff(service_id) {
+    function go_to_service(category_id) {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
         localStorage.setItem('id', id);
         localStorage.setItem('category_id', category_id);
         location.replace(`/book_record/services/`);
-    }
-
-    async function onClickBut() {
-        let search = await searchService();
-        let search_arr = search.list_search[0]
-
-        console.log(search_arr);
-
-        let svg = document.getElementById('svgId')
-
-        console.log(search);
-        let row = document.getElementById('rowId');
-        row.remove();
-
-        let card = document.createElement('div');
-        card.className = 'card-service';
-
-        let container = document.createElement('div');
-        container.className = 'container-sm-1';
-
-        let h = document.createElement('h3')
-        h.textContent = search_arr.service_title
-
-        let a = document.createElement('a');
-        a.href = `/book_record/services/${search_arr.service_id}`;
-        a.className = 'btn-service';
-        a.onclick = go_to_staff.bind(a, search_arr.service_id);
-        a.textContent = 'Выбрать'
-
-        container.appendChild(svg);
-        container.appendChild(h)
-        card.appendChild(container);
-        card.appendChild(a);
-
-        let mainСon = document.getElementById('mainId');
-        mainСon.appendChild(card);
     }
 
     document.getElementById('searchFieldId').addEventListener('input', function () {

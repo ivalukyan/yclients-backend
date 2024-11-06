@@ -173,7 +173,7 @@
 </style>
 <body>
 <nav class="navbar">
-    <a href="/book_record" class="back-button">
+    <a href="/book_record/services/category" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
              viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -191,7 +191,7 @@
     </div>
 
     <div class="row gap-4 row-cols-lg-3" id="rowId">
-        {% for el in data %}
+        {% for el in dates %}
             <div class="card-service">
                 <div class="container-sm-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
@@ -220,14 +220,26 @@
 <script>
     let userId = null;
     let fullname = null;
+    let dates = [];
+    let list = `{{ data }}`;
+    let category_id = null;
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
+        category_id = localStorage.getItem('category_id');
     }
 
     console.log('User ID:', userId)
     console.log(`Дата тг: ${fullname}`)
+
+    function category_list() {
+        for (let i = 0; i < list.length; i++){
+            if (list[i]['category_id'] === category_id){
+                dates.append(list[i]);
+            }
+        }
+    }
 
 
     function go_to_staff(service_id) {
