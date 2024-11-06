@@ -204,8 +204,8 @@
                     </svg>
                     <div class="name-service">{{ el.category_title }}</div>
                 </div>
-                <a href="/book_record/services/" class="btn-service"
-                   onclick="go_to_service(el.category_id)">Выбрать</a>
+                <button href="/book_record/category/services/" class="btn-service"
+                   onclick="go_to_service(el.category_id)">Выбрать</button>
             </div>
         {% endfor %}
     </div>
@@ -235,7 +235,7 @@
         localStorage.setItem('fullname', fullname);
         localStorage.setItem('id', id);
         localStorage.setItem('category_id', category_id);
-        location.replace(`/services`);
+        location.replace(`/book_record/category/services/`);
     }
 
     document.getElementById('searchFieldId').addEventListener('input', function () {
