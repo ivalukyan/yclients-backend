@@ -35,6 +35,7 @@ async def book_services(request: Request):
     """Получние доступных услуг для бронирования"""
 
     services = await api.book_services()
+    print(services)
     values = list(services.values())
     for i in values:
         i['service_description'] = await remove_html_tags(i['service_description'])
