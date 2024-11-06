@@ -39,6 +39,7 @@ async def book_services(request: Request):
     for i in values:
         i['service_description'] = await remove_html_tags(i['service_description'])
 
+    print(values)
     if not services:
         exp = "Услуги для бронирования отсутствуют"
         return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
