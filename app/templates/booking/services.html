@@ -234,11 +234,13 @@
     console.log(`Дата тг: ${fullname}`)
 
     function category_list() {
+        alert(list)
         for (let i = 0; i < list.length; i++){
             if (list[i]['category_id'] === category_id){
                 dates.push(list[i]);
             }
         }
+        alert(dates)
     }
 
 
