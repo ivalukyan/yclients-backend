@@ -78,7 +78,6 @@ class Yclient:
                     services[uuid4().hex] = {'service_id': service[_]['id'], 'category_id': service[_]['category_id'],
                                              'service_title': service[_]['title'],
                                              'service_description': service[_]['comment'],}
-                print(services)
                 return services
             
         return None
@@ -225,6 +224,7 @@ async def main():
 
     # print("user token - %s" % (await api.user_token(login=yclient.login, password=yclient.password)))
     # print(await api.book_services())
+    # print(await api.book_category())
     # print(await api.book_dates())
     # print(await api.book_staff())
     # staff = await api.book_staff()

@@ -205,7 +205,7 @@
                     <div class="name-service">{{ el.category_title }}</div>
                 </div>
                 <a href="/book_record/category/services/" class="btn-service"
-                   onclick="go_to_service(el.category_id)">Выбрать</a>
+                   onclick="go_to_service(el.id)">Выбрать</a>
             </div>
         {% endfor %}
     </div>
@@ -230,11 +230,11 @@
     console.log(`Дата тг: ${fullname}`)
 
 
-    function go_to_service(category_id) {
+    function go_to_service(id) {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
         localStorage.setItem('id', id);
-        localStorage.setItem('category_id', category_id);
+        localStorage.setItem('category_id', id);
         location.replace(`/book_record/category/services/`);
     }
 
