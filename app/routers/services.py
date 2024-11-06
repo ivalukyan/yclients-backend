@@ -35,7 +35,6 @@ async def category_services(request: Request):
     """Получение категорий"""
 
     category = await api.book_category()
-    print(category)
 
     if not category:
         exp = "Категории отсутствуют"
@@ -50,6 +49,7 @@ async def book_services(request: Request):
 
     services = await api.book_services()
     values = list(services.values())
+    print(values)
     for i in values:
         i['service_description'] = await remove_html_tags(i['service_description'])
 
