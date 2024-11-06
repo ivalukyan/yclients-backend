@@ -124,8 +124,16 @@ class Yclient:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
 
-        return res
-    
+        categories = {}
+
+        if res['success']:
+            data = res['data']
+            for _ in range(len(data)):
+                categories[uuid4().hex] = {"id": data[_]['id'], "category_id": data[_]['category_id'],
+                                           "category_title": data[_]['title']}
+
+            return categories
+        return "Ошибка запроса"
 
     async def book_times(self, staff_id: int, date: str) -> None:
 
