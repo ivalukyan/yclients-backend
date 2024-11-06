@@ -36,6 +36,11 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {'request': request})
 
 
+@router.get("/category_service")
+async def category_service():
+    service = await api.book_services()
+    return {'list': service}
+
 @router.get("/get_services", response_model=ServicesLoad)
 async def get_services():
     exist = True
