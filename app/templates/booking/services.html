@@ -173,7 +173,7 @@
 </style>
 <body>
 <nav class="navbar">
-    <a href="/book_record/services/category" class="back-button">
+    <a href="/book_record/category" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
              viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -221,7 +221,7 @@
     let userId = null;
     let fullname = null;
     let dates = [];
-    let list = `{{ data }}`;
+    let list = JSON.parse(`{{ data|escapejs }}`);
     let category_id = null;
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
@@ -245,43 +245,7 @@
     function go_to_staff(service_id) {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
-        location.replace(`/book_record/services/${service_id}`);
-    }
-
-    async function onClickBut() {
-        let search = await searchService();
-        let search_arr = search.list_search[0]
-
-        console.log(search_arr);
-
-        let svg = document.getElementById('svgId')
-
-        console.log(search);
-        let row = document.getElementById('rowId');
-        row.remove();
-
-        let card = document.createElement('div');
-        card.className = 'card-service';
-
-        let container = document.createElement('div');
-        container.className = 'container-sm-1';
-
-        let h = document.createElement('h3')
-        h.textContent = search_arr.service_title
-
-        let a = document.createElement('a');
-        a.href = `/book_record/services/${search_arr.service_id}`;
-        a.className = 'btn-service';
-        a.onclick = go_to_staff.bind(a, search_arr.service_id);
-        a.textContent = 'Выбрать'
-
-        container.appendChild(svg);
-        container.appendChild(h)
-        card.appendChild(container);
-        card.appendChild(a);
-
-        let mainСon = document.getElementById('mainId');
-        mainСon.appendChild(card);
+        location.replace(`/book_record/category/services/${service_id}`);
     }
 
     document.getElementById('searchFieldId').addEventListener('input', function () {

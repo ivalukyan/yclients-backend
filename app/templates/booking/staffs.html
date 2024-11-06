@@ -162,7 +162,7 @@
 </style>
 <body>
 <nav class="navbar">
-    <a href="/book_record/services/" class="back-button">
+    <a href="/book_record/category/services/" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
              viewBox="0 0 16 16">
             <path fill-rule="evenodd"
@@ -213,7 +213,7 @@
 
     async function go_to_dates(staff_id) {
         localStorage.setItem('user', userId);
-        location.replace(`/book_record/services/{{ service_id }}/${staff_id}`);
+        location.replace(`/book_record/category/services/{{ service_id }}/${staff_id}`);
     }
 
     async function sendServiceId(staff) {
@@ -224,7 +224,7 @@
             staff_id: staff
         }
         try {
-            await fetch('/book_record/services/{{ service_id }}', {
+            await fetch('/book_record/category/services/{{ service_id }}', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
@@ -236,60 +236,6 @@
         await go_to_dates(staff);
     }
 
-    async function onClickBut() {
-        let search = await searchService();
-        let search_arr = search.list_search[0]
-
-        console.log(search);
-        console.log(search_arr);
-
-        let row = document.getElementById('rowId');
-        row.remove();
-
-        let card = document.createElement('div');
-        card.className = 'container-sm';
-
-        let container = document.createElement('div');
-        container.className = 'container-sm-1';
-
-        let img = document.createElement('img');
-        img.src = search_arr.staff_avatar;
-
-        let h = document.createElement('h3');
-        h.textContent = search_arr.staff_name;
-
-        let div1 = document.createElement('div')
-        div1.className = 'mb-3'
-
-        let p1 = document.createElement('p');
-        p1.textContent = `Специализация: ${search_arr.staff_specialization || 'Специализация отсутствует'}`;
-
-        let div2 = document.createElement('div');
-        div2.className = 'mb-3';
-
-        let p2 = document.createElement('p');
-        p2.textContent = `Описание: ${search_arr.staff_info || 'Описание отсутствует'}`;
-
-        let but = document.createElement('button');
-        but.id = search_arr.staff_id;
-        but.className = 'btn';
-        but.onclick = sendServiceId.bind(but, search_arr.staff_id);
-        but.textContent = 'Выбрать';
-
-        container.appendChild(img);
-        container.appendChild(h);
-
-        div1.appendChild(p1);
-        div2.appendChild(p2);
-
-        card.appendChild(container);
-        card.appendChild(div1);
-        card.appendChild(div2);
-        card.appendChild(but);
-
-        let con = document.getElementById('mainId');
-        con.appendChild(card);
-    }
 
     document.getElementById('searchFieldId').addEventListener('input', function () {
         let filter = this.value.toLowerCase();

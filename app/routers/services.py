@@ -17,7 +17,7 @@ from db.utils import get_user_phone_number
 
 
 router = APIRouter(
-    prefix="/book_record/services",
+    prefix="/book_record/category",
     tags=["Services"]
 )
 
@@ -31,25 +31,6 @@ cache_ = {}
 
 # Запись на Индивидульные занятия
 @router.get("/")
-async def book_services(request: Request):
-    """Получние доступных услуг для бронирования"""
-
-    services = await api.book_services()
-    print(services)
-    values = list(services.values())
-    for i in values:
-        i['service_description'] = await remove_html_tags(i['service_description'])
-
-    print(values)
-    if not services:
-        exp = "Услуги для бронирования отсутствуют"
-        return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
-    else:
-        return templates.TemplateResponse("booking/services.html", {'request': request,
-                                                                    'data': values})
-
-
-@router.get("/category")
 async def category_services(request: Request):
     """Получение категорий"""
 
@@ -63,17 +44,24 @@ async def category_services(request: Request):
                                                                          'data': category.values()})
 
 
-@router.post('/search', response_model=SearchSchemas)
-async def get_search_services(search: SearchSchemas):
+@router.get("/services")
+async def book_services(request: Request):
+    """Получние доступных услуг для бронирования"""
 
-    list_services = await api.book_services()
-    search_service = await get_search(search.text, list_services.values(), 'service_title')
+    services = await api.book_services()
+    values = list(services.values())
+    for i in values:
+        i['service_description'] = await remove_html_tags(i['service_description'])
 
-    return {'text': search.text, 'list_search': search_service,
-            'content': f"{search.text}", 'status': 'ok', 'msg': 'Search services'}
+    if not services:
+        exp = "Услуги для бронирования отсутствуют"
+        return templates.TemplateResponse("booking/services.html", {'request': request, 'exp': exp})
+    else:
+        return templates.TemplateResponse("booking/services.html", {'request': request,
+                                                                    'data': values})
 
 
-@router.get("/{service_id}")
+@router.get("/services/{service_id}")
 async def book_staff(request: Request, service_id: int):
     """Получение персонала по выбранной услуге"""
 
@@ -86,7 +74,7 @@ async def book_staff(request: Request, service_id: int):
                                       {'request': request, 'data': values, 'service_id': service_id})
 
 
-@router.post("/{service_id}", response_model=ServiceSchemas)
+@router.post("/services/{service_id}", response_model=ServiceSchemas)
 async def book_staff(user: ServiceSchemas):
     cache_[user.user_id] = {'fullname': user.fullname, 'service_id': str(user.service_id),
                             'staff_id': str(user.staff_id)}
@@ -99,17 +87,7 @@ async def book_staff(user: ServiceSchemas):
             'status': 'ok', 'msg': 'Save service data'}
 
 
-@router.post('/{service_id}/search', response_model=SearchSchemas)
-async def get_search_staffs(search: SearchSchemas):
-    staff = await api.book_staff()
-
-    list_staff = await get_search(search.text, staff.values(), 'staff_name')
-
-    return {'text': search.text, 'list_search': list_staff,
-            'content': f"{search.text}", 'status': 'ok', 'msg': 'Search staff'}
-
-
-@router.get("/{service_id}/{staff_id}")
+@router.get("/services/{service_id}/{staff_id}")
 async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
 
@@ -120,7 +98,7 @@ async def book_date(request: Request, service_id: int, staff_id: int):
                                        'data': dates.values()})
 
 
-@router.post("/{service_id}/times", response_model=Times)
+@router.post("/servives/{service_id}/times", response_model=Times)
 async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
 
@@ -138,7 +116,7 @@ async def get_reserve_times(time: Times):
             'content': content, 'status': 'ok', 'msg': 'Get times'}
 
 
-@router.post("/{service_id}/save", response_model=DataTime)
+@router.post("/services/{service_id}/save", response_model=DataTime)
 async def save_reserve_times(request: Request, datatime: DataTime):
     """Сохранение полученных даты и времени"""
 
@@ -151,7 +129,7 @@ async def save_reserve_times(request: Request, datatime: DataTime):
             'content': content, 'status': 'ok', 'msg': 'Save time'}
 
 
-@router.get("/{service_id}/{staff_id}/recording")
+@router.get("/services/{service_id}/{staff_id}/recording")
 async def book_created(request: Request, service_id: int, staff_id: int):
     """Создание онлайн-записи"""
 
@@ -160,7 +138,7 @@ async def book_created(request: Request, service_id: int, staff_id: int):
                                                                  'staff_id': staff_id})
 
 
-@router.post("/{service_id}/{staff_id}/get_form_data", response_model=FormData)
+@router.post("/services/{service_id}/{staff_id}/get_form_data", response_model=FormData)
 async def get_form_data(service_id: int, staff_id: int, form: FormData):
 
     phone = get_user_phone_number(form.user_id)
@@ -171,7 +149,7 @@ async def get_form_data(service_id: int, staff_id: int, form: FormData):
             'status': 'ok', 'msg': 'Get form data'}
 
 
-@router.post("/{service_id}/{staff_id}/recording", response_model=UserData)
+@router.post("/services/{service_id}/{staff_id}/recording", response_model=UserData)
 async def book_created(request: Request, service_id: int, staff_id: int, user: UserData):
     """Создание онлай-записи"""
 
@@ -188,14 +166,14 @@ async def book_created(request: Request, service_id: int, staff_id: int, user: U
                                                                  'staff_id': staff_id})
 
 
-@router.get('/{service_id}/{staff_id}/success')
+@router.get('/services/{service_id}/{staff_id}/success')
 async def success(request: Request, service_id: int, staff_id: int):
     return templates.TemplateResponse('booking/success.html', {'request': request,
                                                                'staff_id': staff_id,
                                                                'service_id': service_id})
 
 
-@router.post('/{service_id}/{staff_id}/success')
+@router.post('/services/{service_id}/{staff_id}/success')
 async def success(request: Request, service_id: int, staff_id: int):
     return templates.TemplateResponse('booking/success.html', {'request': request,
                                                                'staff_id': staff_id,
