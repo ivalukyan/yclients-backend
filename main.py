@@ -39,7 +39,7 @@ async def home(request: Request):
 @router.get("/category_service")
 async def category_service():
     service = await api.book_services()
-    return {'list': service}
+    return {'list': list(service.values())}
 
 @router.get("/get_services", response_model=ServicesLoad)
 async def get_services():

@@ -223,8 +223,9 @@
         })
 
         const data = await res.json()
-        list = data.data
-
+        list = data.list
+        console.log(list)
+        console.log(category_id)
 
         for (let i = 0; i < list.length; i++) {
             if (list[i]['category_id'] === category_id) {
