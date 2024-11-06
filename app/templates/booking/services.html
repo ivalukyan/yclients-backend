@@ -234,7 +234,7 @@
     console.log(`Дата тг: ${fullname}`)
 
     async function createElServices() {
-        const res = await fetch("book_record/category_service", {
+        const res = await fetch("/book_record/category_service", {
             method: "GET",
             headers: {"Content-Type": "application/json"}
         })
@@ -267,7 +267,7 @@
                     <div class="name-service">${el.service_title }</div>
             </div>
             <div class="comment-service">${el.service_description || "Описание услуги отсутствует" }</div>
-            <a href="/book_record/services/${el.service_id}" class="btn-service"
+            <a href="/book_record/category/services/${el.service_id}" class="btn-service"
                    onclick="go_to_staff(${el.service_id})">Выбрать</a>`
 
             mainDiv.appendChild(cardDiv);
