@@ -145,6 +145,8 @@ class Yclient:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
 
+        print(res)
+
         if res['success']:
 
             for _ in res['data']:
