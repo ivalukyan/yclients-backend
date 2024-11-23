@@ -92,19 +92,19 @@ async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
 
     dates = await api.book_dates()
-    print(dates)
+    #print(dates)
 
     return templates.TemplateResponse("booking/dates.html",
                                       {'request': request, 'service_id': service_id, 'staff_id': staff_id,
                                        'data': dates.values()})
 
 
-@router.post("/servives/{service_id}/times", response_model=Times)
+@router.post("/services/{service_id}/times", response_model=Times)
 async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
 
     times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
-    print(times)
+    #print(times)
     if not times:
         available_times = []
     else:
