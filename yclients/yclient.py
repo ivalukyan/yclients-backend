@@ -140,6 +140,7 @@ class Yclient:
         times = {}
 
         url = f"https://api.yclients.com/api/v1/book_times/{self.company_id}/{staff_id}/{date}"
+        print(url)
 
         async with httpx.AsyncClient() as c:
             response = await c.get(url=url, headers=self.headers)
