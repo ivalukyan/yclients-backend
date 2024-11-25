@@ -390,6 +390,10 @@
     }
 
     async function selectDate() {
+        if(!dateSelected) {
+            dateSelected = true;
+            return;
+        }
         let dateId = document.getElementById('idDateInput').value.trim();
 
         console.log(`Выбранная дата: ${dateId}`);
