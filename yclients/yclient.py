@@ -134,8 +134,9 @@ class Yclient:
             else:
                 category = data['category']
                 for _ in range(len(category)):
-                    categories[uuid4().hex] = {"c_id": category[_]['id'], "category_id": 1,
-                                            "category_title": category[_]['title']}
+                    if not category[_]['id'] in (16211506, 16211505):
+                        categories[uuid4().hex] = {"c_id": category[_]['id'], "category_id": 1,
+                                                "category_title": category[_]['title']}
 
                 return categories
         return "Ошибка запроса"
@@ -255,7 +256,7 @@ async def main():
 
     # print("user token - %s" % (await api.user_token(login=yclient.login, password=yclient.password)))
     # print(await api.book_services())
-    # print(await api.book_category())
+    print(await api.book_category())
     # print(await api.book_dates())
     # print(await api.book_staff())
     # staff = await api.book_staff()
