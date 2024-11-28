@@ -119,7 +119,8 @@ class Yclient:
 
 
     async def book_category(self) -> None:
-        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/service_categories/"
+        url = f"https://api.yclients.com/api/v1/book_services/{self.company_id}"
+
         async with httpx.AsyncClient() as c:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
@@ -128,12 +129,39 @@ class Yclient:
 
         if res['success']:
             data = res['data']
-            for _ in range(len(data)):
-                categories[uuid4().hex] = {"c_id": data[_]['id'], "category_id": data[_]['category_id'],
-                                           "category_title": data[_]['title']}
+            if not data['category']:
+                return None
+            else:
+                category = data['category']
+                for _ in range(len(category)):
+                    categories[uuid4().hex] = {"c_id": category[_]['id'], "category_id": 1,
+                                            "category_title": category[_]['title']}
 
-            return categories
+                return categories
         return "Ошибка запроса"
+    
+    # async def book_services(self) -> None:
+    #     url = f"https://api.yclients.com/api/v1/book_services/{self.company_id}"
+
+    #     async with httpx.AsyncClient() as c:
+    #         response = await c.get(url=url, headers=self.headers)
+    #     res = ujson.loads(response.text)
+
+    #     services = {}
+
+    #     if res['success']:
+    #         data = res['data']
+    #         if not data['services']:
+    #             return None
+    #         else:
+    #             service = data['services']
+    #             for _ in range(len(service)):
+    #                 services[uuid4().hex] = {'service_id': service[_]['id'], 'category_id': service[_]['category_id'],
+    #                                          'service_title': service[_]['title'],
+    #                                          'service_description': service[_]['comment'],}
+    #             return services
+            
+    #     return None
 
     async def book_times(self, staff_id: int, date: str) -> None:
 
