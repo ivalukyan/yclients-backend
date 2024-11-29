@@ -99,9 +99,12 @@
     alert(userId);
     alert(fullname);
 
+    localStorage.setItem('user', userId);
+    localStorage.setItem('fullname', fullname);
+
     function go_to_service(url) {
         localStorage.setItem('user', userId);
-        localStorage.setItem('first_name', fullname);
+        localStorage.setItem('fullname', fullname);
         location.replace(`${url}`);
     }
 

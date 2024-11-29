@@ -220,13 +220,13 @@
     let userId = null;
     let fullname = null;
 
-    if (localStorage.getItem('user') && localStorage.getItem('first_name')) {
+    if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
     }
 
     alert(localStorage.getItem('user'));
-    alert(localStorage.getItem('first_name'));
+    alert(localStorage.getItem('fullname'));
 
     console.log('User ID:', userId)
     console.log(`Дата тг: ${fullname}`)
