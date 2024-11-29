@@ -104,12 +104,12 @@ async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
 
     times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
-    print(times)
+    #print(times)
     if not times:
         available_times = []
     else:
         available_times = await get_times(times.values())
-    print(available_times)
+    #print(available_times)
     content = f"{time.staff_id} -- {time.select_date}"
 
     return {'available_times': available_times,
@@ -120,6 +120,8 @@ async def get_reserve_times(time: Times):
 @router.post("/services/{service_id}/save", response_model=DataTime)
 async def save_reserve_times(request: Request, datatime: DataTime):
     """Сохранение полученных даты и времени"""
+
+    print(datatime.user_id)
 
     cache_[datatime.user_id]['date'] = datatime.save_date
     cache_[datatime.user_id]['time'] = datatime.save_time
