@@ -134,6 +134,7 @@ async def save_reserve_times(request: Request, datatime: DataTime):
 async def book_created(request: Request, service_id: int, staff_id: int):
     """Создание онлайн-записи"""
 
+    print(cache_)
     return templates.TemplateResponse("booking/recording.html", {'request': request,
                                                                  'service_id': service_id,
                                                                  'staff_id': staff_id})
