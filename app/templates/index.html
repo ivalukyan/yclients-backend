@@ -92,7 +92,7 @@
     const userData = Object.fromEntries(params);
     let userDt = JSON.parse(userData.user);
 
-    alert(userDt);
+    alert(userDt.id);
 
     let userId = userDt.id || '';
     let fullname = userDt.first_name || '';
