@@ -92,8 +92,10 @@
     const userData = Object.fromEntries(params);
     let userDt = JSON.parse(userData.user);
 
-    let userId = userDt.id || ''
-    let fullname = userDt.first_name || ''
+    alert(userDt);
+
+    let userId = userDt.id || '';
+    let fullname = userDt.first_name || '';
 
     console.log(userId);
     console.log(fullname);
