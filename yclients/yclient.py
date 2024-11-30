@@ -74,6 +74,7 @@ class Yclient:
                 return None
             else:
                 service = data['services']
+                print(service)
                 for _ in range(len(service)):
                     services[uuid4().hex] = {'service_id': service[_]['id'], 'category_id': service[_]['category_id'],
                                              'service_title': service[_]['title'],
