@@ -135,7 +135,7 @@ class Yclient:
                 category = data['category']
                 for _ in range(len(category)):
                     if not category[_]['id'] in (16211506, 16211505):
-                        print(_)
+                        print(category[_])
                         categories[uuid4().hex] = {"c_id": category[_]['id'], "category_id": 1,
                                                 "category_title": category[_]['title']}
 
