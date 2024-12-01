@@ -6,7 +6,7 @@ from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
 from uuid import uuid4
-from app.routers.utils import get_times, get_search, remove_html_tags
+from app.routers.utils import get_times, get_search, remove_html_tags, include_staffs
 
 from yclients.yclient import Yclient
 from conf import YclientsConfig
@@ -70,14 +70,14 @@ async def book_staff(request: Request, service_id: int):
     staff = await api.book_staff()
 
     staff_values = list(staff.values())
-    print(staff_values, "\n\n")
-    print(service_staff_id)
+
+    data = include_staffs(service_staff_id, staff_values)
 
     for i in staff_values:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'data': staff_values, 'staff_ids': service_staff_id,
+                                      {'request': request, 'staffs': data,
                                        'service_id': service_id})
 
 
