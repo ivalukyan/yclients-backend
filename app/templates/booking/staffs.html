@@ -206,20 +206,17 @@
     let staffValues = '{{ data }}'
     let staffs = []
 
-    alert(staffIds);
-    alert(staffValues);
 
     const filterStaffs = () => {
         staffValues.forEach((el) => {
-            if (el.staff_id in staffIds){
+            if (staffIds.includes(el.staff_id)) {
                 staffs.push(el);
             }
-        })
+        });
     };
 
     filterStaffs();
 
-    alert(staffs);
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
