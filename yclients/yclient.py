@@ -111,8 +111,8 @@ class Yclient:
 
         if res['success']:
             data = res['data']
-            for _ in range(len(data)):
-                staff[uuid4().hex] = {'service_id': service_id, 'staff': data['staff']}
+            for _ in range(len(data['staff'])):
+                staff[uuid4().hex] = {'service_id': service_id, 'staff_id': data['staff'][_]['id']}
 
             return staff
 
