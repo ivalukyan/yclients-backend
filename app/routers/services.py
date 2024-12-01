@@ -72,7 +72,6 @@ async def book_staff(request: Request, service_id: int):
     staff_values = list(staff.values())
 
     data = await include_staffs(service_staff_id, staff_values)
-    print(data)
 
     for i in data:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
