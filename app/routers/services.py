@@ -70,8 +70,8 @@ async def book_staff(request: Request, service_id: int):
     staff = await api.book_staff()
 
     staff_values = list(staff.values())
-
-    #print(service_staff_id)
+    print(staff_values, "\n\n")
+    print(service_staff_id)
 
     for i in staff_values:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
