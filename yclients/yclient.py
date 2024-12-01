@@ -107,12 +107,12 @@ class Yclient:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
 
-        staff = {}
+        staff = []
 
         if res['success']:
             data = res['data']
             for _ in range(len(data['staff'])):
-                staff[uuid4().hex] = {'service_id': service_id, 'staff_id': data['staff'][_]['id']}
+                staff.append(data['staff'][_]['id'])
 
             return staff
 

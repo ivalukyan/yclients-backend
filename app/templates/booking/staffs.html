@@ -178,7 +178,7 @@
                required>
     </div>
     <div class="row gap-4 row-cols-lg-3" id="rowId">
-        {% for el in data %}
+        {% for el in staffs %}
             <div class="container-sm">
                 <div class="container-sm-1">
                     <img src="{{ el.staff_avatar }}" height="32" width="32"></img>
@@ -202,6 +202,19 @@
     let userId = null;
     let fullname = null;
     let serviceId = '{{ service_id }}'
+    let staffIds = {{ staff_ids }}
+    let staffValues = {{ data }}
+    let staffs = []
+
+    const filterStaffs = () => {
+        staffValues.forEach((el) => {
+            if (el.staff_id in staffIds){
+                staffs.push(el);
+            }
+        })
+    };
+
+    filterStaffs();
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');

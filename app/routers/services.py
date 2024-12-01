@@ -66,19 +66,19 @@ async def book_staff(request: Request, service_id: int):
     """Получение персонала по выбранной услуге"""
 
 
-    service_staff = await api.get_staff(service_id)
+    service_staff_id= await api.get_staff(service_id)
     staff = await api.book_staff()
 
     staff_values = list(staff.values())
-    print(staff_values, "\n\n")
-    service_values = list(service_staff.values())
-    print(service_values)
+
+    print(service_staff_id)
 
     for i in staff_values:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'data': staff_values, 'service_id': service_id})
+                                      {'request': request, 'data': staff_values, 'staff_ids': service_staff_id,
+                                       'service_id': service_id})
 
 
 @router.post("/services/{service_id}", response_model=ServiceSchemas)
