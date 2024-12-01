@@ -2,7 +2,6 @@
 Services
 """
 from fastapi import APIRouter, Request, Form, HTTPException
-from jupyter_server import services
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
