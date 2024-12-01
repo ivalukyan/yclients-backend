@@ -77,9 +77,8 @@ class Yclient:
 
                 for _ in range(len(service)):
                     services[uuid4().hex] = {'service_id': service[_]['id'], 'category_id': service[_]['category_id'],
-                                             'service_title': service[_]['title'], 'staff': service[_]['staff'],
+                                             'service_title': service[_]['title'],
                                              'service_description': service[_]['comment'],}
-                print(services)
                 return services
             
         return None
@@ -100,7 +99,25 @@ class Yclient:
 
             return booking_dates
         return "Ошибка запроса"
-    
+
+
+    async def get_staff(self, service_id) -> None:
+        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/services/{service_id}"
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        staff = {}
+
+        if res['success']:
+            data = res['data']
+            for _ in range(len(data)):
+                staff[uuid4().hex] = {'service_id': service_id, 'staff': data['staff']}
+
+            return staff
+
+        return "Ошибка запроса"
+
 
     async def book_staff(self) -> None:
         url = f"https://api.yclients.com/api/v1/book_staff/{self.company_id}"

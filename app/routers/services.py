@@ -2,6 +2,7 @@
 Services
 """
 from fastapi import APIRouter, Request, Form, HTTPException
+from jupyter_server import services
 from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
@@ -65,13 +66,18 @@ async def book_services(request: Request):
 async def book_staff(request: Request, service_id: int):
     """Получение персонала по выбранной услуге"""
 
+
+    service_staff = await api.get_staff(service_id)
     staff = await api.book_staff()
-    values = list(staff.values())
+
+    staff_values = list(staff.values())
+    service_values = list(services.values())
+
     for i in values:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'data': values, 'service_id': service_id})
+                                      {'request': request, 'data': staff_values, 'service_id': service_id})
 
 
 @router.post("/services/{service_id}", response_model=ServiceSchemas)
