@@ -216,6 +216,8 @@
     .alert{
         margin-top: 15px;
     }
+
+
 </style>
 <body>
 <nav class="navbar">
@@ -231,7 +233,7 @@
 <div class="container" id="containerId">
     <div class="mb-3" id="mb3Id">
         <label class="form-label" for="idDateInput">Выберите дату записи</label>
-        <input name="date" class="form-control" type="date" id="idDateInput">
+        <input name="date" class="form-control" type="date" id="idDateInput" style="color: #f8f8f8;">
         <!-- <button class="submit-button" id="submitButton">Выбрать дату</button> -->
         <div id="liveAlertPlaceholder"></div>
     </div>
@@ -428,6 +430,20 @@
             console.log("Время записи отсутствует");
         }
     }
+    window.onload = function() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+
+    var dateInput = document.getElementById('idDateInput');
+    if(dateInput) {
+        dateInput.min = today;
+        dateInput.value = today;
+    }
+}
 
     document.getElementById('idDateInput').onchange = selectDate;
 </script>
