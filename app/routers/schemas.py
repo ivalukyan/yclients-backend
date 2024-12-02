@@ -35,8 +35,8 @@ class ServiceSchemas(BaseModel):
 
 class FormData(BaseModel):
     user_id: int
-    phone: str
-    cache: dict[str, str]
+    phone: str | None = None
+    cache: dict[str, str] | None = None
 
 
 class FormGroup(BaseModel):

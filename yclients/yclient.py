@@ -74,6 +74,7 @@ class Yclient:
                 return None
             else:
                 service = data['services']
+
                 for _ in range(len(service)):
                     services[uuid4().hex] = {'service_id': service[_]['id'], 'category_id': service[_]['category_id'],
                                              'service_title': service[_]['title'],
@@ -98,7 +99,25 @@ class Yclient:
 
             return booking_dates
         return "Ошибка запроса"
-    
+
+
+    async def get_staff(self, service_id) -> None:
+        url = f"https://api.yclients.com/api/v1/company/{self.company_id}/services/{service_id}"
+        async with httpx.AsyncClient() as c:
+            response = await c.get(url=url, headers=self.headers)
+        res = ujson.loads(response.text)
+
+        staff = []
+
+        if res['success']:
+            data = res['data']
+            for _ in range(len(data['staff'])):
+                staff.append(data['staff'][_]['id'])
+
+            return staff
+
+        return "Ошибка запроса"
+
 
     async def book_staff(self) -> None:
         url = f"https://api.yclients.com/api/v1/book_staff/{self.company_id}"
@@ -110,6 +129,7 @@ class Yclient:
 
         if res['success']:
             data = res['data']
+            #print(data)
             for _ in range(len(data)):
                 staff[uuid4().hex] = {"staff_id": data[_]['id'], "staff_name": data[_]['name'], "staff_specialization": data[_]['specialization'],
                                       "staff_avatar": data[_]['avatar'], "staff_info": data[_]['information']}
@@ -135,6 +155,7 @@ class Yclient:
                 category = data['category']
                 for _ in range(len(category)):
                     if not category[_]['id'] in (16211506, 16211505):
+
                         categories[uuid4().hex] = {"c_id": category[_]['id'], "category_id": 1,
                                                 "category_title": category[_]['title']}
 
@@ -169,13 +190,13 @@ class Yclient:
         times = {}
 
         url = f"https://api.yclients.com/api/v1/book_times/{self.company_id}/{staff_id}/{date}"
-        print(url)
+        #print(url)
 
         async with httpx.AsyncClient() as c:
             response = await c.get(url=url, headers=self.headers)
         res = ujson.loads(response.text)
 
-        print(res)
+        #print(res)
 
         if res['success']:
 

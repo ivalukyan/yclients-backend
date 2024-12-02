@@ -6,7 +6,7 @@ from starlette.templating import Jinja2Templates
 from starlette.responses import RedirectResponse
 from typing import Annotated
 from uuid import uuid4
-from app.routers.utils import get_times, get_search, remove_html_tags
+from app.routers.utils import get_times, get_search, remove_html_tags, include_staffs
 
 from yclients.yclient import Yclient
 from conf import YclientsConfig
@@ -65,13 +65,20 @@ async def book_services(request: Request):
 async def book_staff(request: Request, service_id: int):
     """Получение персонала по выбранной услуге"""
 
+
+    service_staff_id= await api.get_staff(service_id)
     staff = await api.book_staff()
-    values = list(staff.values())
-    for i in values:
+
+    staff_values = list(staff.values())
+
+    data = await include_staffs(service_staff_id, staff_values)
+
+    for i in data:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'data': values, 'service_id': service_id})
+                                      {'request': request, 'staffs': data,
+                                       'service_id': service_id})
 
 
 @router.post("/services/{service_id}", response_model=ServiceSchemas)
@@ -92,7 +99,7 @@ async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
 
     dates = await api.book_dates()
-    print(dates)
+    #print(dates)
 
     return templates.TemplateResponse("booking/dates.html",
                                       {'request': request, 'service_id': service_id, 'staff_id': staff_id,
@@ -104,12 +111,12 @@ async def get_reserve_times(time: Times):
     """Получение доступных времен для выбранной даты"""
 
     times = await api.book_times(staff_id=time.staff_id, date=time.select_date)
-    print(times)
+    #print(times)
     if not times:
         available_times = []
     else:
         available_times = await get_times(times.values())
-    print(available_times)
+    #print(available_times)
     content = f"{time.staff_id} -- {time.select_date}"
 
     return {'available_times': available_times,
@@ -120,6 +127,8 @@ async def get_reserve_times(time: Times):
 @router.post("/services/{service_id}/save", response_model=DataTime)
 async def save_reserve_times(request: Request, datatime: DataTime):
     """Сохранение полученных даты и времени"""
+
+    print(datatime.user_id)
 
     cache_[datatime.user_id]['date'] = datatime.save_date
     cache_[datatime.user_id]['time'] = datatime.save_time
@@ -134,6 +143,7 @@ async def save_reserve_times(request: Request, datatime: DataTime):
 async def book_created(request: Request, service_id: int, staff_id: int):
     """Создание онлайн-записи"""
 
+    print(cache_)
     return templates.TemplateResponse("booking/recording.html", {'request': request,
                                                                  'service_id': service_id,
                                                                  'staff_id': staff_id})

@@ -145,8 +145,6 @@
 
         const payload = {
             user_id: userId,
-            phone: "",
-            cache: {}
         }
 
         try{
@@ -156,8 +154,7 @@
                 body: JSON.stringify(payload)
             })
 
-            let data = await response.json();
-            return data;
+            return await response.json();
         } catch (e){
             console.log(e);
         }
