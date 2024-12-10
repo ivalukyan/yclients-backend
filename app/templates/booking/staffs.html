@@ -190,7 +190,7 @@
                 <div class="mb-3">
                     <p>{{el.staff_info or '' }}</p>
                 </div>
-                <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
+                <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }}, {{el.staff_name}})">Выбрать</button>
             </div>
         {% endfor %}
     </div>
@@ -217,7 +217,7 @@
         location.replace(`/book_record/category/services/{{ service_id }}/${staff_id}`);
     }
 
-    async function sendServiceId(staff) {
+    async function sendServiceId(staff, staff_username) {
         const payload = {
             user_id: userId,
             fullname: fullname,
@@ -233,7 +233,7 @@
         } catch (e) {
             console.log(e)
         }
-
+        localStorage.setItem("person", staff_username);
         await go_to_dates(staff);
     }
 

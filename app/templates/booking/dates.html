@@ -170,7 +170,7 @@
 
     .sel {
         padding: 8px;
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 500;
     }
 
@@ -253,6 +253,8 @@
 
     // let userId = 642500259;
     let userId = null;
+    const person = localStorage.getItem("selectPerson") || "";
+    const cost = localStorage.getItem("selectCost") || "";
 
     if (localStorage.getItem('user')) {
         userId = localStorage.getItem('user');
@@ -310,6 +312,14 @@
 
         let h4El = document.createElement('h4')
         h4El.textContent = 'Информация о записи';
+
+        let selPerson = document.createElement('div');
+        selPerson.className = 'sel';
+        selPerson.textContent = `Выбранный специалист ${person}`
+
+        let selCost = document.createElement('div');
+        selCost.className = 'sel';
+        selCost.textContext = `Стоимость выбранной услуги ${cost}`
 
         let selDate = document.createElement('div')
         selDate.className = 'sel'
