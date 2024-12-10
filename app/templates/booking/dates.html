@@ -344,7 +344,7 @@
         conEl.appendChild(divButtons)
     }
 
-    async function createTimesEl(text, data_id) {
+    const createTimesEl = async (text, data_id) => {
         let butEl = document.createElement('button')
         butEl.className = 'time-button';
         butEl.id = text
@@ -397,13 +397,8 @@
             console.log("Ошибка при GET:", e)
         }
     }
-    let dateSelected = false;
 
     const selectDate = async () => {
-        // if(!dateSelected) {
-        //     dateSelected = true;
-        //     return;
-        // }
         let dateId = document.getElementById('idDateInput').value.trim();
 
         console.log(`Выбранная дата: ${dateId}`);
@@ -444,9 +439,9 @@
             dateInput.min = today;
             dateInput.value = today;
         }
-    }
 
-    document.getElementById('idDateInput').onload = selectDate;
+        selectDate();
+    }
 
     document.getElementById('idDateInput').onchange = selectDate;
 </script>
