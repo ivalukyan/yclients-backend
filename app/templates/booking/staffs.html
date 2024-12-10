@@ -185,10 +185,10 @@
                     <div class="name-staff">{{ el.staff_name }}</div>
                 </div>
                 <div class="mb-3">
-                    <p>Специализация: {{ el.staff_specialization or 'Специализация отсутствует' }}</p>
+                    <p>{{ el.staff_specialization or '' }}</p>
                 </div>
                 <div class="mb-3">
-                    <p>Описание: {{ el.staff_info or 'Описание отсутствует' }}</p>
+                    <p>{{el.staff_info or '' }}</p>
                 </div>
                 <button id="{{ el.staff_id }}" class="btn" onclick="sendServiceId({{ el.staff_id }})">Выбрать</button>
             </div>

@@ -130,24 +130,24 @@
         color: #8d8d8d;
     }
 
-    .container{
+    .container {
         opacity: 0;
         animation: fadeOut 0.8s ease-in-out;
         animation-fill-mode: forwards;
     }
 
-    .list-times{
+    .list-times {
         opacity: 0;
         animation: fadeOut 0.8s ease-in-out;
         animation-fill-mode: forwards;
     }
 
     @keyframes fadeOut {
-        0%{
+        0% {
             opacity: 0;
             transform: translateY(30px);
         }
-        100%{
+        100% {
             opacity: 1;
             transform: translateX(0);
         }
@@ -213,7 +213,7 @@
         animation-fill-mode: forwards;
     }
 
-    .alert{
+    .alert {
         margin-top: 15px;
     }
 
@@ -256,6 +256,7 @@
     console.log(userId);
 
     let staffId = "{{ staff_id }}";
+
     // let staffId = "3547739";
 
     async function reloadBut() {
@@ -274,7 +275,7 @@
         }
     }
 
-    async function viewInfo(time) {
+    const viewInfo = async (time) => {
 
         let data = document.getElementById('idDateInput').value.trim()
 
@@ -330,7 +331,7 @@
 
         let saveBut = document.createElement('button');
         saveBut.className = 'save-button';
-        saveBut.textContent = 'Сохранить';
+        saveBut.textContent = 'Записаться';
         saveBut.onclick = await nextStep;
 
         let resetBut = document.createElement('button');
@@ -353,7 +354,7 @@
         return butEl
     }
 
-    async function viewTimes(timesList, dataID) {
+    const viewTimes = async (timesList, dataID) => {
 
         const inputDate = document.getElementById('idDateInput');
         // inputDate.disabled = true;
@@ -377,7 +378,7 @@
         con.appendChild(divEl);
     }
 
-    async function getTimes(staffID, selectDate) {
+    const getTimes = async (staffID, selectDate) => {
         try {
 
             const payload = {
@@ -397,8 +398,8 @@
         }
     }
     let dateSelected = false;
-    
-    async function selectDate() {
+
+    const selectDate = async () => {
         // if(!dateSelected) {
         //     dateSelected = true;
         //     return;
@@ -418,32 +419,34 @@
             const mb3 = document.getElementById('timeContainer');
 
             const wrapper = document.createElement('div')
-              wrapper.innerHTML = [
+            wrapper.innerHTML = [
                 `<div class="alert alert-primary alert-dismissible" role="alert">`,
                 `   <div>Для выбранной даты отсутсвует время для записи.</div>`,
                 '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
                 '</div>'
-              ].join('')
+            ].join('')
             mb3.textContent = '';
             mb3.append(wrapper);
 
             console.log("Время записи отсутствует");
         }
     }
-    window.onload = function() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
+    window.onload = function () {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
 
-    today = yyyy + '-' + mm + '-' + dd;
+        today = yyyy + '-' + mm + '-' + dd;
 
-    var dateInput = document.getElementById('idDateInput');
-    if(dateInput) {
-        dateInput.min = today;
-        dateInput.value = today;
+        let dateInput = document.getElementById('idDateInput');
+        if (dateInput) {
+            dateInput.min = today;
+            dateInput.value = today;
+        }
     }
-}
+
+    document.getElementById('idDateInput').onload = selectDate;
 
     document.getElementById('idDateInput').onchange = selectDate;
 </script>

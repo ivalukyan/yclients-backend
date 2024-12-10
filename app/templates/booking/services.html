@@ -185,7 +185,7 @@
 </nav>
 <div class="container" id="mainId">
     <div class="search-input">
-        <label for="searchId"></label>
+        <label for="searchFieldId"></label>
         <input type="text" name="search" placeholder="Поиск" id="searchFieldId" class="search-field" autocomplete="off"
                required>
     </div>
@@ -213,8 +213,8 @@
         category_id = localStorage.getItem('category_id');
     }
 
-    {#alert(userId);#}
-    {#alert(fullname);#}
+    //alert(userId);
+    //alert(fullname);
 
     console.log('User ID:', userId)
     console.log(`Дата тг: ${fullname}`)
@@ -253,7 +253,7 @@
                     </svg>
                     <div class="name-service">${el.service_title }</div>
             </div>
-            <div class="comment-service">${el.service_description || "Описание услуги отсутствует" }</div>
+            <div class="comment-service">${el.service_description || "" }</div>
             <a href="/book_record/category/services/${el.service_id}" class="btn-service"
                    onclick="go_to_staff(${el.service_id})">Выбрать</a>`
 
