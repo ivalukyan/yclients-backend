@@ -193,7 +193,7 @@
                 <button
                         id="{{ el.staff_id }}"
                         class="btn"
-                        onclick="sendServiceId(${el.staff_id }, ${el.staff_name})"
+                        onclick="sendServiceId('{{ el.staff_id }}', '{{ el.staff_name }}')"
                 >Выбрать</button>
             </div>
         {% endfor %}
