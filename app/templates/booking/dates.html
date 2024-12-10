@@ -173,7 +173,7 @@
         padding: 3px;
         font-size: 16px;
         font-weight: 500;
-        gap: 11px;
+        gap: 6px;
         align-items: center;
     }
 
@@ -185,7 +185,7 @@
     }
 
     .main-buttons {
-        padding: 5px;
+        padding: 3px;
         gap: 8px;
         width: 100%;
     }
@@ -348,10 +348,10 @@
         divEl.innerHTML = `
             <div class="mb-5">
                 <h4>Информация о записи</h4>
-                <div class="sel">Выбранный специалист: <p>${person}</p></div>
-                <div class="sel">Стоимость услуги: <p>${cost}</p></div>
-                <div class="sel">Выбраная дата: <p>${data}</p></div>
-                <div class="sel">Выбранное время: <p>${time}</p></div>
+                <div class="sel"><div>Выбранный специалист:</div><p>${person}</p></div>
+                <div class="sel"><div>Стоимость услуги:</div><p>${cost}</p></div>
+                <div class="sel"><div>Выбраная дата:</div><p>${data}</p></div>
+                <div class="sel"><div>Выбранное время:</div><p>${time}</p></div>
             </div>
             <div class="main-buttons">
                 <button class="reset-button" onclick="location.reload()">Заполнить заново</button>
