@@ -170,6 +170,15 @@
         font-size: 14px;
         font-weight: 500;
     }
+
+    .price-service {
+        margin-top: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 4px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
+        border-radius: 10px;
+    }
 </style>
 <body>
 <nav class="navbar">
@@ -253,9 +262,12 @@
                     </svg>
                     <div class="name-service">${el.service_title }</div>
             </div>
+            <div class="price-service">${el.service_price}</div>
             <div class="comment-service">${el.service_description || "" }</div>
-            <a href="/book_record/category/services/${el.service_id}" class="btn-service"
-                   onclick="go_to_staff(${el.service_id})">Выбрать</a>`
+            <button
+            class="btn-service"
+            onclick="go_to_staff(${el.service_id}, ${el.service_price})"
+            >Выбрать</button>`
 
             mainDiv.appendChild(cardDiv);
         });
@@ -263,9 +275,10 @@
 
     createElServices();
 
-    function go_to_staff(service_id) {
+    const go_to_staff = (service_id, service_cost) => {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
+        localStorage.setItem("selectCost", service_cost);
         location.replace(`/book_record/category/services/${service_id}`);
     }
 
