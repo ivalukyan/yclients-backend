@@ -88,7 +88,7 @@
     const params = new URLSearchParams(Telegram.WebApp.initData);
 
     Telegram.WebApp.ready();
-
+    Telegram.WebApp.isActive = true;
     Telegram.WebApp.isFullscreen = true;
 
     const userData = Object.fromEntries(params);
