@@ -217,6 +217,11 @@
         margin-top: 15px;
     }
 
+    /* Изменяем цвет иконки календаря на белый */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* Инвертируем цвет для белого */
+    }
+
 
 </style>
 <body>
@@ -259,16 +264,16 @@
 
     // let staffId = "3547739";
 
-    async function reloadBut() {
+    const reloadBut = async () => {
         location.reload();
     }
 
-    async function nextStep() {
+    const nextStep = async () => {
         localStorage.setItem('user', userId);
         location.replace(`${staffId}/recording`);
     }
 
-    async function disableBut() {
+    const disableBut = async () => {
         let listTimes = document.getElementById('listTimesId').getElementsByTagName('*');
         for (let i = 0; i < listTimes.length; i++) {
             listTimes[i].disabled = true;
