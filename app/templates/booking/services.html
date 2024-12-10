@@ -172,10 +172,17 @@
     }
 
     .price-service {
+        display: flex;
         margin-top: 10px;
         font-size: 16px;
         font-weight: 500;
-        padding: 6px;
+        padding: 3px;
+
+    }
+
+    .price-service p{
+        text-align: center;
+        padding: 5px;
         box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
         border-radius: 10px;
     }
@@ -262,7 +269,7 @@
                     </svg>
                     <div class="name-service">${el.service_title }</div>
             </div>
-            <div class="price-service">${el.service_price} руб.</div>
+            <div class="price-service"><p>${el.service_price} руб.</p></div>
             <div class="comment-service">${el.service_description || "" }</div>
             <button
             class="btn-service"
