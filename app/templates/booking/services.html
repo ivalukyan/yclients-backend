@@ -179,6 +179,12 @@
         box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
         border-radius: 10px;
     }
+
+    .price-service p{
+        padding: 4px;
+        position: absolute;
+        left: 15px;
+    }
 </style>
 <body>
 <nav class="navbar">
@@ -262,7 +268,7 @@
                     </svg>
                     <div class="name-service">${el.service_title }</div>
             </div>
-            <div class="price-service">${el.service_price}</div>
+            <div class="price-service"><p>${el.service_price} руб.</p></div>
             <div class="comment-service">${el.service_description || "" }</div>
             <button
             class="btn-service"

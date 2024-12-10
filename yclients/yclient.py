@@ -130,7 +130,6 @@ class Yclient:
 
         if res['success']:
             data = res['data']
-            print(data)
             for _ in range(len(data)):
                 staff[uuid4().hex] = {"staff_id": data[_]['id'], "staff_name": data[_]['name'], "staff_specialization": data[_]['specialization'],
                                       "staff_avatar": data[_]['avatar'], "staff_info": data[_]['information']}
