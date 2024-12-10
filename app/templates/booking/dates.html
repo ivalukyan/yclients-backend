@@ -169,9 +169,15 @@
     }
 
     .sel {
-        padding: 8px;
+        padding: 3px;
         font-size: 16px;
         font-weight: 500;
+    }
+
+    .sel p {
+        padding: 5px;
+        box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
+        border-radius: 10px;
     }
 
     .main-buttons {
@@ -309,31 +315,45 @@
         let divEl = document.createElement('div')
         divEl.className = 'mb-5'
 
+        //
+        // let h4El = document.createElement('h4')
+        // h4El.textContent = 'Информация о записи';
+        //
+        // let selPerson = document.createElement('div');
+        // selPerson.className = 'sel';
+        // selPerson.textContent = `Выбранный специалист ${person}`
+        //
+        // let selPrice = document.createElement('div')
+        // selPrice.className = 'sel'
+        // selPrice.textContent = `Стоимость выбранной услуги ${cost}`
+        //
+        // let selDate = document.createElement('div')
+        // selDate.className = 'sel'
+        // selDate.textContent = `Выбраная дата ${data}`
+        //
+        // let selTime = document.createElement('div')
+        // selTime.className = 'sel'
+        // selTime.textContent = `Выбранное время ${time}`
+        //
+        // divEl.appendChild(h4El);
+        // divEl.appendChild(selPerson);
+        // divEl.appendChild(selPrice);
+        // divEl.appendChild(selDate);
+        // divEl.appendChild(selTime);
 
-        let h4El = document.createElement('h4')
-        h4El.textContent = 'Информация о записи';
-
-        let selPerson = document.createElement('div');
-        selPerson.className = 'sel';
-        selPerson.textContent = `Выбранный специалист ${person}`
-        
-        let selPrice = document.createElement('div')
-        selPrice.className = 'sel'
-        selPrice.textContent = `Стоимость выбранной услуги ${cost}`
-
-        let selDate = document.createElement('div')
-        selDate.className = 'sel'
-        selDate.textContent = `Выбраная дата ${data}`
-
-        let selTime = document.createElement('div')
-        selTime.className = 'sel'
-        selTime.textContent = `Выбранное время ${time}`
-
-        divEl.appendChild(h4El);
-        divEl.appendChild(selPerson);
-        divEl.appendChild(selPrice);
-        divEl.appendChild(selDate);
-        divEl.appendChild(selTime);
+        divEl.innerHTML = `
+            <div class="mb-5">
+                <h4>Информация о записи</h4>
+                <div class="sel">Выбранный специалист: <p>${person}</p></div>
+                <div class="sel">Стоимость услуги: <p>${cost}</p></div>
+                <div class="sel">Выбраная дата: <p>${data}</p></div>
+                <div class="sel">Выбранное время: <p>${time}</p></div>
+            </div>
+            <div class="main-buttons">
+                <button class="reset-button" onclick="location.reload()">Заполнить заново</button>
+                <button class="save-button" onclick="location.replace('${staffId}/recording')">Записаться</button>
+            </div>
+        `;
 
         conEl.appendChild(divEl);
 
