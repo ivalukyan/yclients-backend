@@ -316,12 +316,10 @@
         let selPerson = document.createElement('div');
         selPerson.className = 'sel';
         selPerson.textContent = `Выбранный специалист ${person}`
-
-        alert(cost);
-
-        let selCost = document.createElement('div');
-        selCost.className = 'sel';
-        selCost.textContext = `Стоимость выбранной услуги ${cost}`;
+        
+        let selPrice = document.createElement('div')
+        selPrice.className = 'sel'
+        selPrice.textContent = `Стоимость выбранной услуги ${cost}`
 
         let selDate = document.createElement('div')
         selDate.className = 'sel'
@@ -333,7 +331,7 @@
 
         divEl.appendChild(h4El);
         divEl.appendChild(selPerson);
-        divEl.appendChild(selCost);
+        divEl.appendChild(selPrice);
         divEl.appendChild(selDate);
         divEl.appendChild(selTime);
 
