@@ -216,8 +216,9 @@
     console.log(userId);
     console.log(fullname);
 
-    async function go_to_dates(staff_id) {
+    const go_to_dates = async (staff_id, staff_username) => {
         localStorage.setItem('user', userId);
+        localStorage.setItem("selectPerson", staff_username);
         location.replace(`/book_record/category/services/{{ service_id }}/${staff_id}`);
     }
 
@@ -237,8 +238,7 @@
         } catch (e) {
             console.log(e)
         }
-        localStorage.setItem("selectPerson", staff_username);
-        await go_to_dates(staff);
+        await go_to_dates(staff, staff_username);
     }
 
 
