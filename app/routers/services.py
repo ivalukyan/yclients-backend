@@ -1,20 +1,15 @@
 """
 Services
 """
-from fastapi import APIRouter, Request, Form, HTTPException
-from starlette.templating import Jinja2Templates
+from fastapi import APIRouter, Request
 from starlette.responses import RedirectResponse
-from typing import Annotated
-from uuid import uuid4
-from app.routers.utils import get_times, get_search, remove_html_tags, include_staffs
+from starlette.templating import Jinja2Templates
 
-from yclients.yclient import Yclient
+from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData
+from app.routers.utils import get_times, remove_html_tags, include_staffs
 from conf import YclientsConfig
-
-from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, SearchSchemas
-
 from db.utils import get_user_phone_number
-
+from yclients.yclient import Yclient
 
 router = APIRouter(
     prefix="/book_record/category",
