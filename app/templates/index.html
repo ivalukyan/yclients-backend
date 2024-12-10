@@ -57,7 +57,7 @@
             <div>
                 <h3>Индивидуальные</h3>
                 <p>Здесь вы можете записаться, выбрав удобную вам дату, время и специалиста</p>
-                <a href="/book_record/services/" class="btn btn-default" onclick="go_to_service()">
+                <a href="/book_record/category/" class="btn btn-default" onclick="go_to_service()">
                     Выбрать
                 </a>
             </div>
@@ -99,13 +99,13 @@
     function go_to_service(){
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
-        location.replace('/book_record/category/services/');
+        location.replace('/book_record/category/');
     }
 
     function go_to_group_service(){
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
-        location.replace('/book_record/category/group_services/');
+        location.replace('/book_record/group_services/');
     }
 </script>
 </body>
