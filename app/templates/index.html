@@ -87,6 +87,11 @@
 
     const params = new URLSearchParams(Telegram.WebApp.initData);
 
+    Telegram.WebApp.ready();
+
+    Telegram.WebApp.MainButton.setText("BODY TOP");
+    Telegram.WebApp.MainButton.show();
+
     const userData = Object.fromEntries(params);
     let userDt = JSON.parse(userData.user);
 
