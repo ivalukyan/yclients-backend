@@ -181,9 +181,13 @@
         text-align: center;
         padding: 5px; /* Обновляем отступы для согласованности */
         margin: 0; /* Убираем внешние отступы */
+        line-height: 1.5; /* Выравниваем высоту строки */
+    }
+
+    .sel-val {
+        padding: 0;
         box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
         border-radius: 10px;
-        line-height: 1.5; /* Выравниваем высоту строки */
     }
 
     .sel-text {
@@ -366,10 +370,10 @@
         divEl.innerHTML = `
             <div class="mb-5">
                 <h4>Информация о записи</h4>
-                <div class="sel"><p class="sel-text">Выбранный специалист:</p><p>${person}</p></div>
-                <div class="sel"><p class="sel-text">Стоимость услуги:</p><p>${cost}</p></div>
-                <div class="sel"><p class="sel-text">Выбраная дата:</p><p>${formattedDate}</p></div>
-                <div class="sel"><p class="sel-text">Выбранное время:</p><p>${time}</p></div>
+                <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
+                <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
+                <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formattedDate}</p></div>
+                <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
             </div>
         `;
 
