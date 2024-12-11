@@ -46,7 +46,7 @@
             opacity: 1;
             transform: translateY(0);
         }
-     }
+    }
 
     .container-sm-1 {
         display: flex;
@@ -91,12 +91,19 @@
         line-height: 1.5;
         gap: 2px;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
+        position: relative; /* Для позиционирования вложенных элементов */
     }
+
     .navbar h2 {
-        display: flex;
+        position: absolute; /* Абсолютное позиционирование */
+        left: 50%; /* Сдвиг влево на 50% ширины родителя */
+        transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
         padding: 5px;
-        justify-content: center;
-        width: calc(100% - 75px);
+        text-align: center;
+    }
+
+    .navbar a {
+        margin-left: 10px;
     }
 
     .back-button svg {
@@ -121,7 +128,7 @@
             opacity: 0;
             transform: translateY(-20px);
         }
-        100%{
+        100% {
             opacity: 1;
             transform: translateY(0);
         }
@@ -160,7 +167,7 @@
     }
 
 
-    .name-service{
+    .name-service {
         font-size: 18px;
         font-weight: 500;
     }
