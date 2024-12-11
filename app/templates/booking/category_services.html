@@ -94,16 +94,15 @@
         position: relative; /* Для позиционирования вложенных элементов */
     }
 
-    .navbar h2 {
-        width: 100%;
+    .navbar h4 {
         position: absolute; /* Абсолютное позиционирование */
-        justify-content: center;
+        left: 50%; /* Сдвиг влево на 50% ширины родителя */
+        transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
         padding: 5px;
         text-align: center;
     }
 
     .navbar a {
-        position: absolute;
         margin-left: 10px;
     }
 
@@ -113,6 +112,7 @@
         fill: #0d6efd;
         box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
     }
+
 
     .search-input {
         display: flex;
@@ -189,7 +189,7 @@
                    .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
         </svg>
     </a>
-    <h2>Выбрать категорию</h2>
+    <h4>Выбрать категорию</h4>
 </nav>
 <div class="container" id="mainId">
     <div class="search-input">
