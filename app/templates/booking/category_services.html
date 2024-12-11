@@ -94,12 +94,13 @@
         position: relative; /* Для позиционирования вложенных элементов */
     }
 
-    .navbar h4 {
+    .navbar h3 {
         position: absolute; /* Абсолютное позиционирование */
         left: 50%; /* Сдвиг влево на 50% ширины родителя */
         transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
         padding: 5px;
         text-align: center;
+        white-space: nowrap; /* Отключение переноса текста */
     }
 
     .navbar a {
@@ -189,7 +190,7 @@
                    .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
         </svg>
     </a>
-    <h4>Выбрать категорию</h4>
+    <h3>Выбрать категорию</h3>
 </nav>
 <div class="container" id="mainId">
     <div class="search-input">
