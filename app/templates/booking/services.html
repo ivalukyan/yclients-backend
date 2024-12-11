@@ -88,14 +88,22 @@
     .navbar {
         display: flex;
         align-items: center;
+        line-height: 1.5;
+        gap: 2px;
         box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
+        position: relative; /* Для позиционирования вложенных элементов */
     }
 
-    .navbar h2 {
-        width: 70%;
+    .navbar h3 {
+        position: absolute; /* Абсолютное позиционирование */
+        left: 50%; /* Сдвиг влево на 50% ширины родителя */
+        transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
+        padding: 5px;
+        text-align: center;
+        white-space: nowrap; /* Отключение переноса текста */
     }
 
-    .navbar .back-button {
+    .navbar a {
         margin-left: 10px;
     }
 
@@ -197,7 +205,7 @@
                    .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"></path>
         </svg>
     </a>
-    <h2>Выбрать услугу</h2>
+    <h3>Выбрать услугу</h3>
 </nav>
 <div class="container" id="mainId">
     <div class="search-input">
