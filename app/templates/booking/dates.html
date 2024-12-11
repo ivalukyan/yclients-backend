@@ -177,6 +177,10 @@
         align-items: center;
     }
 
+    .sel-text {
+        padding: 3px;
+    }
+
     .sel p {
         text-align: center;
         padding: 3px;
@@ -296,6 +300,16 @@
 
         let data = document.getElementById('idDateInput').value.trim()
 
+        let dateObj = new Date(data);
+
+        let day = dateObj.getDate();
+        let month = dateObj.getMonth() + 1;
+        let year = dateObj.getFullYear();
+
+
+        let formattedDate = `${day}-${month}-${year}`;
+
+
         if (time) {
 
             const payload = {
@@ -348,10 +362,10 @@
         divEl.innerHTML = `
             <div class="mb-5">
                 <h4>Информация о записи</h4>
-                <div class="sel"><div>Выбранный специалист:</div><p>${person}</p></div>
-                <div class="sel"><div>Стоимость услуги:</div><p>${cost}</p></div>
-                <div class="sel"><div>Выбраная дата:</div><p>${data}</p></div>
-                <div class="sel"><div>Выбранное время:</div><p>${time}</p></div>
+                <div class="sel"><div class="sel-text">Выбранный специалист:</div><p>${person}</p></div>
+                <div class="sel"><div class="sel-text">Стоимость услуги:</div><p>${cost}</p></div>
+                <div class="sel"><div class="sel-text">Выбраная дата:</div><p>${formattedDate}</p></div>
+                <div class="sel"><div class="sel-text">Выбранное время:</div><p>${time}</p></div>
             </div>
         `;
 
