@@ -7,6 +7,6 @@ def get_user_phone_number(user_id: int) -> str:
     user = db_session.query(BotUser).filter(BotUser.telegram_id == user_id).first()
 
     if not user:
-        return "Номер телефона неуказан"
+        return ""
     else:
         return user.phone
