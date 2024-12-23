@@ -177,6 +177,10 @@
         time_id = cache.time || null;
     })();
 
+    function validateRussianPhoneNumber(phone) {
+        const regex = /^(\+7|8)\d{10}$/;
+        return regex.test(phone);
+    }
 
     async function sendForm(){
 
@@ -186,6 +190,10 @@
         let comment = document.getElementById('comment-input').value.trim()
 
         if (fullname && phone){
+
+            if (!(validateRussianPhoneNumber(phone))){
+                return
+            }
 
             const payload = {
                 name: fullname,
