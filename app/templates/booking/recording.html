@@ -171,7 +171,7 @@
         let data = await getDataForm();
         let cache = data.cache;
 
-        document.getElementById('phone-input').value = data.phone || "+7(9ХХ)-ХХХ-ХХ-ХХ"; // Если нет данных, задать шаблон
+        document.getElementById('phone-input').value = data.phone || ""; // Если нет данных, задать шаблон
         document.getElementById('name-input').value = cache.fullname || ""; // Если имени нет, оставить пустым
         date_id = cache.date || null;
         time_id = cache.time || null;
