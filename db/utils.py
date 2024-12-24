@@ -1,3 +1,5 @@
+from sqlalchemy import nullsfirst
+
 from db.database import  Session, BotUser
 
 
