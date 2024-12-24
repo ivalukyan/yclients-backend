@@ -214,7 +214,7 @@
 
     let currentDate = new Date();
     const staffId = '{{ staff_id }}';
-    const bookingDates = JSON.parse('{{ data | tojson | safe }}');
+    const bookingDates = '{{ data }}';
 
     async function getTimes(staffId, date) {
         try {
