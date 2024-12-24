@@ -16,7 +16,10 @@
             flex-direction: column;
             align-items: center;
             margin: 20px;
+            background-color: #2f2f32;
             box-shadow: rgba(0, 0, 0, 0.40) 0 5px 15px 0;
+            padding: 5px;
+            border-radius: 10px;
         }
 
         .calendar-header {
@@ -39,14 +42,11 @@
             align-items: center;
             width: 40px;
             height: 40px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
+            color: #fff;
             transition: background-color 0.3s ease, border-radius 0.3s ease;
-        }
-
-        .date:hover {
-            background-color: #f0f0f0;
         }
 
         .date.selected {
@@ -55,7 +55,7 @@
         }
 
         .date.disabled {
-            background-color: #e0e0e0;
+            box-shadow: rgba(0, 0, 0, 0.40) 0 7px 17px 0;
             color: #a0a0a0;
             pointer-events: none;
         }
@@ -120,6 +120,7 @@
             if (!response.ok) throw new Error('Failed to fetch times');
             const data = await response.json();
             bookingDates = data.available_dates || [];
+            alert(bookingDates);
         } catch (error) {
             console.error(error);
         } finally {
@@ -167,6 +168,7 @@
             timeContainer.innerHTML = '';
 
             const response = await fetch(`/book_record/category/services/{{ service_id }}/times?date=${date}`);
+            alert(response);
             if (!response.ok) throw new Error('Failed to load time slots');
 
             const data = await response.json();
@@ -198,7 +200,7 @@
 
     (async () => {
         await getTimes(staffId, currentDate.toISOString().split('T')[0]);
-        renderCalendar();
+        await renderCalendar();
     })();
 </script>
 </body>
