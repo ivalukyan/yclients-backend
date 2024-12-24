@@ -86,7 +86,7 @@
 
         #prevMonth {
             box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
-            border-radius: 3px;
+            border-radius: 7px;
             background-color: #2f2f32;
             color: #fff;
             width: 40px;
@@ -97,7 +97,7 @@
 
         #nextMonth {
             box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
-            border-radius: 3px;
+            border-radius: 7px;
             background-color: #2f2f32;
             color: #fff;
             width: 40px;
@@ -129,6 +129,8 @@
     let currentDate = new Date();// Store available booking dates
     const staffId = '{{ staff_id }}';
     const bookingDates = '{{ dates }}';
+
+    alert(bookingDates)
 
     const getTimes = async (staffId, date) => {
         try {
