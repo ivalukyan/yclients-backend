@@ -424,6 +424,7 @@
             if (response.ok) {
                 const data = await response.json();
                 bookingDates = data.available_times;
+                alert(bookingDates)
             }
 
         } catch (e) {
@@ -431,7 +432,6 @@
         }
     }
 
-    alert(bookingDates);
 
     <!--?const activeDates = bookingDates.map(timestamp => {-->
     <!--?    const date = new Date(timestamp * 1000);-->
@@ -445,7 +445,7 @@
     let currentDate = new Date(minActiveDate); // делаем минимальную дату текущей
     let selectedDate = null;
 
-    const renderCalendar = () => {
+    const renderCalendar = async () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth() + 1;
 
