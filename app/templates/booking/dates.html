@@ -84,18 +84,7 @@
             color: #555;
         }
 
-        #prevMonth {
-            box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
-            border-radius: 7px;
-            background-color: #2f2f32;
-            color: #fff;
-            width: 40px;
-            height: 40px;
-            border: none;
-            outline: none;
-        }
-
-        #nextMonth {
+        #prevMonth, #nextMonth {
             box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
             border-radius: 7px;
             background-color: #2f2f32;
@@ -119,16 +108,16 @@
             line-height: 1.5;
             gap: 2px;
             box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
-            position: relative; /* Для позиционирования вложенных элементов */
+            position: relative;
         }
 
         .navbar h3 {
-            position: absolute; /* Абсолютное позиционирование */
-            left: 50%; /* Сдвиг влево на 50% ширины родителя */
-            transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 5px;
             text-align: center;
-            white-space: nowrap; /* Отключение переноса текста */
+            white-space: nowrap;
         }
 
         .navbar a {
@@ -142,12 +131,11 @@
             box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
         }
 
-        /* Основной стиль для всплывающего уведомления */
         .alert {
             position: fixed;
             top: 20px;
             right: 20px;
-            z-index: 1050; /* Убедитесь, что оно выше других элементов */
+            z-index: 1050;
             padding: 15px 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -157,11 +145,10 @@
             line-height: 1.5;
             display: flex;
             align-items: center;
-            background-color: #e3f2fd; /* Цвет фона для primary */
-            color: #0d6efd; /* Цвет текста для primary */
+            background-color: #e3f2fd;
+            color: #0d6efd;
         }
 
-        /* Кнопка закрытия */
         .btn-close {
             margin-left: auto;
             background: none;
@@ -176,7 +163,6 @@
             color: #0d6efd;
         }
 
-        /* Плавное появление и исчезновение */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -199,21 +185,13 @@
             }
         }
 
-        /* Дополнительные стили для разных типов уведомлений */
-        .alert-primary {
-            background-color: #e3f2fd;
-            color: #0d6efd;
-        }
-
     </style>
 </head>
 <body>
 <nav class="navbar">
     <a href="/book_record/category/services/{{ staff_id }}" class="back-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-             viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
         </svg>
     </a>
     <h3>Выбор даты и времени</h3>
@@ -226,224 +204,123 @@
     </div>
     <div class="dates" id="dates"></div>
 </div>
-
 <div id="timeContainer"></div>
 <div id="loading">Loading...</div>
-
 <script>
     const monthDisplay = document.getElementById('monthDisplay');
     const datesEl = document.getElementById('dates');
     const timeContainer = document.getElementById('timeContainer');
     const loadingEl = document.getElementById('loading');
 
-    let currentDate = new Date();// Store available booking dates
+    let currentDate = new Date();
     const staffId = '{{ staff_id }}';
-    const bookingDates = '{{ data }}';
+    const bookingDates = JSON.parse('{{ data | tojson | safe }}');
 
-    function autoCloseAlert(alertElement, timeout = 5000) {
-        setTimeout(() => {
-            alertElement.classList.add('fade-out'); // Добавляем класс для анимации исчезновения
-            setTimeout(() => alertElement.remove(), 500); // Удаляем элемент после завершения анимации
-        }, timeout);
-    }
-
-    const getTimes = async (staffId, date) => {
+    async function getTimes(staffId, date) {
         try {
             loadingEl.style.display = 'block';
-            const payload = {staff_id: staffId, date: date};
-            return await fetch('/book_record/category/services/{{ service_id }}/times', {
+            const response = await fetch(`/book_record/category/services/{{ service_id }}/times`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ staff_id: staffId, date })
             });
+            return response.json();
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching times:', error);
+            return { available_times: [] };
         } finally {
             loadingEl.style.display = 'none';
         }
-    };
+    }
 
-    const renderCalendar = async () => {
+    async function renderCalendar() {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
 
-        monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
+        monthDisplay.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
-        // Get first and last day of the month
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
 
-        // Clear previous dates
         datesEl.innerHTML = '';
 
-        // Render dates
         for (let day = 1; day <= lastDay.getDate(); day++) {
             const date = new Date(year, month, day);
+            const dateStr = date.toISOString().split('T')[0];
+
             const dateEl = document.createElement('div');
             dateEl.className = 'date';
             dateEl.textContent = day;
 
-            if (bookingDates.includes(date.toISOString().split('T')[0])) {
-                dateEl.onclick = async () => {
+            if (bookingDates.includes(dateStr)) {
+                dateEl.addEventListener('click', async () => {
                     document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
                     dateEl.classList.add('selected');
-                    await loadTimeSlots(date.toISOString().split('T')[0]);
-                };
+                    await loadTimeSlots(dateStr);
+                });
             } else {
                 dateEl.classList.add('disabled');
             }
 
             datesEl.appendChild(dateEl);
         }
-    };
-
-    const viewInfo = async (time) => {
-
-        //let data =
-
-        let dateObj = new Date(data);
-
-        let day = dateObj.getDate();
-        let month = dateObj.getMonth() + 1;
-        let year = dateObj.getFullYear();
-
-        let formattedDate = `${day}-${month}-${year}`;
-
-        if (time) {
-
-            const payload = {
-                user_id: userId,
-                save_time: time,
-                save_date: data
-            }
-
-            try {
-                await fetch('/book_record/category/services/{{ service_id }}/save', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                })
-            } catch (e) {
-                console.log(e)
-            }
-        }
-
-        let conEl = document.getElementById('containerId')
-        let divEl = document.createElement('div')
-        divEl.className = 'mb-5'
-
-        divEl.innerHTML = `
-        <div class="mb-5">
-            <h4>Информация о записи</h4>
-            <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
-            <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
-            <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formattedDate}</p></div>
-            <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
-        </div>
-    `;
-
-        conEl.appendChild(divEl);
-
-
-        await disableBut();
-
-        let inputDate = document.getElementById('idDateInput');
-        inputDate.disabled = true;
-
-        let divButtons = document.createElement('div');
-        divButtons.className = 'main-buttons';
-
-        let saveBut = document.createElement('button');
-        saveBut.className = 'save-button';
-        saveBut.textContent = 'Записаться';
-        saveBut.onclick = await nextStep;
-
-        let resetBut = document.createElement('button');
-        resetBut.className = 'reset-button';
-        resetBut.textContent = 'Заполнить заново';
-        resetBut.onclick = await reloadBut;
-
-        divButtons.appendChild(saveBut)
-        divButtons.appendChild(resetBut)
-        conEl.appendChild(divButtons)
     }
 
+    async function loadTimeSlots(date) {
+        const times = await getTimes(staffId, date);
 
-    const createTimesEl = async (text, data_id) => {
-        let butEl = document.createElement('button')
-        butEl.className = 'time-button';
-        butEl.id = text
-        butEl.textContent = text;
-        butEl.onclick = await viewInfo.bind(butEl, text);
-
-        return butEl
-    }
-
-    const viewTimes = async (timesList, dataID) => {
-
-        let divEl = document.createElement('div');
-        divEl.className = 'list-times';
-        divEl.id = 'listTimesId'
-
-        for (let i = 0; i < timesList.length; i++) {
-            let but = await createTimesEl(timesList[i], dataID);
-            divEl.appendChild(but);
-        }
-
-        let con = document.getElementById('timeContainer')
-        let h4El = document.createElement('h4');
-        h4El.textContent = 'Выберите время записи';
-        con.textContent = '';
-        con.appendChild(h4El);
-        con.appendChild(divEl);
-    }
-
-    const loadTimeSlots = async (date) => {
-
-        const response = await getTimes(staffId, date);
-        let times = await response.json();
-        alert(times.available_times);
-
-        if (times.available_times && times.available_times.length !== 0) {
-            await viewTimes(times.available_times, date);
+        if (times.available_times && times.available_times.length > 0) {
+            renderTimeButtons(times.available_times);
         } else {
-            const mb3 = document.getElementById('timeContainer');
-
-            const wrapper = document.createElement('div')
-            wrapper.innerHTML = [
-                `<div class="alert alert-primary alert-dismissible" role="alert">
-                    <div>Для выбранной даты отсутсвует время для записи.</div>
-                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>`
-            ].join('')
-            mb3.textContent = '';
-            mb3.append(wrapper);
+            displayNoTimesAlert();
         }
-    };
+    }
 
-    document.getElementById('prevMonth').onclick = () => {
+    function renderTimeButtons(times) {
+        timeContainer.innerHTML = '<h4>Выберите время записи</h4>';
+        const timeList = document.createElement('div');
+        timeList.className = 'list-times';
+
+        times.forEach(time => {
+            const timeButton = document.createElement('button');
+            timeButton.className = 'time-button';
+            timeButton.textContent = time;
+            timeButton.addEventListener('click', () => handleTimeSelection(time));
+            timeList.appendChild(timeButton);
+        });
+
+        timeContainer.appendChild(timeList);
+    }
+
+    function displayNoTimesAlert() {
+        timeContainer.innerHTML = '';
+        const alert = document.createElement('div');
+        alert.className = 'alert alert-primary';
+        alert.innerHTML = `
+            <div>Для выбранной даты отсутствует время для записи.</div>
+            <button type="button" class="btn-close" aria-label="Close">&times;</button>
+        `;
+
+        alert.querySelector('.btn-close').addEventListener('click', () => alert.remove());
+        timeContainer.appendChild(alert);
+    }
+
+    function handleTimeSelection(time) {
+        console.log('Selected time:', time);
+        // Implement time selection logic
+    }
+
+    document.getElementById('prevMonth').addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
         renderCalendar();
-    };
+    });
 
-    document.getElementById('nextMonth').onclick = () => {
+    document.getElementById('nextMonth').addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
         renderCalendar();
-    };
+    });
 
-    window.onload = () => {
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        let yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
-        renderCalendar();
-    }
-    {#(async () => {#}
-    {#    await getTimes(staffId, currentDate.toISOString().split('T')[0]);#}
-    {#    await renderCalendar();#}
-    {# })();#}
+    window.onload = renderCalendar;
 </script>
 </body>
 </html>
