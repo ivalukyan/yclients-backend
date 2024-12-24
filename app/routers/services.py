@@ -162,14 +162,9 @@ async def book_created(request: Request, service_id: int, staff_id: int, user: U
     service = await api.create_booking(fullname=user.name, phone=user.phone, email=user.email,
                                  comment=user.comment, service_id=service_id, staff_id=staff_id,
                                  date_id=user.date_id, time_id=user.time_id)
-    if service['success']:
-        print('Запись сделана')
-        redirect_url = request.url_for('success', service_id=service_id, staff_id=staff_id)
-        return RedirectResponse(redirect_url)
-    else:
-        return templates.TemplateResponse("booking/recording.html", {'request': request,
-                                                                 'service_id': service_id,
-                                                                 'staff_id': staff_id})
+
+    return UserData(name=user.name, phone=user.phone, date_id=user.date_id, time_id=user.time_id,
+                    status=service['success'], message=service['meta']['message'])
 
 
 @router.get('/services/{service_id}/{staff_id}/success')

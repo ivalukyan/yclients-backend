@@ -24,6 +24,8 @@ class UserData(BaseModel):
     comment: str | None = None
     date_id: str
     time_id: str
+    status: str | None = None
+    message: str | None = None
 
 
 class ServiceSchemas(BaseModel):

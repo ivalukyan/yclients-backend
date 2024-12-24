@@ -191,7 +191,12 @@
                 return;
             }
 
-            location.replace('/book_record/category/services/{{ service_id }}/{{ staff_id }}/success');
+            const data = await response.json()
+            if (data.status){
+                location.replace('/book_record/category/services/{{ service_id }}/{{ staff_id }}/success');
+            } else {
+                alert(data.message);
+            }
         } catch (e) {
             console.error("Ошибка отправки формы", e);
             alert("Не удалось отправить данные. Попробуйте позже.");
