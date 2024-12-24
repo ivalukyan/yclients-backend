@@ -142,6 +142,7 @@
     const renderCalendar = async () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
+        let bookingDates = []
 
         monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
 
@@ -151,6 +152,8 @@
 
         // Clear previous dates
         datesEl.innerHTML = '';
+
+        const response = await getTimes(staffId, )
 
         // Render dates
         for (let day = 1; day <= lastDay.getDate(); day++) {
@@ -314,7 +317,6 @@
         let yyyy = today.getFullYear();
 
         today = yyyy + '-' + mm + '-' + dd;
-
         renderCalendar();
     }
     {#(async () => {#}
