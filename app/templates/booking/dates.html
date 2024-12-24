@@ -403,6 +403,111 @@
         }
     }
 
+// это нужно получить по https://developers.yclients.com/ru/#tag/Onlajn-zapis/operation/Получить%20список%20дат%20доступных%20для%20бронирования ['data']['booking_dates']
+    // в параметрах запроса надо передать услугу и сотрудника
+    const bookingDates = [
+        1441324800,
+        1441411200,
+        1441670400,
+        1441756800,
+        1442016000,
+        1442102400,
+        1442361600,
+        1442448000,
+        1442707200,
+        1442793600,
+        1443052800,
+        1443139200,
+        1443398400,
+        1443484800,
+        1443571200,
+        1443657600,
+        1443916800,
+        1444003200,
+        1444262400,
+        1444348800,
+        1444608000,
+        1444694400,
+        1444953600,
+        1445040000,
+        1445299200,
+        1445385600,
+        1445644800,
+        1445731200
+    ];
+
+    // timestamp в нормальные даты
+    const activeDates = bookingDates.map(timestamp => {
+        const date = new Date(timestamp * 1000);
+        return {
+            formatted: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
+            date
+        };
+    });
+
+
+    const minActiveDate = activeDates.reduce((min, current) => current.date < min ? current.date : min, activeDates[0].date);
+    let currentDate = new Date(minActiveDate); // делаем минимальную дату текущей
+    let selectedDate = null; // выбранная дата
+
+    const renderCalendar = () => {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+
+        monthYearElement.textContent = currentDate.toLocaleString('ru-RU', {month: 'long', year: 'numeric'});
+
+        datesElement.innerHTML = '';
+
+        const firstDay = new Date(year, month - 1, 1).getDay();
+        const lastDate = new Date(year, month, 0).getDate();
+
+        const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+        for (let i = 0; i < adjustedFirstDay; i++) {
+            datesElement.innerHTML += `<div class="date"></div>`;
+        }
+
+        for (let date = 1; date <= lastDate; date++) {
+            const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+            const isActive = activeDates.some(activeDate => activeDate.formatted === formattedDate);
+            const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
+
+            datesElement.innerHTML += dateDiv;
+        }
+
+        const dateElements = document.querySelectorAll('.date:not(.inactive)');
+        dateElements.forEach(element => {
+            element.addEventListener('click', () => {
+                // отменяем выделение предыдущей даты
+                if (selectedDate) {
+                    const previouslySelected = document.querySelector(`.date[data-date="${selectedDate}"]`);
+                    if (previouslySelected) {
+                        previouslySelected.classList.remove('selected');
+                    }
+                }
+
+                // выделяем новую выбранную дату
+                selectedDate = element.dataset.date;
+                element.classList.add('selected');
+                selectedDateElement.textContent = `Вы выбрали дату: ${selectedDate}`;
+            });
+        });
+    }
+
+    // тут наверное надо добавить прогрузку доступных слотов
+    prevMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+    });
+
+    // тут наверное надо добавить прогрузку доступных слотов
+    nextMonthButton.addEventListener('click', () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+    });
+
+    renderCalendar();
+
     const viewInfo = async (time) => {
 
         let data = document.getElementById('idDateInput').value.trim()
@@ -602,111 +707,6 @@
     }
 
     document.getElementById('idDateInput').onchange = selectDate;
-
-    // это нужно получить по https://developers.yclients.com/ru/#tag/Onlajn-zapis/operation/Получить%20список%20дат%20доступных%20для%20бронирования ['data']['booking_dates']
-    // в параметрах запроса надо передать услугу и сотрудника
-    const bookingDates = [
-        1441324800,
-        1441411200,
-        1441670400,
-        1441756800,
-        1442016000,
-        1442102400,
-        1442361600,
-        1442448000,
-        1442707200,
-        1442793600,
-        1443052800,
-        1443139200,
-        1443398400,
-        1443484800,
-        1443571200,
-        1443657600,
-        1443916800,
-        1444003200,
-        1444262400,
-        1444348800,
-        1444608000,
-        1444694400,
-        1444953600,
-        1445040000,
-        1445299200,
-        1445385600,
-        1445644800,
-        1445731200
-    ];
-
-    // timestamp в нормальные даты
-    const activeDates = bookingDates.map(timestamp => {
-        const date = new Date(timestamp * 1000);
-        return {
-            formatted: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,
-            date
-        };
-    });
-
-
-    const minActiveDate = activeDates.reduce((min, current) => current.date < min ? current.date : min, activeDates[0].date);
-    let currentDate = new Date(minActiveDate); // делаем минимальную дату текущей
-    let selectedDate = null; // выбранная дата
-
-    function renderCalendar() {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-
-        monthYearElement.textContent = currentDate.toLocaleString('ru-RU', {month: 'long', year: 'numeric'});
-
-        datesElement.innerHTML = '';
-
-        const firstDay = new Date(year, month - 1, 1).getDay();
-        const lastDate = new Date(year, month, 0).getDate();
-
-        const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
-
-        for (let i = 0; i < adjustedFirstDay; i++) {
-            datesElement.innerHTML += `<div class="date"></div>`;
-        }
-
-        for (let date = 1; date <= lastDate; date++) {
-            const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-            const isActive = activeDates.some(activeDate => activeDate.formatted === formattedDate);
-            const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
-
-            datesElement.innerHTML += dateDiv;
-        }
-
-        const dateElements = document.querySelectorAll('.date:not(.inactive)');
-        dateElements.forEach(element => {
-            element.addEventListener('click', () => {
-                // отменяем выделение предыдущей даты
-                if (selectedDate) {
-                    const previouslySelected = document.querySelector(`.date[data-date="${selectedDate}"]`);
-                    if (previouslySelected) {
-                        previouslySelected.classList.remove('selected');
-                    }
-                }
-
-                // выделяем новую выбранную дату
-                selectedDate = element.dataset.date;
-                element.classList.add('selected');
-                selectedDateElement.textContent = `Вы выбрали дату: ${selectedDate}`;
-            });
-        });
-    }
-
-    // тут наверное надо добавить прогрузку доступных слотов
-    prevMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    });
-
-    // тут наверное надо добавить прогрузку доступных слотов
-    nextMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    });
-
-    renderCalendar();
 </script>
 </body>
 </html>
