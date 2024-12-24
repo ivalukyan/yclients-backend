@@ -208,7 +208,7 @@
             if (!response.ok) throw new Error('Ошибка записи');
 
             const data = await response.json();
-            if (data.status) {
+            if (data.success) {
                 location.replace(`/book_record/category/services/{{ service_id }}/{{ staff_id }}/success`);
             } else {
                 alert(data.message || "Запись не удалась");
