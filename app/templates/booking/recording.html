@@ -10,18 +10,21 @@
             background-color: #1d1d1d;
             color: #fff;
         }
+
         svg {
             background-color: #343a40;
             padding: 5px;
             fill: #8d8d8d;
             border-radius: 8px;
         }
+
         .container {
             margin-top: 5vh;
             padding: 10px;
             opacity: 0;
             animation: fadeOut 0.8s ease-in-out forwards;
         }
+
         @keyframes fadeOut {
             0% {
                 opacity: 0;
@@ -32,33 +35,40 @@
                 transform: translateX(0);
             }
         }
+
         h2 {
             padding: 10px;
             text-align: center;
         }
+
         .form-input {
             padding: 10px;
             border-radius: 8px;
             background-color: #2f2f32;
             box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
         }
+
         .btn {
             width: 100%;
             font-size: 16px;
             font-weight: 600;
             margin-top: 20px;
         }
+
         .form-control {
             border: 1px solid #000;
         }
+
         .form-control:focus {
             border-color: #DC63C2;
         }
+
         .form-text {
             font-size: 16px;
             font-weight: 600;
             color: #ff5b5b;
         }
+
         .navbar {
             display: flex;
             align-items: center;
@@ -66,6 +76,7 @@
             box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
             position: relative;
         }
+
         .navbar h3 {
             position: absolute;
             left: 50%;
@@ -74,9 +85,11 @@
             text-align: center;
             white-space: nowrap;
         }
+
         .navbar a {
             margin-left: 10px;
         }
+
         .back-button svg {
             height: 32px;
             width: 32px;
@@ -128,21 +141,22 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script>
-    let userId = localStorage.getItem('user');
+    const userId = localStorage.getItem('user');
     let date_id = null;
     let time_id = null;
 
     async function getDataForm() {
-        const payload = { user_id: userId };
+        const payload = {user_id: userId};
         try {
-            const response = await fetch('/book_record/category/services/{{ service_id }}/{{ staff_id }}/get_form_data', {
+            const response = await fetch(`/book_record/category/services/{{ service_id }}/{{ staff_id }}/get_form_data`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             });
+            if (!response.ok) throw new Error('Ошибка загрузки данных формы');
             return await response.json();
         } catch (e) {
-            console.error("Ошибка получения данных формы", e);
+            console.error(e.message);
             return {};
         }
     }
@@ -158,7 +172,7 @@
     })();
 
     function validateRussianPhoneNumber(phone) {
-        return /^(\+7)\d{10}$/.test(phone);
+        return /^\+7\d{10}$/.test(phone);
     }
 
     async function sendForm() {
@@ -172,38 +186,40 @@
             return;
         }
 
+        if (fullname.length < 2) {
+            alert("Имя должно содержать хотя бы 2 символа.");
+            return;
+        }
+
         if (!validateRussianPhoneNumber(phone)) {
             alert("Некорректный номер телефона. Номер должен начинаться с +7 и содержать 10 цифр.");
             return;
         }
 
-        const payload = { name: fullname, phone, email, comment, date_id, time_id };
+        const payload = {name: fullname, phone, email, comment, date_id, time_id};
 
         try {
-            const response = await fetch('/book_record/category/services/{{ service_id }}/{{ staff_id }}/recording', {
+            const response = await fetch(`/book_record/category/services/{{ service_id }}/{{ staff_id }}/recording`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             });
 
-            if (!response.ok) {
-                alert("Произошла ошибка при записи.");
-                return;
-            }
+            if (!response.ok) throw new Error('Ошибка записи');
 
-            const data = await response.json()
-            if (data.status){
-                location.replace('/book_record/category/services/{{ service_id }}/{{ staff_id }}/success');
+            const data = await response.json();
+            if (data.status) {
+                location.replace(`/book_record/category/services/{{ service_id }}/{{ staff_id }}/success`);
             } else {
-                alert(data.message);
+                alert(data.message || "Запись не удалась");
             }
         } catch (e) {
-            console.error("Ошибка отправки формы", e);
+            console.error(e.message);
             alert("Не удалось отправить данные. Попробуйте позже.");
         }
     }
 
-    document.getElementById('sendIdButton').onclick = sendForm;
+    document.getElementById('sendIdButton').addEventListener('click', sendForm);
 </script>
 </body>
 </html>
