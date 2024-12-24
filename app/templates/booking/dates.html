@@ -85,17 +85,23 @@
         }
 
         #prevMonth {
-            padding: 4px;
             box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
             border-radius: 3px;
+            background-color: #2f2f32;
+            color: #fff;
+            width: 40px;
+            height: 40px;
             border: none;
             outline: none;
         }
 
         #nextMonth {
-            padding: 4px;
             box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
             border-radius: 3px;
+            background-color: #2f2f32;
+            color: #fff;
+            width: 40px;
+            height: 40px;
             border: none;
             outline: none;
         }
@@ -121,7 +127,8 @@
     const loadingEl = document.getElementById('loading');
 
     let currentDate = new Date();// Store available booking dates
-    const staffId = '{{ staff_id }}'; // Example staff ID (replace with actual logic)
+    const staffId = '{{ staff_id }}';
+    const bookingDates = '{{ dates }}';
 
     const getTimes = async (staffId, date) => {
         try {
@@ -142,7 +149,6 @@
     const renderCalendar = async () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
-        let bookingDates = []
 
         monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
 
@@ -152,8 +158,6 @@
 
         // Clear previous dates
         datesEl.innerHTML = '';
-
-        const response = await getTimes(staffId, )
 
         // Render dates
         for (let day = 1; day <= lastDay.getDate(); day++) {

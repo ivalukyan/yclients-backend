@@ -94,7 +94,7 @@ async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
 
     dates = await api.book_dates()
-    print(dates)
+    #print(dates)
 
     return templates.TemplateResponse("booking/dates.html",
                                       {'request': request, 'service_id': service_id, 'staff_id': staff_id,
