@@ -83,6 +83,22 @@
             margin-top: 10px;
             color: #555;
         }
+
+        #prevMonth {
+            padding: 3px;
+            box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
+            border: none;
+            outline: none;
+            color: #fff;
+        }
+
+        #nextMonth {
+            padding: 3px;
+            box-shadow: rgba(0, 0, 0, 0.45) 0 7px 17px 0;
+            border: none;
+            outline: none;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -104,23 +120,18 @@
     const timeContainer = document.getElementById('timeContainer');
     const loadingEl = document.getElementById('loading');
 
-    let currentDate = new Date();
-    let bookingDates = []; // Store available booking dates
+    let currentDate = new Date();// Store available booking dates
     const staffId = '{{ staff_id }}'; // Example staff ID (replace with actual logic)
 
     const getTimes = async (staffId, date) => {
         try {
             loadingEl.style.display = 'block';
             const payload = {staff_id: staffId, date: date};
-            const response = await fetch('/book_record/category/services/{{ service_id }}/times', {
+            return await fetch('/book_record/category/services/{{ service_id }}/times', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),
             });
-            if (!response.ok) throw new Error('Failed to fetch times');
-            const data = await response.json();
-            bookingDates = data.available_dates || [];
-            alert(bookingDates);
         } catch (error) {
             console.error(error);
         } finally {
@@ -162,29 +173,127 @@
         }
     };
 
+    const viewInfo = async (time) => {
+
+        //let data =
+
+        let dateObj = new Date(data);
+
+        let day = dateObj.getDate();
+        let month = dateObj.getMonth() + 1;
+        let year = dateObj.getFullYear();
+
+        let formattedDate = `${day}-${month}-${year}`;
+
+        if (time) {
+
+            const payload = {
+                user_id: userId,
+                save_time: time,
+                save_date: data
+            }
+
+            try {
+                await fetch('/book_record/category/services/{{ service_id }}/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        let conEl = document.getElementById('containerId')
+        let divEl = document.createElement('div')
+        divEl.className = 'mb-5'
+
+        divEl.innerHTML = `
+        <div class="mb-5">
+            <h4>Информация о записи</h4>
+            <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
+            <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
+            <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formattedDate}</p></div>
+            <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
+        </div>
+    `;
+
+        conEl.appendChild(divEl);
+
+
+        await disableBut();
+
+        let inputDate = document.getElementById('idDateInput');
+        inputDate.disabled = true;
+
+        let divButtons = document.createElement('div');
+        divButtons.className = 'main-buttons';
+
+        let saveBut = document.createElement('button');
+        saveBut.className = 'save-button';
+        saveBut.textContent = 'Записаться';
+        saveBut.onclick = await nextStep;
+
+        let resetBut = document.createElement('button');
+        resetBut.className = 'reset-button';
+        resetBut.textContent = 'Заполнить заново';
+        resetBut.onclick = await reloadBut;
+
+        divButtons.appendChild(saveBut)
+        divButtons.appendChild(resetBut)
+        conEl.appendChild(divButtons)
+    }
+
+
+    const createTimesEl = async (text, data_id) => {
+        let butEl = document.createElement('button')
+        butEl.className = 'time-button';
+        butEl.id = text
+        butEl.textContent = text;
+        butEl.onclick = await viewInfo.bind(butEl, text);
+
+        return butEl
+    }
+
+    const viewTimes = async (timesList, dataID) => {
+
+        let divEl = document.createElement('div');
+        divEl.className = 'list-times';
+        divEl.id = 'listTimesId'
+
+        for (let i = 0; i < timesList.length; i++) {
+            let but = await createTimesEl(timesList[i], dataID);
+            divEl.appendChild(but);
+        }
+
+        let con = document.getElementById('timeContainer')
+        let h4El = document.createElement('h4');
+        h4El.textContent = 'Выберите время записи';
+        con.textContent = '';
+        con.appendChild(h4El);
+        con.appendChild(divEl);
+    }
+
     const loadTimeSlots = async (date) => {
-        try {
-            loadingEl.style.display = 'block';
-            timeContainer.innerHTML = '';
 
-            const response = await fetch(`/book_record/category/services/{{ service_id }}/times?date=${date}`);
-            alert(response);
-            if (!response.ok) throw new Error('Failed to load time slots');
+        const response = await getTimes(staffId, date);
+        let times = await response.json();
 
-            const data = await response.json();
-            const times = data.available_times || [];
 
-            times.forEach(time => {
-                const button = document.createElement('button');
-                button.className = 'time-button';
-                button.textContent = time;
-                button.onclick = () => alert(`You selected: ${time} on ${date}`);
-                timeContainer.appendChild(button);
-            });
-        } catch (error) {
-            console.error(error);
-        } finally {
-            loadingEl.style.display = 'none';
+        if (times.available_times && times.available_times.length !== 0) {
+            await viewTimes(times.available_times, date);
+        } else {
+            const mb3 = document.getElementById('timeContainer');
+
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+                ```<div class="alert alert-primary alert-dismissible" role="alert">
+                    <div>Для выбранной даты отсутсвует время для записи.</div>
+                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>```
+            ].join('')
+            mb3.textContent = '';
+            mb3.append(wrapper);
         }
     };
 
@@ -198,10 +307,20 @@
         renderCalendar();
     };
 
-    (async () => {
-        await getTimes(staffId, currentDate.toISOString().split('T')[0]);
-        await renderCalendar();
-    })();
+    window.onload = () => {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+
+        renderCalendar();
+    }
+    {#(async () => {#}
+    {#    await getTimes(staffId, currentDate.toISOString().split('T')[0]);#}
+    {#    await renderCalendar();#}
+    {# })();#}
 </script>
 </body>
 </html>
