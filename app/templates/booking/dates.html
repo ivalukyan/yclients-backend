@@ -1,655 +1,202 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <title>Select Service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .calendar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 300px;
+        }
+
+        .dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .date {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, border-radius 0.3s ease;
+        }
+
+        .date:hover {
+            background-color: #f0f0f0;
+        }
+
+        .date.selected {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .date.disabled {
+            background-color: #e0e0e0;
+            color: #a0a0a0;
+            pointer-events: none;
+        }
+
+        #timeContainer {
+            margin-top: 20px;
+        }
+
+        .time-button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .time-button:hover {
+            background-color: #0056b3;
+        }
+
+        #loading {
+            display: none;
+            margin-top: 10px;
+            color: #555;
+        }
+    </style>
 </head>
-<style>
-    body {
-        background-color: #1d1d1d;
-        color: #fff;
-    }
-
-    svg {
-        background-color: #343a40;
-        padding: 5px;
-        border-radius: 8px;
-    }
-
-    .container {
-        margin-top: 10vh;
-    }
-
-
-    .navbar {
-        display: flex;
-        align-items: center;
-        line-height: 1.5;
-        gap: 2px;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
-        position: relative; /* Для позиционирования вложенных элементов */
-    }
-
-    .navbar h3 {
-        position: absolute; /* Абсолютное позиционирование */
-        left: 50%; /* Сдвиг влево на 50% ширины родителя */
-        transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
-        padding: 5px;
-        text-align: center;
-        white-space: nowrap; /* Отключение переноса текста */
-    }
-
-    .navbar a {
-        margin-left: 10px;
-    }
-
-    .back-button svg {
-        height: 32px;
-        width: 32px;
-        fill: #0d6efd;
-        box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
-    }
-
-    .form-label {
-        font-size: 24px;
-        font-weight: 600;
-        width: 100%;
-        text-align: center;
-    }
-
-    .form-control {
-        font-size: 18px;
-        font-weight: 500;
-        text-align: center;
-        color: #f8f8f8;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
-        background-color: #2f2f32;
-        border: none;
-        outline: none;
-    }
-
-    .form-control:focus {
-        font-size: 18px;
-        font-weight: 500;
-        text-align: center;
-        color: #f8f8f8;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
-        background-color: #2f2f32;
-        border: none;
-        outline: none;
-    }
-
-    .form-control:disabled {
-        font-size: 18px;
-        font-weight: 500;
-        text-align: center;
-        color: #f8f8f8;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 15px 0;
-        background-color: #2f2f32;
-        border: none;
-        outline: none;
-    }
-
-    .submit-button {
-        margin-top: 15px;
-        padding: 5px;
-        width: 100%;
-        border-radius: 6px;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        font-weight: 500;
-        background-color: #0060d0;
-        color: #1d1d1d;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
-    }
-
-    .submit-button:active {
-        background-color: #2f2f32;
-    }
-
-    .list-times {
-        display: flex;
-        gap: 10px;
-        overflow-x: scroll;
-    }
-
-    .list-times::-webkit-scrollbar {
-        width: 0;
-    }
-
-    .time-button {
-        padding: 5px;
-        background-color: #b2ec5d;
-        color: #2f2f32;
-        border: none;
-        outline: none;
-        border-radius: 5px;
-        font-size: 18px;
-        font-weight: 500;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
-    }
-
-    .time-button:active {
-        background-color: #2f2f32;
-        color: #8d8d8d;
-    }
-
-    .container {
-        opacity: 0;
-        animation: fadeOut 0.8s ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    .list-times {
-        opacity: 0;
-        animation: fadeOut 0.8s ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    @keyframes fadeOut {
-        0% {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
-    }
-
-    .container h4 {
-        width: 100%;
-        text-align: center;
-        padding: 15px;
-    }
-
-    .mb-5 {
-        background-color: #2f2f32;
-        border-radius: 10px;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
-        opacity: 0;
-        animation: fadeOut 0.8s ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    .sel {
-        display: flex;
-        padding: 3px;
-        font-size: 16px;
-        font-weight: 500;
-        gap: 10px; /* Увеличиваем расстояние для читабельности */
-        align-items: center; /* Центрируем элементы по вертикали */
-    }
-
-    .sel p {
-        text-align: center;
-        padding: 5px; /* Обновляем отступы для согласованности */
-        margin: 0; /* Убираем внешние отступы */
-        line-height: 1.5; /* Выравниваем высоту строки */
-    }
-
-    .sel-val {
-        padding: 0;
-        box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
-        border-radius: 10px;
-    }
-
-    .sel-text {
-        padding: 0; /* Минимизируем отступы текста */
-        margin-right: 5px; /* Немного расстояния между текстом и p */
-    }
-
-
-    .main-buttons {
-        padding: 3px;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .save-button {
-        width: 100%;
-        background-color: #47b143;
-        color: #2f2f32;
-        padding: 10px;
-        border-radius: 10px;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        font-weight: 500;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
-        opacity: 0;
-        animation: fadeOut 0.8s ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    .reset-button {
-        width: 100%;
-        background-color: #fff643;
-        color: #2f2f32;
-        border-radius: 10px;
-        padding: 10px;
-        margin-top: 15px;
-        border: none;
-        outline: none;
-        font-size: 18px;
-        font-weight: 500;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
-        opacity: 0;
-        animation: fadeOut 0.8s ease-in-out;
-        animation-fill-mode: forwards;
-    }
-
-    .alert {
-        margin-top: 15px;
-    }
-
-    /* Изменяем цвет иконки календаря на белый */
-    input[type="date"]::-webkit-calendar-picker-indicator {
-        filter: invert(1); /* Инвертируем цвет для белого */
-    }
-
-    .calendar {
-        background-color: #1e1e1e;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    button {
-        background: none;
-        border: none;
-        color: #ffffff;
-        font-size: 24px;
-        cursor: pointer;
-    }
-
-    .days {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        margin-top: 10px;
-    }
-
-    .day {
-        font-weight: bold;
-        text-align: center;
-        padding: 20px;
-        width: 25px;
-    }
-
-    .dates {
-        display: grid;
-        grid-template-columns: repeat(7, 1fr);
-        margin-top: 10px;
-    }
-
-    .date {
-        text-align: center;
-        padding: 20px;
-        cursor: pointer;
-        transition: background-color 0.2s, border-radius 0.2s;
-        width: 25px;
-        border-radius: 20%;
-    }
-
-    .date.inactive {
-        color: #555;
-        cursor: not-allowed;
-    }
-
-    .date:hover:not(.inactive, .selected) {
-        background-color: #3a3a3a;
-    }
-
-    .selected {
-        background-color: #007BFF;
-        color: #ffffff;
-        border-radius: 25%;
-    }
-
-    .selected-date {
-        margin-top: 20px;
-        font-size: 18px;
-        text-align: center;
-    }
-</style>
 <body>
-<nav class="navbar">
-    <a href="/book_record/category/services/{{ service_id }}" class="back-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-             viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
-        </svg>
-    </a>
-    <h3>Выбрать Дату</h3>
-</nav>
-<div class="container" id="containerId">
-    <!--?    <div class="mb-3" id="mb3Id">-->
-    <!--?        <label class="form-label" for="idDateInput">Выберите дату записи</label>-->
-    <!--?        <input name="date" class="form-control" type="date" id="idDateInput" style="color: #f8f8f8;">-->
-    <!--?        <button class="submit-button" id="submitButton">Выбрать дату</button> -->
-    <!--?        <div id="liveAlertPlaceholder"></div>-->
-    <!--?    </div>-->
     <div class="calendar">
-        <header>
-            <button id="prevMonth">◀</button>
-            <h1 id="monthYear"></h1>
-            <button id="nextMonth">▶</button>
-        </header>
-        <div class="days">
-            <div class="day">Пн</div>
-            <div class="day">Вт</div>
-            <div class="day">Ср</div>
-            <div class="day">Чт</div>
-            <div class="day">Пт</div>
-            <div class="day">Сб</div>
-            <div class="day">Вс</div>
+        <div class="calendar-header">
+            <button id="prevMonth">&lt;</button>
+            <h3 id="monthDisplay"></h3>
+            <button id="nextMonth">&gt;</button>
         </div>
-        <div id="dates" class="dates"></div>
-        <div id="selectedDate" class="selected-date"></div>
+        <div class="dates" id="dates"></div>
     </div>
-    <div id="timeContainer">
 
-    </div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-<script>
+    <div id="timeContainer"></div>
+    <div id="loading">Loading...</div>
 
-    // let userId = 642500259;
-    let userId = null;
-    const person = localStorage.getItem("selectPerson") || "";
-    const cost = localStorage.getItem("selectCost") || "";
-    const monthYearElement = document.getElementById('monthYear');
-    const datesElement = document.getElementById('dates');
-    const prevMonthButton = document.getElementById('prevMonth');
-    const nextMonthButton = document.getElementById('nextMonth');
-    const selectedDateElement = document.getElementById('selectedDate');
+    <script>
+        const monthDisplay = document.getElementById('monthDisplay');
+        const datesEl = document.getElementById('dates');
+        const timeContainer = document.getElementById('timeContainer');
+        const loadingEl = document.getElementById('loading');
 
-    if (localStorage.getItem('user')) {
-        userId = localStorage.getItem('user');
-    }
+        let currentDate = new Date();
+        let bookingDates = []; // Store available booking dates
+        const staffId = 1; // Example staff ID (replace with actual logic)
 
-    console.log(userId);
-
-    let staffId = "{{ staff_id }}";
-
-    // let staffId = "3547739";
-
-    const reloadBut = async () => {
-        location.reload();
-    }
-
-    const nextStep = async () => {
-        localStorage.setItem('user', userId);
-        location.replace(`${staffId}/recording`);
-    }
-
-    const disableBut = async () => {
-        let listTimes = document.getElementById('listTimesId').getElementsByTagName('*');
-        for (let i = 0; i < listTimes.length; i++) {
-            listTimes[i].disabled = true;
-        }
-    }
-
-
-    let bookingDates = [];
-
-    const getTimes = async (staffID, selectDate) => {
-        try {
-
-            const payload = {
-                staff_id: staffID,
-                select_date: selectDate,
-                available_times: []
-            }
-
-            const response = fetch('/book_record/category/services/{{ service_id }}/times', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(payload)
-            });
-
-            if (response.ok) {
+        const getTimes = async (staffId, date) => {
+            try {
+                loadingEl.style.display = 'block';
+                const payload = { staff_id: staffId, date: date };
+                const response = await fetch('/book_record/category/services/{{ service_id }}/times', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                if (!response.ok) throw new Error('Failed to fetch times');
                 const data = await response.json();
-                bookingDates = data.available_times;
-                alert(bookingDates)
+                bookingDates = data.available_dates || [];
+            } catch (error) {
+                console.error(error);
+            } finally {
+                loadingEl.style.display = 'none';
             }
+        };
 
-        } catch (e) {
-            console.log("Ошибка при GET:", e)
-        }
-    }
+        const renderCalendar = async () => {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
 
+            monthDisplay.textContent = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
-    <!--?const activeDates = bookingDates.map(timestamp => {-->
-    <!--?    const date = new Date(timestamp * 1000);-->
-    <!--?    return {-->
-    <!--?        formatted: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`,-->
-    <!--?        date-->
-    <!--?    };-->
-    <!--?});-->
+            // Get first and last day of the month
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
 
-    const minActiveDate = bookingDates.reduce((min, current) => current.date < min ? current.date : min, activeDates[0].date);
-    let currentDate = new Date(minActiveDate); // делаем минимальную дату текущей
-    let selectedDate = null;
+            // Clear previous dates
+            datesEl.innerHTML = '';
 
-    const renderCalendar = async () => {
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
+            // Render dates
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(year, month, day);
+                const dateEl = document.createElement('div');
+                dateEl.className = 'date';
+                dateEl.textContent = day;
 
-        monthYearElement.textContent = currentDate.toLocaleString('ru-RU', {month: 'long', year: 'numeric'});
-
-        datesElement.innerHTML = '';
-
-        const firstDay = new Date(year, month - 1, 1).getDay();
-        const lastDate = new Date(year, month, 0).getDate();
-
-        const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
-
-        for (let i = 0; i < adjustedFirstDay; i++) {
-            datesElement.innerHTML += `<div class="date"></div>`;
-        }
-
-        for (let date = 1; date <= lastDate; date++) {
-            const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-            const isActive = activeDates.some(activeDate => activeDate.formatted === formattedDate);
-            const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
-
-            datesElement.innerHTML += dateDiv;
-        }
-
-        const dateElements = document.querySelectorAll('.date:not(.inactive)');
-        dateElements.forEach(element => {
-            element.addEventListener('click', () => {
-                // отменяем выделение предыдущей даты
-                if (selectedDate) {
-                    const previouslySelected = document.querySelector(`.date[data-date="${selectedDate}"]`);
-                    if (previouslySelected) {
-                        previouslySelected.classList.remove('selected');
-                    }
+                if (bookingDates.includes(date.toISOString().split('T')[0])) {
+                    dateEl.onclick = async () => {
+                        document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
+                        dateEl.classList.add('selected');
+                        await loadTimeSlots(date.toISOString().split('T')[0]);
+                    };
+                } else {
+                    dateEl.classList.add('disabled');
                 }
 
-                // выделяем новую выбранную дату
-                selectedDate = element.dataset.date;
-                element.classList.add('selected');
-                selectedDateElement.textContent = `Вы выбрали дату: ${selectedDate}`;
-            });
-        });
-    }
-
-    // тут наверное надо добавить прогрузку доступных слотов
-    prevMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
-    });
-
-    // тут наверное надо добавить прогрузку доступных слотов
-    nextMonthButton.addEventListener('click', () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
-    });
-
-
-    const viewInfo = async (time) => {
-
-        let data = selectedDate
-
-        let dateObj = new Date(data);
-
-        let day = dateObj.getDate();
-        let month = dateObj.getMonth() + 1;
-        let year = dateObj.getFullYear();
-
-
-        let formattedDate = ${day}-${month}-${year};
-
-
-        if (time) {
-
-            const payload = {
-                user_id: userId,
-                save_time: time,
-                save_date: data
+                datesEl.appendChild(dateEl);
             }
+        };
 
+        const loadTimeSlots = async (date) => {
             try {
-                await fetch('/book_record/category/services/{{ service_id }}/save', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                })
-            } catch (e) {
-                console.log(e)
+                loadingEl.style.display = 'block';
+                timeContainer.innerHTML = '';
+
+                const response = await fetch(`/book_record/category/services/{{ service_id }}/times?date=${date}`);
+                if (!response.ok) throw new Error('Failed to load time slots');
+
+                const data = await response.json();
+                const times = data.available_times || [];
+
+                times.forEach(time => {
+                    const button = document.createElement('button');
+                    button.className = 'time-button';
+                    button.textContent = time;
+                    button.onclick = () => alert(`You selected: ${time} on ${date}`);
+                    timeContainer.appendChild(button);
+                });
+            } catch (error) {
+                console.error(error);
+            } finally {
+                loadingEl.style.display = 'none';
             }
-        }
+        };
 
-        let conEl = document.getElementById('containerId')
-        let divEl = document.createElement('div')
-        divEl.className = 'mb-5'
+        document.getElementById('prevMonth').onclick = () => {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        };
 
-        divEl.innerHTML = `
-        <div class="mb-5">
-            <h4>Информация о записи</h4>
-            <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
-            <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
-            <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formattedDate}</p></div>
-            <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
-        </div>
-    `;
+        document.getElementById('nextMonth').onclick = () => {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        };
 
-        conEl.appendChild(divEl);
-
-
-        await disableBut();
-
-        let inputDate = document.getElementById('idDateInput');
-        inputDate.disabled = true;
-
-        let divButtons = document.createElement('div');
-        divButtons.className = 'main-buttons';
-
-        let saveBut = document.createElement('button');
-        saveBut.className = 'save-button';
-        saveBut.textContent = 'Записаться';
-        saveBut.onclick = await nextStep;
-
-        let resetBut = document.createElement('button');
-        resetBut.className = 'reset-button';
-        resetBut.textContent = 'Заполнить заново';
-        resetBut.onclick = await reloadBut;
-
-        divButtons.appendChild(saveBut)
-        divButtons.appendChild(resetBut)
-        conEl.appendChild(divButtons)
-    }
-
-
-    const createTimesEl = async (text, data_id) => {
-        let butEl = document.createElement('button')
-        butEl.className = 'time-button';
-        butEl.id = text
-        butEl.textContent = text;
-        butEl.onclick = await viewInfo.bind(butEl, text);
-
-        return butEl
-    }
-
-    const viewTimes = async (timesList, dataID) => {
-
-        let divEl = document.createElement('div');
-        divEl.className = 'list-times';
-        divEl.id = 'listTimesId'
-
-        for (let i = 0; i < timesList.length; i++) {
-            let but = await createTimesEl(timesList[i], dataID);
-            divEl.appendChild(but);
-        }
-
-        let con = document.getElementById('timeContainer')
-        let h4El = document.createElement('h4');
-        h4El.textContent = 'Выберите время записи';
-        con.textContent = '';
-        con.appendChild(h4El);
-        con.appendChild(divEl);
-    }
-
-    const selectDate = async () => {
-
-        //console.log(`Выбранная дата: ${dateId}`);
-
-        const response = await getTimes(staffId, selectedDate);
-        let times = await response.json();
-
-        //console.log(times.available_times)
-
-        if (times.available_times && times.available_times.length !== 0) {
-            await viewTimes(times.available_times, selectedDate);
-        } else {
-            const mb3 = document.getElementById('timeContainer');
-
-            const wrapper = document.createElement('div')
-            wrapper.innerHTML = [
-                `<div class="alert alert-primary alert-dismissible" role="alert">
-                    <div>Для выбранной даты отсутсвует время для записи.</div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>,
-                    </div>'`
-            ].join('')
-            mb3.textContent = '';
-            mb3.append(wrapper);
-
-            console.log("Время записи отсутствует");
-        }
-    }
-
-
-    window.onload = function () {
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        let yyyy = today.getFullYear();
-
-        today = yyyy + '-' + mm + '-' + dd;
-
-        selectedDate = today;
-        getTimes();
-        renderCalendar();
-    }
-
-    renderCalendar();
-
-    //document.getElementById('idDateInput').onchange = selectDate;
-</script>
+        (async () => {
+            await getTimes(staffId, currentDate.toISOString().split('T')[0]);
+            renderCalendar();
+        })();
+    </script>
 </body>
 </html>
