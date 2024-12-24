@@ -105,9 +105,55 @@
             border: none;
             outline: none;
         }
+
+        svg {
+            background-color: #343a40;
+            padding: 5px;
+            fill: #8d8d8d;
+            border-radius: 8px;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            line-height: 1.5;
+            gap: 2px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
+            position: relative; /* Для позиционирования вложенных элементов */
+        }
+
+        .navbar h3 {
+            position: absolute; /* Абсолютное позиционирование */
+            left: 50%; /* Сдвиг влево на 50% ширины родителя */
+            transform: translateX(-50%); /* Центровка текста за счёт обратного сдвига */
+            padding: 5px;
+            text-align: center;
+            white-space: nowrap; /* Отключение переноса текста */
+        }
+
+        .navbar a {
+            margin-left: 10px;
+        }
+
+        .back-button svg {
+            height: 32px;
+            width: 32px;
+            fill: #0d6efd;
+            box-shadow: rgba(0, 0, 0, 0.25) 1px 5px 15px 2px;
+        }
     </style>
 </head>
 <body>
+<nav class="navbar">
+    <a href="/book_record/category/services/{{ staff_id }}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
+             viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                  d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+    </a>
+    <h3>Выбор даты и времени</h3>
+</nav>
 <div class="calendar">
     <div class="calendar-header">
         <button id="prevMonth">&lt;</button>
@@ -287,7 +333,7 @@
 
         const response = await getTimes(staffId, date);
         let times = await response.json();
-
+        alert(times);
 
         if (times.available_times && times.available_times.length !== 0) {
             await viewTimes(times.available_times, date);
@@ -296,10 +342,10 @@
 
             const wrapper = document.createElement('div')
             wrapper.innerHTML = [
-                ```<div class="alert alert-primary alert-dismissible" role="alert">
+                `<div class="alert alert-primary alert-dismissible" role="alert">
                     <div>Для выбранной даты отсутсвует время для записи.</div>
                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>```
+                    </div>`
             ].join('')
             mb3.textContent = '';
             mb3.append(wrapper);
