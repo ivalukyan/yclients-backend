@@ -229,7 +229,7 @@ class Yclient:
         async with httpx.AsyncClient() as c:
             response = await c.post(url=url, json=payload, headers=self.headers)
         res = ujson.loads(response.text)
-
+        print(res)
         return res
     
 
