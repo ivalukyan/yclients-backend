@@ -24,7 +24,7 @@ class UserData(BaseModel):
     comment: str | None = None
     date_id: str
     time_id: str
-    status: bool | None = None
+    success: bool | None = None
     message: str | None = None
 
 

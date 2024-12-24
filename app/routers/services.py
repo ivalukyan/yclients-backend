@@ -163,8 +163,12 @@ async def book_created(request: Request, service_id: int, staff_id: int, user: U
                                  comment=user.comment, service_id=service_id, staff_id=staff_id,
                                  date_id=user.date_id, time_id=user.time_id)
 
-    return UserData(name=user.name, phone=user.phone, date_id=user.date_id, time_id=user.time_id,
-                    status=service['success'], message=service['meta']['message'])
+    if service['success']:
+        return UserData(name=user.name, phone=user.phone, date_id=user.date_id, time_id=user.time_id,
+                        success=service['success'])
+    else:
+        return UserData(name=user.name, phone=user.phone, date_id=user.date_id, time_id=user.time_id,
+                    success=service['success'], message=service['meta']['message'])
 
 
 @router.get('/services/{service_id}/{staff_id}/success')
