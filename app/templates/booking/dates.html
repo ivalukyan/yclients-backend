@@ -195,6 +195,44 @@
                 transform: translateY(-20px);
             }
         }
+
+        .mb-5 {
+            background-color: #2f2f32;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+            opacity: 0;
+            animation: fadeOut 0.8s ease-in-out;
+            animation-fill-mode: forwards;
+        }
+
+        .sel {
+            display: flex;
+            padding: 3px;
+            font-size: 16px;
+            font-weight: 500;
+            gap: 10px; /* Увеличиваем расстояние для читабельности */
+            align-items: center; /* Центрируем элементы по вертикали */
+        }
+
+        .sel p {
+            text-align: center;
+            padding: 5px; /* Обновляем отступы для согласованности */
+            margin: 0; /* Убираем внешние отступы */
+            line-height: 1.5; /* Выравниваем высоту строки */
+        }
+
+        .sel-val {
+            padding: 0;
+            box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
+            border-radius: 10px;
+        }
+
+        .sel-text {
+            padding: 0; /* Минимизируем отступы текста */
+            margin-right: 5px; /* Немного расстояния между текстом и p */
+        }
+
+
     </style>
 </head>
 <body>
@@ -331,11 +369,13 @@
         const div = document.createElement('div');
         div.className = 'all-info';
         div.innerHTML = `
-            <h4>Информация о записи</h4>
-            <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
-            <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
-            <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${currentDate}</p></div>
-            <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
+        <div class="mb-5">
+                    <h4>Информация о записи</h4>
+                    <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
+                    <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
+                    <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${currentDate}</p></div>
+                    <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
+        </div>
         `
         mainDiv.appendChild(div);
     }
