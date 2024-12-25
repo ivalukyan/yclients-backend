@@ -312,7 +312,7 @@
         for (let day = 1; day <= lastDay.getDate(); day++) {
             const date = new Date(year, month, day);
             const dateStr = date.toISOString().split('T')[0];
-            selDate = dateStr
+
 
             const dateEl = document.createElement('div');
             dateEl.className = 'date';
@@ -322,6 +322,7 @@
                 dateEl.addEventListener('click', async () => {
                     document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
                     dateEl.classList.add('selected');
+                    selDate = dateStr
                     await loadTimeSlots(dateStr);
                 });
             } else {
@@ -372,6 +373,10 @@
     }
 
     function handleTimeSelection(time) {
+
+        const [year, month, day] = selDate.split("-");
+        const formatedDate = `${day}-${month}-${year}`
+
         document.getElementById('timeContainer').innerHTML = '';
         const mainDiv = document.getElementById('timeContainer');
         const div = document.createElement('div');
@@ -381,7 +386,7 @@
                     <h4>Информация о записи</h4>
                     <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
                     <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
-                    <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${selDate}</p></div>
+                    <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formatedDate}</p></div>
                     <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
         </div>
         `
