@@ -228,16 +228,51 @@
 
         .sel-val {
             padding: 0;
+            font-size: 14px;
+            font-weight: 600;
             box-shadow: rgba(0, 0, 0, 0.4) 0 5px 15px 0;
             border-radius: 10px;
         }
 
         .sel-text {
-            padding: 0; /* Минимизируем отступы текста */
+            padding: 0;
+            font-size: 14px;
+            font-weight: 600;
             margin-right: 5px; /* Немного расстояния между текстом и p */
         }
 
+        .save-button {
+            width: 100%;
+            background-color: #47b143;
+            color: #2f2f32;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+            opacity: 0;
+            animation: fadeOut 0.8s ease-in-out;
+            animation-fill-mode: forwards;
+        }
 
+        .reset-button {
+            width: 100%;
+            background-color: #fff643;
+            color: #2f2f32;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 5px 17px 0;
+            opacity: 0;
+            animation: fadeOut 0.8s ease-in-out;
+            animation-fill-mode: forwards;
+        }
     </style>
 </head>
 <body>
@@ -373,8 +408,15 @@
 
     function handleTimeSelection(time) {
 
-        const [year, month, day] = selDate.split("-");
-        const formatedDate = `${day+1}-${month}-${year}`
+        const date = new Date(selDate);
+
+        date.setDate(date.getDate() + 1);
+
+        const day = String(date.getDate()).padStart(2, "0"); // День с ведущим нулем
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // Месяц с ведущим нулем (нумерация месяцев с 0)
+        const year = date.getFullYear();
+
+        const formatedDate = `${day}-${month}-${year}`;
 
         document.getElementById('timeContainer').innerHTML = '';
         const mainDiv = document.getElementById('timeContainer');
@@ -388,6 +430,8 @@
                     <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${formatedDate}</p></div>
                     <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
         </div>
+        <button class="save-button">Записаться</button>
+        <button class="reset-button">Заполнить заново</button>
         `
         mainDiv.appendChild(div);
     }
