@@ -203,7 +203,7 @@ class Yclient:
             for _ in res['data']:
                 times[uuid4().hex] = {'date': date, 'time': _['time']}
 
-
+            print(times)
             return times
 
 
