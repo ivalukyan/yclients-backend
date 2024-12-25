@@ -327,6 +327,7 @@
 
     function handleTimeSelection(time) {
         $('timeContainer').empty();
+        const mainDiv = document.getElementById('timeContainer');
         const div = document.createElement('div');
         div.className = 'all-info';
         div.innerHTML = `
@@ -336,7 +337,7 @@
             <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${currentDate}</p></div>
             <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
         `
-        $('timeContainer').appendChild(div);
+        mainDiv.appendChild(div);
     }
 
     document.getElementById('prevMonth').addEventListener('click', () => {
