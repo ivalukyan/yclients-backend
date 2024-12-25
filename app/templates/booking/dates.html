@@ -186,15 +186,16 @@
         }
 
         @keyframes fadeOut {
-            from {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            to {
+            0% {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
             }
         }
+
 
         .mb-5 {
             background-color: #2f2f32;
