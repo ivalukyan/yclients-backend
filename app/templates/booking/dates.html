@@ -64,7 +64,6 @@
             margin: 20px 10px 0 10px;
             font-size: 18px;
             font-weight: 600;
-            width: 100%;
             justify-content: center;
         }
 
@@ -375,7 +374,7 @@
     function handleTimeSelection(time) {
 
         const [year, month, day] = selDate.split("-");
-        const formatedDate = `${day}-${month}-${year}`
+        const formatedDate = `${day+1}-${month}-${year}`
 
         document.getElementById('timeContainer').innerHTML = '';
         const mainDiv = document.getElementById('timeContainer');
