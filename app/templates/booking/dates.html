@@ -247,14 +247,26 @@
 <div id="timeContainer"></div>
 <div id="loading">Loading...</div>
 <script>
-    const monthDisplay = document.getElementById('monthDisplay');
+     const monthDisplay = document.getElementById('monthDisplay');
     const datesEl = document.getElementById('dates');
     const timeContainer = document.getElementById('timeContainer');
     const loadingEl = document.getElementById('loading');
+    const modal = document.getElementById("modal");
+    const closeModalButton = document.getElementById("closeModalButton");
 
     let currentDate = new Date();
     const staffId = '{{ staff_id }}';
-    const bookingDates = '{{ data }}';
+    const bookingDates = JSON.parse('{{ data }}'.replace(/&quot;/g, '"'));
+
+    closeModalButton.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
 
     async function getTimes(staffId, date) {
         try {
@@ -283,12 +295,11 @@
 
         monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
 
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
+        const lastDay = new Date(year, month + 1, 0).getDate();
 
         datesEl.innerHTML = '';
 
-        for (let day = 1; day <= lastDay.getDate(); day++) {
+        for (let day = 1; day <= lastDay; day++) {
             const date = new Date(year, month, day);
             const dateStr = date.toISOString().split('T')[0];
 
@@ -328,43 +339,17 @@
         times.forEach(time => {
             const timeButton = document.createElement('button');
             timeButton.className = 'time-button';
-            timeButton.id = "openModalButton";
             timeButton.textContent = time;
-            //timeButton.addEventListener('click', () => handleTimeSelection(time));
+
+            timeButton.addEventListener('click', () => {
+                modal.style.display = "flex";
+            });
+
             timeList.appendChild(timeButton);
-            timeList.innerHTML = `
-                <div id="modal" class="modal">
-                    <div class="modal-content">
-                      <span id="closeModalButton" class="close-button">&times;</span>
-                      <p>Это содержимое модального окна!</p>
-                    </div>
-                </div>
-            `
         });
 
         timeContainer.appendChild(timeList);
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const openModalButton = document.getElementById("openModalButton");
-        const closeModalButton = document.getElementById("closeModalButton");
-        const modal = document.getElementById("modal");
-
-        openModalButton.addEventListener("click", () => {
-            modal.style.display = "flex";
-        });
-
-        closeModalButton.addEventListener("click", () => {
-            modal.style.display = "none";
-        });
-
-        // Закрытие модального окна при клике вне его содержимого
-        window.addEventListener("click", (event) => {
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        });
-    });
 
     function displayNoTimesAlert() {
         timeContainer.innerHTML = '';
@@ -377,10 +362,6 @@
 
         alert.querySelector('.btn-close').addEventListener('click', () => alert.remove());
         timeContainer.appendChild(alert);
-    }
-
-    function handleTimeSelection(time) {
-
     }
 
     document.getElementById('prevMonth').addEventListener('click', () => {
