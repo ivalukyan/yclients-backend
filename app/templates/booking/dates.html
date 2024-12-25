@@ -256,7 +256,7 @@
 
     let currentDate = new Date();
     const staffId = '{{ staff_id }}';
-    const bookingDates = JSON.parse('{{ data }}'.replace(/&quot;/g, '"'));
+    const bookingDates = '{{ data }}';
 
     closeModalButton.addEventListener("click", () => {
         modal.style.display = "none";
