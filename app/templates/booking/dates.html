@@ -206,6 +206,11 @@
             animation-fill-mode: forwards;
         }
 
+        .mb-5 h4 {
+            padding: 10px;
+            width: 100%;
+        }
+
         .sel {
             display: flex;
             padding: 3px;
@@ -259,8 +264,9 @@
 <div id="loading">Loading...</div>
 <script>
 
-    const person = localStorage.getItem('fullname');
-    const cost = localStorage.getItem('cost');
+    const person = localStorage.getItem('selectPerson');
+    const cost = localStorage.getItem('selectCost');
+    let selDate = null;
 
     const monthDisplay = document.getElementById('monthDisplay');
     const datesEl = document.getElementById('dates');
@@ -306,6 +312,7 @@
         for (let day = 1; day <= lastDay.getDate(); day++) {
             const date = new Date(year, month, day);
             const dateStr = date.toISOString().split('T')[0];
+            selDate = dateStr
 
             const dateEl = document.createElement('div');
             dateEl.className = 'date';
@@ -374,7 +381,7 @@
                     <h4>Информация о записи</h4>
                     <div class="sel"><p class="sel-text">Выбранный специалист:</p><p class="sel-val">${person}</p></div>
                     <div class="sel"><p class="sel-text">Стоимость услуги:</p><p class="sel-val">${cost}</p></div>
-                    <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${currentDate}</p></div>
+                    <div class="sel"><p class="sel-text">Выбраная дата:</p><p class="sel-val">${selDate}</p></div>
                     <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
         </div>
         `
