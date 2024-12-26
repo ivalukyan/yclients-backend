@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request
 from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 
-from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData
+from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, Dates
 from app.routers.utils import get_times, remove_html_tags, include_staffs
 from conf import YclientsConfig
 from db.utils import get_user_phone_number
@@ -116,6 +116,23 @@ async def get_reserve_times(time: Times):
 
     return {'available_times': available_times,
             'select_date': time.select_date, 'staff_id': time.staff_id,
+            'content': content, 'status': 'ok', 'msg': 'Get times'}
+
+@router.post("/services/{service_id}/dates", response_model=Dates)
+async def get_reserve_dates(date: Dates):
+    """Получение доступных дат для выбранного сотрудника и услуги"""
+
+    dates = await api.book_dates(staff_id=date.staff_id, service_ids=date.service_ids)
+    #print(times)
+    if not dates:
+        available_dates = []
+    else:
+        available_dates = await get_times(dates.values())
+    #print(available_times)
+    content = f"{date.staff_id} -- {date.service_ids}"
+
+    return {'available_dates': available_dates,
+            'select_service_ids': date.service_ids, 'staff_id': date.staff_id,
             'content': content, 'status': 'ok', 'msg': 'Get times'}
 
 

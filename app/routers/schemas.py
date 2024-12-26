@@ -10,6 +10,10 @@ class Times(BaseModel):
     select_date: str
     available_times: list
 
+class Dates(BaseModel):
+    staff_id: int
+    service_ids: list
+
 
 class DataTime(BaseModel):
     user_id: int

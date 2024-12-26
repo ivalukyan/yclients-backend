@@ -85,10 +85,10 @@ class Yclient:
         return None
     
 
-    async def book_dates(self) -> None:
+    async def book_dates(self, service_ids: list[int], staff_id: int) -> None:
         url = f"https://api.yclients.com/api/v1/book_dates/{self.company_id}"
         async with httpx.AsyncClient() as c:
-            response = await c.get(url=url, headers=self.headers)
+            response = await c.get(url=url, headers=self.headers, params={'service_ids': service_ids, 'staff_id': staff_id})
         res = ujson.loads(response.text)
 
         booking_dates = {}
