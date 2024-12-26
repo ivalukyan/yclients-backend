@@ -291,11 +291,9 @@
     createElServices();
 
     const go_to_staff = (service_id, service_cost, service_name) => {
-        localStorage.setItem('user', userId);
-        localStorage.setItem('fullname', fullname);
+        localStorage.setItem('serviceName', service_name);
         localStorage.setItem("selectCost", service_cost);
         localStorage.setItem('service_id', service_id);
-        localStorage.setItem('serviceName', service_name);
         location.replace(`/book_record/category/services/${service_id}`);
     }
 
