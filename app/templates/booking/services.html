@@ -281,7 +281,7 @@
             <div class="comment-service">${el.service_description || "" }</div>
             <button
             class="btn-service"
-            onclick="go_to_staff(${el.service_id}, ${el.service_price})"
+            onclick="go_to_staff(${el.service_id}, ${el.service_price}, ${el.service_title})"
             >Выбрать</button>`
 
             mainDiv.appendChild(cardDiv);
@@ -290,11 +290,12 @@
 
     createElServices();
 
-    const go_to_staff = (service_id, service_cost) => {
+    const go_to_staff = (service_id, service_cost, service_name) => {
         localStorage.setItem('user', userId);
         localStorage.setItem('fullname', fullname);
         localStorage.setItem("selectCost", service_cost);
         localStorage.setItem('service_id', service_id);
+        localStorage.setItem('serviceName', service_name);
         location.replace(`/book_record/category/services/${service_id}`);
     }
 
