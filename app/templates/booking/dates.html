@@ -374,7 +374,7 @@
 
             const dateEl = document.createElement('div');
             dateEl.className = 'date';
-            dateEl.textContent = dateStr;
+            dateEl.textContent = day - 1;
 
             if (bookingDates.includes(dateStr)) {
                 dateEl.addEventListener('click', async () => {
