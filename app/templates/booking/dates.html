@@ -367,7 +367,7 @@
 
         datesEl.innerHTML = '';
 
-        for (let day = firstDay.getDate(); day <= lastDay.getDate()+1; day++) {
+        for (let day = firstDay.getDate() + 1; day <= lastDay.getDate()+1; day++) {
             const date = new Date(year, month, day);
             const dateStr = date.toISOString().split('T')[0];
 
