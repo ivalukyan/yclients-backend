@@ -94,12 +94,14 @@ async def book_date(request: Request, service_id: int, staff_id: int):
     """Получение доступных дат для записи"""
 
     dates = await api.book_dates(service_ids=[service_id], staff_id=staff_id)
-    print(dates)
-    print('VALUES', dates.values())
+    # print(dates)
+    # print('VALUES', dates.values())
+    dates_formatted = [d['book_date'] for d in dates.values()]
+    print('FORMATTED DATES', dates_formatted)
 
     return templates.TemplateResponse("booking/dates.html",
                                       {'request': request, 'service_id': service_id, 'staff_id': staff_id,
-                                       'data': dates.values()})
+                                       'data': dates_formatted})
 
 
 @router.post("/services/{service_id}/times", response_model=Times)
