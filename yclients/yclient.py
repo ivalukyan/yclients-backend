@@ -97,7 +97,7 @@ class Yclient:
             data = res['data']
             for _ in range(len(data['booking_dates'])):
                 booking_dates[uuid4().hex] = {'book_date': data['booking_dates'][_]}
-
+            print('Ответы с book_dates', booking_dates)
             return booking_dates
         return "Ошибка запроса"
 
