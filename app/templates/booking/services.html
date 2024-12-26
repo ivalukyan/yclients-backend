@@ -291,6 +291,7 @@
     createElServices();
 
     const go_to_staff = (service_id, service_cost, service_name) => {
+        alert(service_name);
         localStorage.setItem('serviceName', service_name);
         localStorage.setItem("selectCost", service_cost);
         localStorage.setItem('service_id', service_id);
