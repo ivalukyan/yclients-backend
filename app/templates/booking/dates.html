@@ -478,7 +478,7 @@
 
         const date = new Date(selDate);
 
-        date.setDate(date.getDate() + 1);
+        date.setDate(date.getDate());
 
         const day = String(date.getDate()).padStart(2, "0"); // День с ведущим нулем
         const month = String(date.getMonth() + 1).padStart(2, "0"); // Месяц с ведущим нулем (нумерация месяцев с 0)
