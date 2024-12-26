@@ -303,8 +303,8 @@
     const cost = localStorage.getItem('selectCost');
     const service_id = localStorage.getItem('service_id');
     let selDate = null;
-    
-    
+
+
     const monthDisplay = document.getElementById('monthDisplay');
     const datesEl = document.getElementById('dates');
     const timeContainer = document.getElementById('timeContainer');
@@ -368,7 +368,7 @@
 
         datesEl.innerHTML = '';
 
-        for (let day = firstDay.getDate() + 1; day <= lastDay.getDate()+1; day++) {
+        for (let day = firstDay.getDate() + 1; day <= lastDay.getDate() + 1; day++) {
             const date = new Date(year, month, day);
             const dateStr = date.toISOString().split('T')[0];
 
@@ -476,7 +476,12 @@
     }
 
     const reloadHandle = () => {
-        window.location.reload();
+        location.reload();
+    }
+
+    const nextStep = async () => {
+        localStorage.setItem('user', userId);
+        location.replace(`${staffId}/recording`);
     }
 
     function handleTimeSelection(time) {
