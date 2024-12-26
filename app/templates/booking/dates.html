@@ -475,6 +475,10 @@
         timeContainer.appendChild(alert);
     }
 
+    const reloadHandle = () => {
+        window.location.reload();
+    }
+
     function handleTimeSelection(time) {
 
         const date = new Date(selDate);
@@ -500,7 +504,7 @@
                     <div class="sel"><p class="sel-text">Выбранное время:</p><p class="sel-val">${time}</p></div>
         </div>
         <button class="save-button">Записаться</button>
-        <button class="reset-button">Заполнить заново</button>
+        <button class="reset-button" onclick="reloadHandle()">Заполнить заново</button>
         `
         mainDiv.appendChild(div);
     }
