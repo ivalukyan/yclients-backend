@@ -312,8 +312,8 @@
     let currentDate = new Date();
     const staffId = '{{ staff_id }}';
     const bookingDates = '{{ data }}';
-    var activeDates = await getDates(staffId, service_id);
-    activeDates = activeDates.available_dates;
+    // var activeDates = await getDates(staffId, service_id);
+    // activeDates = activeDates.available_dates;
 
     async function getTimes(staffId, date) {
         try {
@@ -410,7 +410,7 @@
 
             for (let date = 1; date <= lastDate; date++) {
                 const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-                const isActive = activeDates.some(activeDate => activeDate.formatted === formattedDate);
+                const isActive = bookingDates.some(activeDate => activeDate.formatted === formattedDate);
                 const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
 
                 datesElement.innerHTML += dateDiv;
