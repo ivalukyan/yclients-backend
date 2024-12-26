@@ -356,84 +356,84 @@
         }
     }
 
-    // async function renderCalendar() {
-    //     const year = currentDate.getFullYear();
-    //     const month = currentDate.getMonth();
+    async function renderCalendar() {
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
 
-    //     monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
+        monthDisplay.textContent = currentDate.toLocaleString('default', {month: 'long', year: 'numeric'});
 
-    //     const firstDay = new Date(year, month, 1);
-    //     const lastDay = new Date(year, month + 1, 0);
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
 
-    //     datesEl.innerHTML = '';
+        datesEl.innerHTML = '';
 
-    //     for (let day = 1; day <= lastDay.getDate(); day++) {
-    //         const date = new Date(year, month, day);
-    //         const dateStr = date.toISOString().split('T')[0];
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+            const date = new Date(year, month, day);
+            const dateStr = date.toISOString().split('T')[0];
 
 
-    //         const dateEl = document.createElement('div');
-    //         dateEl.className = 'date';
-    //         dateEl.textContent = day;
+            const dateEl = document.createElement('div');
+            dateEl.className = 'date';
+            dateEl.textContent = day;
 
-    //         if (bookingDates.includes(dateStr)) {
-    //             dateEl.addEventListener('click', async () => {
-    //                 document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
-    //                 dateEl.classList.add('selected');
-    //                 selDate = dateStr
-    //                 await loadTimeSlots(dateStr);
-    //             });
-    //         } else {
-    //             dateEl.classList.add('disabled');
+            if (bookingDates.includes(dateStr)) {
+                dateEl.addEventListener('click', async () => {
+                    document.querySelectorAll('.date').forEach(el => el.classList.remove('selected'));
+                    dateEl.classList.add('selected');
+                    selDate = dateStr
+                    await loadTimeSlots(dateStr);
+                });
+            } else {
+                dateEl.classList.add('disabled');
+            }
+
+            datesEl.appendChild(dateEl);
+        }
+    }
+
+    // function renderCalendar() {
+    //         const year = currentDate.getFullYear();
+    //         const month = currentDate.getMonth() + 1;
+
+    //         monthYearElement.textContent = currentDate.toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
+
+    //         datesElement.innerHTML = '';
+
+    //         const firstDay = new Date(year, month - 1, 1).getDay();
+    //         const lastDate = new Date(year, month, 0).getDate();
+
+    //         const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
+
+    //         for (let i = 0; i < adjustedFirstDay; i++) {
+    //             datesElement.innerHTML += `<div class="date"></div>`;
     //         }
 
-    //         datesEl.appendChild(dateEl);
+    //         for (let date = 1; date <= lastDate; date++) {
+    //             const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+    //             const isActive = bookingDates.some(activeDate => activeDate.formatted === formattedDate);
+    //             const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
+
+    //             datesElement.innerHTML += dateDiv;
+    //         }
+
+    //         const dateElements = document.querySelectorAll('.date:not(.inactive)');
+    //         dateElements.forEach(element => {
+    //             element.addEventListener('click', async() => {
+    //                 // отменяем выделение предыдущей даты
+    //                 if (selectedDate) {
+    //                     const previouslySelected = document.querySelector(`.date[data-date="${selectedDate}"]`);
+    //                     if (previouslySelected) {
+    //                         previouslySelected.classList.remove('selected');
+    //                     }
+    //                 }
+
+    //                 // выделяем новую выбранную дату
+    //                 selectedDate = element.dataset.date;
+    //                 element.classList.add('selected');
+    //                 await loadTimeSlots(selectedDate);
+    //             });
+    //         });
     //     }
-    // }
-
-    function renderCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth() + 1;
-
-            monthYearElement.textContent = currentDate.toLocaleString('ru-RU', { month: 'long', year: 'numeric' });
-
-            datesElement.innerHTML = '';
-
-            const firstDay = new Date(year, month - 1, 1).getDay();
-            const lastDate = new Date(year, month, 0).getDate();
-
-            const adjustedFirstDay = (firstDay === 0) ? 6 : firstDay - 1;
-
-            for (let i = 0; i < adjustedFirstDay; i++) {
-                datesElement.innerHTML += `<div class="date"></div>`;
-            }
-
-            for (let date = 1; date <= lastDate; date++) {
-                const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
-                const isActive = bookingDates.some(activeDate => activeDate.formatted === formattedDate);
-                const dateDiv = `<div class="date${isActive ? '' : ' inactive'}" data-date="${formattedDate}">${date}</div>`;
-
-                datesElement.innerHTML += dateDiv;
-            }
-
-            const dateElements = document.querySelectorAll('.date:not(.inactive)');
-            dateElements.forEach(element => {
-                element.addEventListener('click', async() => {
-                    // отменяем выделение предыдущей даты
-                    if (selectedDate) {
-                        const previouslySelected = document.querySelector(`.date[data-date="${selectedDate}"]`);
-                        if (previouslySelected) {
-                            previouslySelected.classList.remove('selected');
-                        }
-                    }
-
-                    // выделяем новую выбранную дату
-                    selectedDate = element.dataset.date;
-                    element.classList.add('selected');
-                    await loadTimeSlots(selectedDate);
-                });
-            });
-        }
 
     async function loadTimeSlots(date) {
         const times = await getTimes(staffId, date);
