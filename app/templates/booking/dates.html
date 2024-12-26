@@ -302,6 +302,7 @@
     const person = localStorage.getItem('selectPerson');
     const cost = localStorage.getItem('selectCost');
     const service_id = localStorage.getItem('service_id');
+    const userId = localStorage.getItem('user');
     let selDate = null;
 
 
@@ -479,22 +480,39 @@
         location.reload();
     }
 
-    const nextStep = async () => {
-        localStorage.setItem('user', userId);
+    const nextStep = () => {
         location.replace(`${staffId}/recording`);
     }
 
-    function handleTimeSelection(time) {
+    const handleTimeSelection = async (time) => {
 
         const date = new Date(selDate);
 
         date.setDate(date.getDate());
 
-        const day = String(date.getDate()).padStart(2, "0"); // День с ведущим нулем
-        const month = String(date.getMonth() + 1).padStart(2, "0"); // Месяц с ведущим нулем (нумерация месяцев с 0)
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
         const year = date.getFullYear();
 
         const formatedDate = `${day}-${month}-${year}`;
+
+        if (time) {
+            const payload = {
+                user_id: userId,
+                save_time: time,
+                save_date: `${year}-${month}-${day}`
+            }
+
+            try {
+                await fetch('/book_record/category/services/{{ service_id }}/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                })
+            } catch (e) {
+                console.log(e)
+            }
+        }
 
         document.getElementById('timeContainer').innerHTML = '';
         const mainDiv = document.getElementById('timeContainer');
