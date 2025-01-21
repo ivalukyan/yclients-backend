@@ -1,6 +1,4 @@
-from uuid import uuid4
-
-from sqlalchemy import Column, Integer, String, DateTime, UUID, Boolean, BigInteger
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, BigInteger
 
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base

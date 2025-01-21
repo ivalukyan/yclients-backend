@@ -2,7 +2,6 @@
 Services
 """
 from fastapi import APIRouter, Request
-from starlette.responses import RedirectResponse
 from starlette.templating import Jinja2Templates
 
 from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, Dates
