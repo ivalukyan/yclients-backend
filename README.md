@@ -48,12 +48,6 @@ docker --version
 ```
 
 ### Запуск
-1. Создадим образ докер нашего проекта.
 ```bash
-docker build -t backend .
-```
-
-2. Запустим докер образ.
-```bash
-docker run -d -p 8000:8000 --name yclients-backend backend
+docker-compose up -d --build
 ```
