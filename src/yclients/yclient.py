@@ -1,3 +1,6 @@
+import re
+from dataclasses import replace
+
 import httpx
 import ujson
 import logging
@@ -135,7 +138,7 @@ class Yclient:
                                       "staff_avatar": data[_]['avatar'], "staff_info": data[_]['information']}
                 
             return staff
-        return "Ошибка запроса"
+        return "Ошибка входа"
 
 
     async def book_category(self) -> None:
@@ -277,7 +280,16 @@ async def main():
 
     # print("user token - %s" % (await api.user_token(login=yclient.login, password=yclient.password)))
     # print(await api.book_services())
-    print(await api.book_category())
+    info = await api.book_staff()
+    cnt = 1
+    for i in info.values():
+        i['staff_info'] = re.sub(r'<[^>]+>', ' ', i['staff_info'])
+        i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
+        i['staff_info'] = i['staff_info'].replace('\n', ' ')
+        print(cnt, i['staff_info'])
+
+        cnt += 1
+    # text_only = re.sub(r'<[^>]+>', '', html_content)
     # print(await api.book_dates())
     # print(await api.book_staff())
     # staff = await api.book_staff()

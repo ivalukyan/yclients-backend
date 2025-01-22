@@ -69,6 +69,8 @@ async def book_staff(request: Request, service_id: int):
 
     for i in data:
         i['staff_info'] = await remove_html_tags(i['staff_info'])
+        i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
+        i['staff_info'] = i['staff_info'].replace('\n', ' ')
 
     return templates.TemplateResponse("booking/staffs.html",
                                       {'request': request, 'staffs': data,
