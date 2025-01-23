@@ -78,7 +78,7 @@ async def book_staff(request: Request, service_id: int):
         BookStaffData.from_orm(i).dict()
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'staffs': data,
+                                      {'request': request, 'staffs': json.dumps(data),
                                        'service_id': service_id})
 
 

@@ -200,7 +200,7 @@
 
     // Безопасное получение данных из шаблона
     try {
-        staffs = "{{ staffs }}";
+        staffs = JSON.parse('{{ staffs | safe }}');
     } catch (e) {
         console.error(`Ошибка парсинга данных staffs: ${e}`);
         staffs = [];
