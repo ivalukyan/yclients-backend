@@ -215,7 +215,7 @@
     let userId = null;
     let fullname = null;
     let serviceId = '{{ service_id }}';
-    let staffs = JSON.parse('{{ staffs|safe }}');
+    let staffs = '{{ staffs }}' || [];
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');

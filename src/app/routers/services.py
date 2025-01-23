@@ -74,8 +74,10 @@ async def book_staff(request: Request, service_id: int):
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         # i['staff_info'] = i['staff_info'].replace('\n', ' ')
 
+    print(data)
+
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'staffs': json.dumps(data),
+                                      {'request': request, 'staffs': data,
                                        'service_id': service_id})
 
 
