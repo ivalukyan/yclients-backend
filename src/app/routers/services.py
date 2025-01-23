@@ -75,9 +75,6 @@ async def book_staff(request: Request, service_id: int):
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         # i['staff_info'] = i['staff_info'].replace('\n', ' ')
         BookStaffData.from_orm(i).dict()
-        print(BookStaffData.from_orm(i).dict())
-
-    print(data)
 
     return templates.TemplateResponse("booking/staffs.html",
                                       {'request': request, 'staffs': json.dumps(data),
