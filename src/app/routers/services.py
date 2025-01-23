@@ -70,10 +70,11 @@ async def book_staff(request: Request, service_id: int):
     data = await include_staffs(service_staff_id, staff_values)
 
     for i in data:
-        print(i['staff_info'])
+        print(i)
         #i['staff_info'] = i['staff_info'].replace('<br>', '\n')
         i['staff_info'] = await remove_html_tags(i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
+        i['staff_info'] = i['staff_info'].replace('"', ' ')
         i['staff_info'] = i['staff_info'].replace('\n', '<br>')
         BookStaffData.from_orm(i).dict()
 
