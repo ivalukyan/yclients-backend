@@ -78,30 +78,30 @@
         crossorigin="anonymous"></script>
 <script>
 
-    const color = "#2B2B3B";
-    const tele = window.Telegram.WebApp;
-
-    tele.expand();
-    tele.disableVerticalSwipes();
-    tele.setHeaderColor(color);
+    // const color = "#2B2B3B";
+    // const tele = window.Telegram.WebApp;
+    //
+    // tele.expand();
+    // tele.disableVerticalSwipes();
+    // tele.setHeaderColor(color);
     //tele.requestFullscreen();
     //tele.setBackgroundColor(color);
     //tele.setBottomBarColor(color);
 
-    const params = new URLSearchParams(Telegram.WebApp.initData);
+    // const params = new URLSearchParams(Telegram.WebApp.initData);
+    //
+    // const userData = Object.fromEntries(params);
+    // let userDt = JSON.parse(userData.user);
+    //
+    //
+    // let userId = userDt.id || '';
+    // let fullname = userDt.first_name || '';
+    //
+    // {#alert(userId);#}
+    // {#alert(fullname);#}
 
-    const userData = Object.fromEntries(params);
-    let userDt = JSON.parse(userData.user);
-
-
-    let userId = userDt.id || '';
-    let fullname = userDt.first_name || '';
-
-    {#alert(userId);#}
-    {#alert(fullname);#}
-
-    localStorage.setItem('user', userId);
-    localStorage.setItem('fullname', fullname);
+    localStorage.setItem('user', '877008114');
+    localStorage.setItem('fullname', 'ivalkn');
 
     function go_to_service(url) {
         localStorage.setItem('user', userId);
