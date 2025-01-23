@@ -68,16 +68,17 @@ async def book_staff(request: Request, service_id: int):
     staff_values = list(staff.values())
 
     data = await include_staffs(service_staff_id, staff_values)
-
+    staffs = []
     for i in data:
         #i['staff_info'] = i['staff_info'].replace('<br>', '\n')
         i['staff_info'] = await remove_html_tags(i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         # i['staff_info'] = i['staff_info'].replace('\n', ' ')
-        BookStaffData.from_orm(i).dict()
+        staffs.append(BookStaffData.from_orm(i).dict())
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'staffs': data,
+                                      {'request': request,
+                                       'staffs': staffs,
                                        'service_id': service_id})
 
 
