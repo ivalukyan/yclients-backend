@@ -187,25 +187,6 @@
                required>
     </div>
     <div class="row gap-4 row-cols-lg-3" id="rowId">
-        {% for el in staffs %}
-            <div class="container-sm">
-                <div class="container-sm-1">
-                    <img src="{{ el.staff_avatar }}" height="32" width="32"></img>
-                    <div class="name-staff">{{ el.staff_name }}</div>
-                </div>
-                <div class="mb-3">
-                    <p>{{ el.staff_specialization or '' }}</p>
-                </div>
-                <div class="mb-3">
-                    <p>{{el.staff_info or '' }}</p>
-                </div>
-                <button
-                        id="{{ el.staff_id }}"
-                        class="btn"
-                        onclick="sendServiceId('{{ el.staff_id }}', '{{ el.staff_name }}')"
-                >Выбрать</button>
-            </div>
-        {% endfor %}
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
