@@ -57,3 +57,14 @@ class SearchSchemas(BaseModel):
 
 class ServicesLoad(BaseModel):
     exist: bool
+
+
+class BookStaffData(BaseModel):
+    staff_id: int
+    staff_name: str
+    staff_specialization: str
+    staff_avatar: str
+    staff_info: str | None = None
+
+    class Config:
+        from_attributes = True

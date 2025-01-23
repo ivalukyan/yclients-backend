@@ -6,7 +6,7 @@ import json
 from fastapi import APIRouter, Request
 from starlette.templating import Jinja2Templates
 
-from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, Dates
+from app.routers.schemas import Times, DataTime, UserData, ServiceSchemas, FormData, Dates, BookStaffData
 from app.routers.utils import get_times, remove_html_tags, include_staffs
 from conf import YclientsConfig
 from db.utils import get_user_phone_number
@@ -74,11 +74,12 @@ async def book_staff(request: Request, service_id: int):
         i['staff_info'] = await remove_html_tags(i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         # i['staff_info'] = i['staff_info'].replace('\n', ' ')
+        BookStaffData.from_orm(i).dict()
 
     print(data)
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'staffs': data,
+                                      {'request': request, 'staffs': json.dumps(data),
                                        'service_id': service_id})
 
 
