@@ -253,7 +253,7 @@
             div.className = 'container-sm';
             div.innerHTML = `
                                 <div class="container-sm-1">
-                                    <img src="${staff.staff_avatar}" alt="Avatar"/>
+                                    <img src="${staff['staff_avatar']}" alt="Avatar"/>
                                     <div class="name-staff">${staff.staff_name}</div>
                                 </div>
                                 <div class="mb-3">
@@ -265,7 +265,7 @@
                                 <button
                                     id="${staff.staff_id}"
                                     class="btn"
-                                    onclick="sendServiceId(${staff.staff_id}, '${staff.staff_name}')"
+                                    onclick="sendServiceId('${staff.staff_id}', '${staff.staff_name}')"
                                 >Выбрать</button>
                             `;
             cards.appendChild(div);
