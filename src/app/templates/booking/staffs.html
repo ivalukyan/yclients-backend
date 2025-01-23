@@ -195,24 +195,30 @@
 <script>
     let userId = null;
     let fullname = null;
-    let serviceId = '{{ service_id }}';
-    let staffs = JSON.parse('{{ staffs|safe }}') || [];
+    let serviceId = '{{service_id}}';
+    let staffs;
 
-    alert(staffs);
+    try {
+        staffs = JSON.parse(`{{ staffs|safe }}`);
+    } catch (e) {
+        alert("Ошибка парсинга данных staffs: ${e}");
+        staffs = [];
+    }
 
     if (localStorage.getItem('user') && localStorage.getItem('fullname')) {
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
     }
 
-    console.log(userId);
-    console.log(fullname);
+    console.log("User ID:", userId);
+    console.log("Fullname:", fullname);
+    console.log("Staffs:", staffs);
 
     const go_to_dates = async (staff_id, staff_username) => {
         localStorage.setItem('user', userId);
         localStorage.setItem("selectPerson", staff_username);
-        location.replace(`/book_record/category/services/{{ service_id }}/${staff_id}`);
-    }
+        location.replace(`/book_record/category/services/${serviceId}/${staff_id}`);
+    };
 
     async function sendServiceId(staff, staff_username) {
         const payload = {
@@ -220,19 +226,18 @@
             fullname: fullname,
             service_id: serviceId,
             staff_id: staff
-        }
+        };
         try {
-            await fetch('/book_record/category/services/{{ service_id }}', {
+            await fetch(`/book_record/category/services/${serviceId}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
-            })
+            });
         } catch (e) {
-            console.log(e)
+            console.error("Ошибка отправки данных:", e);
         }
         await go_to_dates(staff, staff_username);
     }
-
 
     document.getElementById('searchFieldId').addEventListener('input', function () {
         let filter = this.value.toLowerCase();
@@ -240,46 +245,45 @@
 
         chatCards.forEach(card => {
             let name = card.querySelector('.name-staff').textContent.toLowerCase();
-            if (name.includes(filter)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
+            card.style.display = name.includes(filter) ? '' : 'none';
         });
     });
 
     function loadStaffs(staffs) {
         const cards = document.getElementById('rowId');
-        if (Array.isArray(staffs)) {
+        if (Array.isArray(staffs) && staffs.length > 0) {
             staffs.forEach(staff => {
                 const div = document.createElement('div');
                 div.className = 'container-sm';
                 div.innerHTML = `
-                    <div class="container-sm-1">
-                        <img src="${staff.staff_avatar}" alt="Avatar">
-                        <div class="name-staff">${staff.staff_name}</div>
-                    </div>
-                    <div class="mb-3">
-                        <p>${staff.staff_specialization}</p>
-                    </div>
-                    <div class="mb-3">
-                        <p>${staff.staff_info}</p>
-                    </div>
-                    <button
-                        id="${staff.staff_id}"
-                        class="btn"
-                        onclick="sendServiceId(${staff.staff_id}, ${staff.staff_name})"
-                    >Выбрать</button>
-                `;
+                        <div class="container-sm-1">
+                            <img src="${staff.staff_avatar}" alt="Avatar">
+                            <div class="name-staff">${staff.staff_name}</div>
+                        </div>
+                        <div class="mb-3">
+                            <p>${staff.staff_specialization || "Нет информации о специализации"}</p>
+                        </div>
+                        <div class="mb-3">
+                            <p>${staff.staff_info || "Нет дополнительной информации"}</p>
+                        </div>
+                        <button
+                            id="${staff.staff_id}"
+                            class="btn"
+                            onclick="sendServiceId(${staff.staff_id}, '${staff.staff_name}')"
+                        >Выбрать</button>
+                    `;
                 cards.appendChild(div);
             });
         } else {
-            alert(`staffs is not a valid array: ${staffs}`);
+            const div = document.createElement('div');
+            div.className = 'text-center text-warning mt-4';
+            div.textContent = "Нет доступных специалистов.";
+            cards.appendChild(div);
         }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        alert(`staffs: ${staffs}`)
+        alert("Загрузка данных о специалистах...");
         loadStaffs(staffs);
     });
 </script>
