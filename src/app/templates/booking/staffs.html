@@ -248,33 +248,44 @@
 
     function loadStaffs(staffs) {
         const cards = document.getElementById('rowId');
-        staffs.forEach(staff => {
-            const div = document.createElement('div')
-            div.className = 'container-sm';
-            div.innerHTML = `
-                <div class="container-sm-1">
-                    <img src="${staff.staff_avatar}" height="32" width="32"></img>
-                    <div class="name-staff">${staff.staff_name}</div>
-                </div>
-                <div class="mb-3">
-                    <p>${staff.staff_specialization or ''}</p>
-                </div>
-                <div class="mb-3">
-                    <p>${staff.staff_info or ''}</p>
-                </div>
-                <button
+
+        // Убедимся, что staffs это массив
+        if (Array.isArray(staffs)) {
+            staffs.forEach(staff => {
+                const div = document.createElement('div');
+                div.className = 'container-sm';
+                div.innerHTML = `
+                    <div class="container-sm-1">
+                        <img src="${staff.staff_avatar}" alt="Avatar">
+                        <div class="name-staff">${staff.staff_name}</div>
+                    </div>
+                    <div class="mb-3">
+                        <p>${staff.staff_specialization || ''}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p>${staff.staff_info || ''}</p>
+                    </div>
+                    <button
                         id="${staff.staff_id}"
                         class="btn"
-                        onclick="sendServiceId(${staff.staff_id}, ${staff.staff_name})"
-                >Выбрать</button>
-            `;
-            cards.appendChild(div);
-        })
+                        onclick="sendServiceId('${staff.staff_id}', '${staff.staff_name}')"
+                    >Выбрать</button>
+                `;
+                cards.appendChild(div);
+            });
+        } else {
+            alert(`staffs is not a valid array: ${staffs}`);
+        }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        loadStaffs(staffs)
-    })
+        try {
+            const parsedStaffs = JSON.parse(staffs); // Парсим строку JSON, если это нужно
+            loadStaffs(parsedStaffs);
+        } catch (e) {
+            alert(`Error parsing staffs: ${e}`);
+        }
+    });
 </script>
 </body>
 </html>
