@@ -6,10 +6,10 @@ WORKDIR /backend_app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-COPY ../src/requirements.txt .
+COPY ./src/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ../src .
+COPY ./src .
 
 EXPOSE 8000
 

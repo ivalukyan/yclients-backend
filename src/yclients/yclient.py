@@ -283,10 +283,12 @@ async def main():
     info = await api.book_staff()
     cnt = 1
     for i in info.values():
+        print(i['staff_info'])
+        print("----------------------------------------")
         i['staff_info'] = re.sub(r'<[^>]+>', ' ', i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         i['staff_info'] = i['staff_info'].replace('\n', ' ')
-        print(cnt, i['staff_info'])
+        # print(cnt, i['staff_info'])
 
         cnt += 1
     # text_only = re.sub(r'<[^>]+>', '', html_content)
