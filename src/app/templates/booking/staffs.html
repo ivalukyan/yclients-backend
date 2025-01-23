@@ -57,9 +57,8 @@
 
     function loadStaffs(staffs) {
         const cards = document.getElementById('rowId');
-        cards.innerHTML = ''; // Очищаем контейнер перед добавлением
+        cards.innerHTML = '';
         staffs.forEach(staff => {
-            const safeName = staff.staff_name.replace(/'/g, "\\'"); // Экранируем одинарные кавычки
             const div = document.createElement('div');
             div.className = 'container-sm';
             div.innerHTML = `
@@ -76,7 +75,7 @@
                 <button
                     id="${staff.staff_id}"
                     class="btn"
-                    onclick="sendServiceId('${staff.staff_id}', '${safeName}')"
+                    onclick="sendServiceId('${staff.staff_id}', ${safe_name})"
                 >Выбрать</button>
             `;
             cards.appendChild(div);
