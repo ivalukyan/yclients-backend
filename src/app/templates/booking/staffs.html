@@ -264,6 +264,36 @@
             }
         });
     });
+
+    function loadStaffs(staffs) {
+        const cards = document.getElementById('rowId');
+        staffs.forEach(staff => {
+            const div = document.createElement('div')
+            div.className = 'container-sm';
+            div.innerHTML = `
+                <div class="container-sm-1">
+                    <img src="${staff.staff_avatar}" height="32" width="32"></img>
+                    <div class="name-staff">${staff.staff_name}</div>
+                </div>
+                <div class="mb-3">
+                    <p>${staff.staff_specialization or ''}</p>
+                </div>
+                <div class="mb-3">
+                    <p>${staff.staff_info or ''}</p>
+                </div>
+                <button
+                        id="${staff.staff_id}"
+                        class="btn"
+                        onclick="sendServiceId(${staff.staff_id}, ${staff.staff_name})"
+                >Выбрать</button>
+            `;
+            cards.appendChild(div);
+        })
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        loadStaffs(staffs)
+    })
 </script>
 </body>
 </html>
