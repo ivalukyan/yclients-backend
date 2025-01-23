@@ -3,73 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Home</title>
-</head>
-<style>
-    body {
-        background-color: #1d1d1d;
-        color: #fff;
-    }
+    <style>
+        body {
+            background-color: #1d1d1d;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    .row {
-        gap: 10px;
-    }
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
 
-    .col {
-        padding: 15px;
-        border-radius: 10px;
-        background-color: #2f2f32;
-        box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
-        animation: fadeInUp 0.8s ease-in-out;
-        opacity: 0;
-        animation-fill-mode: forwards;
-    }
+        h2 {
+            color: #62aafd;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
 
-    @keyframes fadeInUp {
-        0% {
+        .row {
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .col {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #2f2f32;
+            box-shadow: rgba(0, 0, 0, 0.25) 0 7px 15px 0;
+            animation: fadeInUp 0.8s ease-in-out;
             opacity: 0;
-            transform: translateY(20px);
+            animation-fill-mode: forwards;
         }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-    }
 
-    .btn {
-        background-color: #0060d0;
-        color: #000;
-        border: none;
-        font-size: 16px;
-        font-weight: 700;
-    }
+        .btn {
+            background-color: #0060d0;
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+        }
 
-    .btn:hover {
-        background-color: #62aafd;
-        color: #000;
-        border: none;
-    }
+        .btn:hover {
+            background-color: #62aafd;
+            color: #fff;
+            border: none;
+        }
 
-    h3 {
-        color: #62aafd;
-    }
-
-    .info-text {
-        font-size: 20px;
-        font-weight: 500;
-        text-align: center;
-        margin-top: 30vh;
-    }
-</style>
+        .info-text {
+            font-size: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+    </style>
+</head>
 <body>
-<div class="container px-4 py-5" id="hanging-icons">
-    <h2 class="pb-2" id="h2Id"><i>Выберите вид услуги</i></h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3" id="mainContainer">
+<div class="container" id="hanging-icons">
+    <h2 id="h2Id"><i>Выберите вид услуги</i></h2>
+    <div class="row" id="mainContainer">
         <div class="info-text" id="infoText">События отсутствуют</div>
     </div>
 </div>
@@ -77,31 +90,26 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 <script>
+    const color = "#2B2B3B";
+    const tele = window.Telegram.WebApp;
 
-    // const color = "#2B2B3B";
-    // const tele = window.Telegram.WebApp;
-    //
-    // tele.expand();
-    // tele.disableVerticalSwipes();
-    // tele.setHeaderColor(color);
-    //tele.requestFullscreen();
-    //tele.setBackgroundColor(color);
-    //tele.setBottomBarColor(color);
+    tele.expand();
+    tele.disableVerticalSwipes();
+    tele.setHeaderColor(color);
+    tele.requestFullscreen();
+    tele.setBackgroundColor(color);
+    tele.setBottomBarColor(color);
 
-    // const params = new URLSearchParams(Telegram.WebApp.initData);
-    //
-    // const userData = Object.fromEntries(params);
-    // let userDt = JSON.parse(userData.user);
-    //
-    //
-    // let userId = userDt.id || '';
-    // let fullname = userDt.first_name || '';
-    //
-    // {#alert(userId);#}
-    // {#alert(fullname);#}
+    const params = new URLSearchParams(Telegram.WebApp.initData);
 
-    localStorage.setItem('user', '877008114');
-    localStorage.setItem('fullname', 'ivalkn');
+    const userData = Object.fromEntries(params);
+    let userDt = JSON.parse(userData.user);
+
+    let userId = userDt.id || '';
+    let fullname = userDt.first_name || '';
+
+    localStorage.setItem('user', userId);
+    localStorage.setItem('fullname', fullname);
 
     function go_to_service(url) {
         localStorage.setItem('user', userId);
@@ -113,11 +121,9 @@
         return await axios.get("/book_record/get_services");
     }
 
-
     async function getGroupServices() {
         return await axios.get("/book_record/get_services_group");
     }
-
 
     function createElement(h3Text, pText, hrefUrl) {
         const textEl = document.getElementById('infoText');
@@ -125,16 +131,14 @@
             textEl.remove();
         }
 
-
         const mainDiv = document.getElementById('mainContainer');
 
-        const nameClass = "col d-flex align-items-start";
+        const nameClass = "col d-flex flex-column align-items-center text-center";
         const div = document.createElement('div');
         div.className = nameClass;
-        div.id = "cardId"
 
         div.innerHTML +=
-            `<div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+            `<div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 mb-3">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" style="fill: #8d8d8d; background-color: #1d1d1d; border-radius: 7px; padding: 4px;"
                      class="bi bi-person-fill" viewBox="0 0 16 16">
                     <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
@@ -151,23 +155,19 @@
         mainDiv.appendChild(div);
     }
 
-
     getServices().then(function (response) {
-        console.log(response.data.exist);
         if (response.data.exist === true) {
             createElement("Индивидуальные", "Здесь вы можете записаться, выбрав удобную вам дату, время и специалиста",
                 "/book_record/category");
         }
-    })
+    });
 
     getGroupServices().then(function (response) {
-        console.log(response.data.exist);
         if (response.data.exist === true) {
             createElement("Групповые", "Здесь вы можете записаться, выбрав удобную вам дату, время и специалиста",
                 "/book_record/group_services");
         }
-    })
-
+    });
 </script>
 </body>
 </html>
