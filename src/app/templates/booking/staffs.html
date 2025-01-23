@@ -199,7 +199,8 @@
     let staffs;
 
     try {
-        staffs = `{{ staffs|tojson }}`;
+        staffs = ['{{ staffs|tojson }}'];
+        alert(staffs)
     } catch (e) {
         alert(`Ошибка парсинга данных staffs: ${e}`);
         staffs = [];
@@ -209,10 +210,6 @@
         userId = localStorage.getItem('user');
         fullname = localStorage.getItem('fullname');
     }
-
-    console.log("User ID:", userId);
-    console.log("Fullname:", fullname);
-    console.log("Staffs:", staffs);
 
     const go_to_dates = async (staff_id, staff_username) => {
         localStorage.setItem('user', userId);
@@ -251,7 +248,6 @@
 
     function loadStaffs(staffs) {
         const cards = document.getElementById('rowId');
-        alert(staffs)
         staffs.forEach(staff => {
             const div = document.createElement('div');
             div.className = 'container-sm';
