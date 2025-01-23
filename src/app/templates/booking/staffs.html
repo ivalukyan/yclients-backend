@@ -199,7 +199,7 @@
     let staffs;
 
     try {
-        staffs = JSON.parse("{{ staffs|tojson }}");
+        staffs = `{{ staffs|tojson }}`;
     } catch (e) {
         alert(`Ошибка парсинга данных staffs: ${e}`);
         staffs = [];
