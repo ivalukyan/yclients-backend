@@ -1,6 +1,8 @@
 """
 Services
 """
+import json
+
 from fastapi import APIRouter, Request
 from starlette.templating import Jinja2Templates
 
@@ -68,12 +70,12 @@ async def book_staff(request: Request, service_id: int):
     data = await include_staffs(service_staff_id, staff_values)
 
     for i in data:
-        i['staff_info'] = await remove_html_tags(i['staff_info'])
+        # i['staff_info'] = await remove_html_tags(i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
-        i['staff_info'] = i['staff_info'].replace('\n', ' ')
+        # i['staff_info'] = i['staff_info'].replace('\n', ' ')
 
     return templates.TemplateResponse("booking/staffs.html",
-                                      {'request': request, 'staffs': data,
+                                      {'request': request, 'staffs': json.dumps(data),
                                        'service_id': service_id})
 
 
