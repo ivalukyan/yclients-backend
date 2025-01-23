@@ -74,7 +74,7 @@ async def book_staff(request: Request, service_id: int):
         i['staff_info'] = await remove_html_tags(i['staff_info'])
         i['staff_info'] = i['staff_info'].replace('&nbsp;', '')
         i['staff_info'] = i['staff_info'].replace('"', '')
-        # i['staff_info'] = i['staff_info'].replace('\n', ' ')
+        i['staff_info'] = i['staff_info'].replace('\n', '<br>')
         BookStaffData.from_orm(i).dict()
 
     return templates.TemplateResponse("booking/staffs.html",
