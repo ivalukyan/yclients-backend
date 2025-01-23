@@ -64,14 +64,14 @@
             div.className = 'container-sm';
             div.innerHTML = `
                 <div class="container-sm-1">
-                    <img src="${staff.staff_avatar || '/path/to/default/avatar.jpg'}" alt="Avatar"/>
-                    <div class="name-staff">${staff.staff_name || 'Имя не указано'}</div>
+                    <img src="${staff.staff_avatar}" alt="Avatar"/>
+                    <div class="name-staff">${staff.staff_name}</div>
                 </div>
                 <div class="mb-3">
-                    <p>${staff.staff_specialization || 'Специализация не указана'}</p>
+                    <p>${staff.staff_specialization}</p>
                 </div>
                 <div class="mb-3">
-                    <p>${staff.staff_info || 'Информация отсутствует'}</p>
+                    <p>${staff.staff_info ||}</p>
                 </div>
                 <button
                     id="${staff.staff_id}"
