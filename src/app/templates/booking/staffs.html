@@ -201,7 +201,7 @@
     try {
         staffs = JSON.parse(`{{ staffs|safe }}`);
     } catch (e) {
-        alert("Ошибка парсинга данных staffs: ${e}");
+        alert(`Ошибка парсинга данных staffs: ${e}`);
         staffs = [];
     }
 
@@ -283,7 +283,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        alert("Загрузка данных о специалистах...");
+        alert(`Загрузка данных о специалистах... ${staffs}`);
         loadStaffs(staffs);
     });
 </script>
